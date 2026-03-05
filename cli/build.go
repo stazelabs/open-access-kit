@@ -34,18 +34,18 @@ Use --skip-download to start from step 2 when the mirror is already fresh.`,
 			return err
 		}
 
+		tierCfg, ok := cfg.Tiers[tier]
+		if !ok {
+			return fmt.Errorf("unknown tier %q", tier)
+		}
+
 		mdir := effectiveMirrorDir(cfg)
-		idir := effectiveReleaseImageDir(cfg)
+		idir := effectiveReleaseImageDir(cfg, tierCfg.Label)
 		odir := effectiveOutputDir(cfg)
 
 		sources, err := sourcesForTier(cfg, tier)
 		if err != nil {
 			return err
-		}
-
-		tierCfg, ok := cfg.Tiers[tier]
-		if !ok {
-			return fmt.Errorf("unknown tier %q", tier)
 		}
 
 		// 1. Download
@@ -102,10 +102,11 @@ Use --skip-download to start from step 2 when the mirror is already fresh.`,
 		var zipPath string
 		if !dryRun {
 			zipPath, err = packaging.Run(cmd.Context(), packaging.Options{
-				ImageDir:  idir,
-				OutputDir: odir,
-				Release:   cfg.Release,
-				TierLabel: tierCfg.Label,
+				ImageDir:    idir,
+				OutputDir:   odir,
+				Release:     cfg.Release,
+				TierLabel:   tierCfg.Label,
+				ZipRootName: zipRootName(cfg),
 			})
 			if err != nil {
 				return fmt.Errorf("package: %w", err)

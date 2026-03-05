@@ -1,4 +1,4 @@
-# Open Access Kit (OAK)
+# 🌳 Open Access Kit (OAK)
 
 A portable, offline-first collection of privacy tools and educational content for people facing censorship or surveillance.
 

@@ -77,10 +77,18 @@ func effectiveImageDir(cfg *config.Config) string {
 	return "./image"
 }
 
-// effectiveReleaseImageDir returns the versioned image subdirectory,
-// e.g. image/OAK-Q126, which is the root placed on the USB drive.
-func effectiveReleaseImageDir(cfg *config.Config) string {
-	return filepath.Join(effectiveImageDir(cfg), "OAK-"+cfg.Release)
+// effectiveReleaseImageDir returns the tier-specific staging directory,
+// e.g. image/OAK-Q126-16GB. Each tier gets its own directory so multiple
+// tiers can coexist without overwriting each other.
+// tierLabel is the human label from the tier config (e.g. "16GB", "64GB").
+func effectiveReleaseImageDir(cfg *config.Config, tierLabel string) string {
+	return filepath.Join(effectiveImageDir(cfg), "OAK-"+cfg.Release+"-"+tierLabel)
+}
+
+// zipRootName returns the directory name inside the ZIP (what appears on the USB drive).
+// This is tier-agnostic — every tier extracts to OAK-{release}/.
+func zipRootName(cfg *config.Config) string {
+	return "OAK-" + cfg.Release
 }
 
 // effectiveOutputDir returns the dist directory from config.

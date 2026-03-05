@@ -14,10 +14,11 @@ import (
 
 // Options configures a packaging run.
 type Options struct {
-	ImageDir  string // e.g. image/OAK-Q126  (the directory that becomes the ZIP root)
-	OutputDir string // e.g. dist/
-	Release   string // e.g. Q126
-	TierLabel string // e.g. 64GB
+	ImageDir    string // e.g. image/OAK-Q126-16GB  (tier-specific staging dir)
+	OutputDir   string // e.g. dist/
+	Release     string // e.g. Q126
+	TierLabel   string // e.g. 64GB  (used in the ZIP filename)
+	ZipRootName string // directory name inside the ZIP (e.g. OAK-Q126); defaults to filepath.Base(ImageDir)
 }
 
 // Run zips ImageDir into OutputDir/OAK-{release}-{tierLabel}.zip and writes
@@ -30,7 +31,11 @@ func Run(_ context.Context, opts Options) (string, error) {
 	zipName := fmt.Sprintf("OAK-%s-%s.zip", opts.Release, opts.TierLabel)
 	zipPath := filepath.Join(opts.OutputDir, zipName)
 
-	if err := createZip(opts.ImageDir, zipPath); err != nil {
+	rootName := opts.ZipRootName
+	if rootName == "" {
+		rootName = filepath.Base(opts.ImageDir)
+	}
+	if err := createZip(opts.ImageDir, zipPath, rootName); err != nil {
 		return "", fmt.Errorf("creating zip: %w", err)
 	}
 
@@ -60,9 +65,8 @@ func Sign(_ context.Context, zipPath, keyID string) error {
 }
 
 // createZip walks imageDir and writes all files into zipPath.
-// Each entry is stored under a top-level directory named after the imageDir basename,
-// so the ZIP extracts to OAK-Q126/<files>.
-func createZip(imageDir, zipPath string) error {
+// rootName is the top-level directory name inside the ZIP (e.g. OAK-Q126).
+func createZip(imageDir, zipPath, rootName string) error {
 	f, err := os.Create(zipPath)
 	if err != nil {
 		return err
@@ -71,9 +75,6 @@ func createZip(imageDir, zipPath string) error {
 
 	w := zip.NewWriter(f)
 	defer w.Close()
-
-	// The ZIP root dir name matches the image directory name (e.g. OAK-Q126)
-	rootName := filepath.Base(imageDir)
 
 	return filepath.Walk(imageDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {

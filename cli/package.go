@@ -15,19 +15,20 @@ var packageCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		idir := effectiveReleaseImageDir(cfg)
-		odir := effectiveOutputDir(cfg)
-
 		tierCfg, ok := cfg.Tiers[tier]
 		if !ok {
 			return fmt.Errorf("unknown tier %q", tier)
 		}
 
+		idir := effectiveReleaseImageDir(cfg, tierCfg.Label)
+		odir := effectiveOutputDir(cfg)
+
 		opts := packaging.Options{
-			ImageDir:  idir,
-			OutputDir: odir,
-			Release:   cfg.Release,
-			TierLabel: tierCfg.Label,
+			ImageDir:    idir,
+			OutputDir:   odir,
+			Release:     cfg.Release,
+			TierLabel:   tierCfg.Label,
+			ZipRootName: zipRootName(cfg),
 		}
 
 		if dryRun {

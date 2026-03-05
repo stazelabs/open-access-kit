@@ -14,17 +14,17 @@ var stageCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		tierCfg, ok := cfg.Tiers[tier]
+		if !ok {
+			return fmt.Errorf("unknown tier %q", tier)
+		}
+
 		mdir := effectiveMirrorDir(cfg)
-		idir := effectiveReleaseImageDir(cfg)
+		idir := effectiveReleaseImageDir(cfg, tierCfg.Label)
 
 		sources, err := sourcesForTier(cfg, tier)
 		if err != nil {
 			return err
-		}
-
-		tierCfg, ok := cfg.Tiers[tier]
-		if !ok {
-			return fmt.Errorf("unknown tier %q", tier)
 		}
 
 		for _, s := range sources {
