@@ -15,7 +15,7 @@ var stageCmd = &cobra.Command{
 			return err
 		}
 		mdir := effectiveMirrorDir(cfg)
-		idir := effectiveImageDir(cfg)
+		idir := effectiveReleaseImageDir(cfg)
 
 		sources, err := sourcesForTier(cfg, tier)
 		if err != nil {
@@ -31,7 +31,7 @@ var stageCmd = &cobra.Command{
 			fmt.Printf("==> Staging %s\n", s.Name())
 			if dryRun {
 				sz, _ := s.Size(mdir)
-				fmt.Printf("    [dry-run] would stage %s (%s) -> %s\n", s.Name(), humanBytes(sz), idir)
+				fmt.Printf("    [dry-run] would stage %s (%s) -> %s/\n", s.Name(), humanBytes(sz), idir)
 				continue
 			}
 			if err := s.Stage(cmd.Context(), mdir, idir, tierCfg); err != nil {

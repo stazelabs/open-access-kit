@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/stazelabs/open-access-kit/internal/config"
 	"github.com/stazelabs/open-access-kit/internal/source"
@@ -64,7 +65,7 @@ func effectiveMirrorDir(cfg *config.Config) string {
 	return "./mirror"
 }
 
-// effectiveImageDir returns the image directory, preferring the config
+// effectiveImageDir returns the image base directory, preferring the config
 // value unless it was overridden by the --image-dir flag.
 func effectiveImageDir(cfg *config.Config) string {
 	if imageDir != "./image" {
@@ -74,4 +75,18 @@ func effectiveImageDir(cfg *config.Config) string {
 		return cfg.Paths.Image
 	}
 	return "./image"
+}
+
+// effectiveReleaseImageDir returns the versioned image subdirectory,
+// e.g. image/OAK-Q126, which is the root placed on the USB drive.
+func effectiveReleaseImageDir(cfg *config.Config) string {
+	return filepath.Join(effectiveImageDir(cfg), "OAK-"+cfg.Release)
+}
+
+// effectiveOutputDir returns the dist directory from config.
+func effectiveOutputDir(cfg *config.Config) string {
+	if cfg.Paths.Output != "" {
+		return cfg.Paths.Output
+	}
+	return "./dist"
 }

@@ -1,4 +1,4 @@
-# OAK (Open Access Kit) — Design Document
+# 🌳 OAK (Open Access Kit) — Design Document
 
 ## Context
 
@@ -95,12 +95,17 @@ open-access-kit/
 
 | Command | Description |
 |---------|-------------|
-| `oak build --tier 64` | Full pipeline: download -> verify -> stage -> annotate -> package -> sign |
-| `oak download [source]` | Fetch/mirror all or a specific source |
+| `oak build --tier 64` | Full pipeline: download → verify → stage → annotate → package → sign |
+| `oak download [source]` | Fetch/mirror all sources for the tier, or a specific source by name |
 | `oak verify [source]` | Check GPG sigs + checksums of mirrored content |
-| `oak stage --tier 64` | Build image directory from mirror |
-| `oak status` | Show mirror state, sizes, detected versions |
+| `oak stage --tier 64` | Copy mirror → `image/OAK-{release}/` with tier size budget |
+| `oak annotate` | Generate `VERSION.txt`, `MANIFEST.txt`, `README.txt` into the staged image |
+| `oak package` | Zip staged image → `dist/OAK-{release}-{tier}.zip` + `.sha256` |
+| `oak sign [zipfile]` | GPG-sign a packaged ZIP → `.zip.asc` |
+| `oak status` | Show mirror state, sizes, detected upstream versions |
 | `oak version` | Print CLI version |
+
+All steps are independently runnable. `oak build` orchestrates them end-to-end.
 
 ### Global Flags
 
@@ -120,12 +125,14 @@ open-access-kit/
 type Source interface {
     Name() string
     DetectVersion(ctx context.Context) (string, error)
-    Download(ctx context.Context, mirrorDir string) error
+    Download(ctx context.Context, mirrorDir string, opts DownloadOptions) error
     Verify(ctx context.Context, mirrorDir string) error
     Size(mirrorDir string) (int64, error)
     Stage(ctx context.Context, mirrorDir, imageDir string, tier TierConfig) error
 }
 ```
+
+`DownloadOptions.Force` re-downloads files even if already cached (`oak download --force`).
 
 Implementations:
 - **RsyncSource** — Tor Browser, Tails (rsync protocol)
@@ -246,20 +253,26 @@ signing:
 `oak build --tier <tier>` runs the full quarterly update cycle:
 
 ```
-1. LOAD CONFIG         Parse oak.yaml, resolve tier, compute release name
-2. DETECT VERSIONS     Scrape latest Tor Browser version, Tails version, etc.
-3. DOWNLOAD            rsync/git/http fetch into mirror/ (parallel, idempotent)
-4. VERIFY UPSTREAM     Check GPG sigs (.asc/.sig) against bundled keyrings
-5. STAGE               Copy selected files from mirror/ -> image/OAK-Q126/
-                       Enforce tier size budget; abort if exceeded
-6. ANNOTATE            Generate README.txt, README.html, MANIFEST.txt, VERSION.txt
-                       Render Markdown guides -> standalone HTML
-                       Build companion website (Go-native renderer)
-7. PACKAGE             ZIP image/ -> dist/OAK-Q126-64GB.zip + .sha256
-8. SIGN                GPG-sign the ZIP -> dist/OAK-Q126-64GB.zip.asc
+1. DOWNLOAD    rsync/git/http fetch into mirror/ (skips cached files; --skip-download to bypass)
+2. VERIFY      Check GPG sigs (.asc/.sig) of mirrored content against bundled keyrings
+3. STAGE       Copy selected files from mirror/ -> image/OAK-{release}/
+               Enforce tier size budget; abort if exceeded
+4. ANNOTATE    Generate VERSION.txt, MANIFEST.txt, README.txt
+5. PACKAGE     ZIP image/OAK-{release}/ -> dist/OAK-{release}-{tier}.zip + .sha256
+6. SIGN        GPG-sign the ZIP -> dist/OAK-{release}-{tier}.zip.asc (only if --sign)
 ```
 
-Each step can run independently. `oak download` only fetches. `oak verify` only checks. This supports iterative development: download once, experiment with staging.
+Each step is also a standalone command. Download once, re-run later steps freely.
+
+**Output artifacts** (all in `dist/`, gitignored, published as GitHub release assets):
+- `dist/OAK-Q126-64GB.zip`
+- `dist/OAK-Q126-64GB.zip.sha256`
+- `dist/OAK-Q126-64GB.zip.asc` (if signed)
+
+**`oak build` flags:**
+- `--sign` — enable step 6
+- `--sign-key <key-id>` — specify GPG key (uses default key if omitted)
+- `--skip-download` — start from step 2 when mirror is already current
 
 ---
 
