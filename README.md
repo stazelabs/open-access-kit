@@ -2,7 +2,8 @@
 
 A portable, offline-first collection of privacy tools and educational content for people facing censorship or surveillance.
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/code-GPL%20v3-blue.svg)](LICENSE)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/content-CC%20BY--SA%204.0-lightgrey.svg)](LICENSE)
 
 ## What is OAK?
 
@@ -54,7 +55,7 @@ If someone handed you an OAK USB drive:
 **Prerequisites**: Go 1.22+, rsync, gpg
 
 ```bash
-git clone https://github.com/open-access-kit/oak
+git clone https://github.com/stazelabs/open-access-kit
 cd oak
 make build
 
@@ -85,4 +86,7 @@ See [AGENTS.md](AGENTS.md) for guidance if you're using AI coding tools.
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE).
+- **Code** (Go source, tooling): [GPL v3](LICENSE)
+- **Content** (`content/`): [CC BY-SA 4.0](LICENSE)
+
+GPL v3 ensures any modified version of OAK must remain open source. CC BY-SA 4.0 ensures educational guides can be freely shared and adapted with attribution.
