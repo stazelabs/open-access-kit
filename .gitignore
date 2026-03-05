@@ -1,0 +1,27 @@
+# Runtime artifacts
+mirror/
+image/
+dist/
+
+# Go build artifacts
+oak
+*.exe
+
+# Go module cache
+vendor/
+
+# Editor and OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# GPG signing key (never commit private keys)
+*.gpg
+*.asc
+!keys/*.gpg
+
+# Test output
+coverage.out
+coverage.html
