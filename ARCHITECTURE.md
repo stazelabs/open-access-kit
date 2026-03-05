@@ -25,7 +25,7 @@ Privacy tools like Tor Browser and Tails OS are critical for people facing censo
 open-access-kit/
 ├── README.md                     # GitHub landing page
 ├── LICENSE
-├── DESIGN.md                     # This document
+├── ARCHITECTURE.md               # This document
 ├── go.mod / go.sum
 ├── Makefile                      # build, test, lint, release targets
 ├── oak.yaml                      # Tier + source configuration

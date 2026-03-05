@@ -1,6 +1,6 @@
 # AGENTS.md — Guide for AI Coding Agents
 
-This document gives AI coding agents the context needed to work effectively on the Open Access Kit (OAK) codebase. Read DESIGN.md for the full architecture specification.
+This document gives AI coding agents the context needed to work effectively on the Open Access Kit (OAK) codebase. Read ARCHITECTURE.md for the full architecture specification.
 
 ## Project Summary
 
@@ -12,7 +12,7 @@ Target users: people in censorship/surveillance environments who need offline co
 
 ```
 open-access-kit/
-├── DESIGN.md               # Full architecture spec — read this first
+├── ARCHITECTURE.md         # Full architecture spec — read this first
 ├── AGENTS.md               # This file
 ├── oak.yaml                # Declarative config: tiers, sources, signing
 ├── go.mod / go.sum
@@ -80,7 +80,7 @@ The following areas require extra care:
 
 When writing or reviewing code in these areas, be explicit about what could go wrong and add comments explaining the security invariants.
 
-## Architecture Decisions (from DESIGN.md)
+## Architecture Decisions (from ARCHITECTURE.md)
 
 - **Cobra** for CLI framework
 - **goldmark** for Markdown-to-HTML (companion website rendered natively — no external tools)

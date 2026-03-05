@@ -64,7 +64,7 @@ make build
 ./oak build --tier 16                 # actually build
 ```
 
-See [DESIGN.md](DESIGN.md) for full architecture documentation.
+See [ARCHITECTURE.md](ARCHITECTURE.md) for full architecture documentation.
 
 ## Release Schedule
 
