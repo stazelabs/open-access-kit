@@ -1,14 +1,58 @@
 package version
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
 	"net/http"
+	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
 )
+
+// RsyncList runs `rsync <url>` to list a remote directory, finds all matches
+// of pattern (first capture group), and returns the selected version.
+func RsyncList(ctx context.Context, url, pattern, selectMode string) (string, error) {
+	var out bytes.Buffer
+	cmd := exec.CommandContext(ctx, "rsync", url)
+	cmd.Stdout = &out
+	// rsync exits non-zero if the listing is empty; stderr noise is fine to ignore
+	_ = cmd.Run()
+
+	re, err := regexp.Compile(pattern)
+	if err != nil {
+		return "", fmt.Errorf("compiling pattern %q: %w", pattern, err)
+	}
+
+	matches := re.FindAllSubmatch(out.Bytes(), -1)
+	if len(matches) == 0 {
+		return "", fmt.Errorf("no versions found in rsync listing of %s with pattern %q", url, pattern)
+	}
+
+	var versions []string
+	seen := map[string]bool{}
+	for _, m := range matches {
+		if len(m) < 2 {
+			continue
+		}
+		v := string(m[1])
+		if !seen[v] {
+			seen[v] = true
+			versions = append(versions, v)
+		}
+	}
+
+	switch selectMode {
+	case "highest-semver", "":
+		return highestSemver(versions)
+	case "first":
+		return versions[0], nil
+	default:
+		return "", fmt.Errorf("unknown select mode: %s", selectMode)
+	}
+}
 
 // HTTPScrape fetches url, finds all matches of pattern (first capture group),
 // and returns the selected version. selectMode is "highest-semver" or "first".

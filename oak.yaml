@@ -72,7 +72,17 @@ sources:
   tails:
     type: rsync
     description: "Tails OS (latest stable)"
-    rsync_base: "rsync://rsync.tails.net/amnesia-archive/stable/latest/"
+    version_detect:
+      method: rsync-list
+      url: "rsync://rsync.tails.net/amnesia-archive/tails/stable/"
+      pattern: 'tails-amd64-([0-9]+\.[0-9]+(?:\.[0-9]+)?)'
+      select: highest-semver
+    rsync_base: "rsync://rsync.tails.net/amnesia-archive/tails/stable/tails-amd64-{version}/"
+    files:
+      - "tails-amd64-{version}.img"
+      - "tails-amd64-{version}.img.sig"
+      - "tails-amd64-{version}.iso"
+      - "tails-amd64-{version}.iso.sig"
     verify:
       method: gpg
       keyring: keys/tails-signing.gpg

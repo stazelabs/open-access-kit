@@ -32,6 +32,8 @@ func (s *rsyncSource) DetectVersion(ctx context.Context) (string, error) {
 	switch vd.Method {
 	case "http-scrape":
 		return version.HTTPScrape(ctx, vd.URL, vd.Pattern, vd.Select)
+	case "rsync-list":
+		return version.RsyncList(ctx, vd.URL, vd.Pattern, vd.Select)
 	default:
 		return "", fmt.Errorf("unknown version_detect method: %s", vd.Method)
 	}
