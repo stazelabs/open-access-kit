@@ -8,8 +8,10 @@ import (
 )
 
 // GPG verifies dataFile against its detached sigFile using the given keyring.
-// The keyring must be a GPG public keyring file (.gpg).
-// Verification is strict: any gpg error is returned as a hard failure.
+// The keyring must be a GPG public keyring file (.gpg) in binary (dearmored) format.
+// Uses gpgv, which operates directly on keyring files without the keyboxd
+// daemon that modern gpg uses and which ignores --keyring on some systems.
+// Verification is strict: any failure is returned as a hard error.
 func GPG(ctx context.Context, keyring, sigFile, dataFile string) error {
 	absKeyring, err := filepath.Abs(keyring)
 	if err != nil {
@@ -24,10 +26,9 @@ func GPG(ctx context.Context, keyring, sigFile, dataFile string) error {
 		return fmt.Errorf("resolving data path: %w", err)
 	}
 
-	cmd := exec.CommandContext(ctx, "gpg",
-		"--no-default-keyring",
+	cmd := exec.CommandContext(ctx, "gpgv",
 		"--keyring", absKeyring,
-		"--verify", absSig, absData,
+		absSig, absData,
 	)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
