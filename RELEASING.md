@@ -151,7 +151,7 @@ PASSPHRASE=$(op read "op://Private/OAK Signing Key Passphrase/password")
 echo "$PASSPHRASE" | gpg --batch --yes \
   --passphrase-fd 0 \
   --pinentry-mode loopback \
-  --armor --detach-sign dist/OAK-Q126-64GB.zip
+  --armor --detach-sign dist/OAK-Q126-M.zip
 ```
 
 `oak sign` invokes `gpg` directly, so you can pre-load the passphrase into the running agent before calling `oak build --sign` and GPG will pick it up without prompting.
@@ -177,7 +177,7 @@ echo "$PASSPHRASE" | gpg --batch --passphrase-fd 0 \
   --pinentry-mode loopback --list-secret-keys > /dev/null
 
 # Build and sign all tiers
-for tier in 16 32 64 max; do
+for tier in S M L; do
   ./oak build --tier "$tier" --sign
 done
 
@@ -191,7 +191,7 @@ echo "Build complete. Artifacts in dist/"
 ### Full pipeline (all six steps)
 
 ```sh
-./oak build --tier 64 --sign
+./oak build --tier M --sign
 ```
 
 This runs: download → verify → stage → annotate → package → sign.
@@ -199,16 +199,16 @@ This runs: download → verify → stage → annotate → package → sign.
 Output artifacts land in `dist/`:
 
 ```
-dist/OAK-Q126-64GB.zip
-dist/OAK-Q126-64GB.zip.sha256
-dist/OAK-Q126-64GB.zip.asc
+dist/OAK-Q126-M.zip
+dist/OAK-Q126-M.zip.sha256
+dist/OAK-Q126-M.zip.asc
 ```
 
 ### Common flags
 
 | Flag | Purpose |
 |------|---------|
-| `--tier 16\|32\|64\|max` | Target tier (default: `64`) |
+| `--tier S\|M\|L` | Target tier (default: `M`) |
 | `--sign` | GPG-sign the output ZIP |
 | `--sign-key KEY_ID` | Override the signing key |
 | `--skip-download` | Skip step 1 when the mirror is already current |
@@ -218,7 +218,7 @@ dist/OAK-Q126-64GB.zip.asc
 ### Build all tiers
 
 ```sh
-for tier in 16 32 64 max; do
+for tier in S M L; do
   ./oak build --tier $tier --sign
 done
 ```
@@ -228,7 +228,7 @@ done
 Once `mirror/` is populated you can skip re-downloading on subsequent runs:
 
 ```sh
-./oak build --tier 64 --skip-download --sign
+./oak build --tier M --skip-download --sign
 ```
 
 ### Running individual steps
@@ -236,10 +236,10 @@ Once `mirror/` is populated you can skip re-downloading on subsequent runs:
 ```sh
 ./oak download              # Step 1: populate mirror/
 ./oak verify                # Step 2: GPG-check mirrored content
-./oak stage --tier 64       # Step 3: assemble image/
+./oak stage --tier M       # Step 3: assemble image/
 ./oak annotate              # Step 4: generate VERSION/MANIFEST/README
 ./oak package               # Step 5: create dist/ ZIP + SHA256
-./oak sign dist/OAK-Q126-64GB.zip   # Step 6: detached GPG signature
+./oak sign dist/OAK-Q126-M.zip   # Step 6: detached GPG signature
 ```
 
 ## Rendering the Companion Website
@@ -310,7 +310,7 @@ After a successful `oak build --sign`, upload the `dist/` artifacts:
 
 ```sh
 RELEASE=Q126
-TIER=64GB
+TIER=M
 
 wrangler r2 object put oak-releases/${RELEASE}/${TIER}/OAK-${RELEASE}-${TIER}.zip \
   --file dist/OAK-${RELEASE}-${TIER}.zip
@@ -326,7 +326,7 @@ Upload all tiers with a shell loop:
 
 ```sh
 RELEASE=Q126
-for tier in 16GB 32GB 64GB Max; do
+for tier in S M L; do
   for ext in .zip .zip.sha256 .zip.asc; do
     file="dist/OAK-${RELEASE}-${tier}${ext}"
     [ -f "$file" ] || continue
@@ -341,13 +341,13 @@ done
 With public access enabled, objects are reachable at:
 
 ```
-https://pub-<your-account-hash>.r2.dev/oak-releases/Q126/64GB/OAK-Q126-64GB.zip
+https://pub-<your-account-hash>.r2.dev/oak-releases/Q126/M/OAK-Q126-M.zip
 ```
 
 If you bind a custom domain to the bucket (e.g., `releases.openaccess.tools`), the URL becomes:
 
 ```
-https://releases.openaccess.tools/oak-releases/Q126/64GB/OAK-Q126-64GB.zip
+https://releases.openaccess.tools/oak-releases/Q126/M/OAK-Q126-M.zip
 ```
 
 Update the download links in the GitHub README and companion website to point at these URLs for each quarterly release.

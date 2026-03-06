@@ -10,11 +10,12 @@ import (
 
 // Config is the top-level structure parsed from oak.yaml.
 type Config struct {
-	Release string                 `yaml:"release"`
-	Paths   PathConfig             `yaml:"paths"`
-	Tiers   map[string]TierConfig  `yaml:"tiers"`
-	Sources map[string]SourceConfig `yaml:"sources"`
-	Signing SigningConfig           `yaml:"signing"`
+	Release      string                  `yaml:"release"`
+	DownloadRoot string                  `yaml:"download_root"`
+	Paths        PathConfig              `yaml:"paths"`
+	Tiers        map[string]TierConfig   `yaml:"tiers"`
+	Sources      map[string]SourceConfig `yaml:"sources"`
+	Signing      SigningConfig           `yaml:"signing"`
 }
 
 type PathConfig struct {
@@ -53,6 +54,9 @@ type SourceConfig struct {
 	GitHubRepo    string   `yaml:"github_repo"`
 	AssetPatterns []string `yaml:"asset_patterns"`
 
+	// kiwix-zim sources
+	ZimFiles []ZimFileConfig `yaml:"zim_files"`
+
 	// common
 	ExcludeDirs   []string            `yaml:"exclude_dirs"`
 	StagePath     string              `yaml:"stage_path"`
@@ -70,6 +74,13 @@ type VersionDetectConfig struct {
 	URL     string `yaml:"url"`
 	Pattern string `yaml:"pattern"`
 	Select  string `yaml:"select"`
+}
+
+type ZimFileConfig struct {
+	Name        string `yaml:"name"`         // base name without date, e.g. "zimgit-medicine_en"
+	Category    string `yaml:"category"`     // Kiwix download category (unused when download_url is set)
+	StageSubdir string `yaml:"stage_subdir"` // subdirectory under stage_path, e.g. "medical"
+	DownloadURL string `yaml:"download_url"` // optional: full URL, bypasses OPDS lookup
 }
 
 type SigningConfig struct {

@@ -2,6 +2,7 @@ package packaging
 
 import (
 	"archive/zip"
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
@@ -14,10 +15,10 @@ import (
 
 // Options configures a packaging run.
 type Options struct {
-	ImageDir    string // e.g. image/OAK-Q126-16GB  (tier-specific staging dir)
+	ImageDir    string // e.g. image/OAK-Q126-M  (tier-specific staging dir)
 	OutputDir   string // e.g. dist/
 	Release     string // e.g. Q126
-	TierLabel   string // e.g. 64GB  (used in the ZIP filename)
+	TierLabel   string // e.g. M  (used in the ZIP filename)
 	ZipRootName string // directory name inside the ZIP (e.g. OAK-Q126); defaults to filepath.Base(ImageDir)
 }
 
@@ -50,16 +51,21 @@ func Run(_ context.Context, opts Options) (string, error) {
 // If keyID is non-empty it selects that key; otherwise the default key is used.
 func Sign(_ context.Context, zipPath, keyID string) error {
 	sigPath := zipPath + ".asc"
-	args := []string{"--detach-sign", "--armor", "--output", sigPath}
+	args := []string{
+		"--pinentry-mode", "loopback",
+		"--detach-sign", "--armor", "--output", sigPath,
+	}
 	if keyID != "" {
 		args = append(args, "--local-user", keyID)
 	}
 	args = append(args, zipPath)
 
+	var stderr bytes.Buffer
 	cmd := exec.Command("gpg", args...)
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("gpg signing failed:\n%s", out)
+	cmd.Stdin = os.Stdin
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("gpg signing failed:\n%s", stderr.String())
 	}
 	return nil
 }

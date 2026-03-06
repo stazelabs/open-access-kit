@@ -16,7 +16,7 @@ var signCmd = &cobra.Command{
 	Long: `GPG-sign a packaged ZIP file.
 
 If no zipfile argument is given, the path is derived from --config, --tier,
-and the release name (e.g. dist/OAK-Q126-64GB.zip).
+and the release name (e.g. dist/OAK-Q126-M.zip).
 
 Uses the default GPG key unless --sign-key is specified.`,
 	Args: cobra.MaximumNArgs(1),

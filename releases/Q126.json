@@ -1,0 +1,171 @@
+{
+  "release": "Q126",
+  "built": "2026-03-06T16:10:31.990587Z",
+  "tiers": {
+    "L": {
+      "label": "L",
+      "budget_gb": 29,
+      "sources": [
+        "tor-browser",
+        "torproject-manual",
+        "siabguide",
+        "dfak",
+        "privacy-guides",
+        "saferjourno",
+        "educational-content",
+        "media-content",
+        "keys",
+        "tails",
+        "tails-doc",
+        "onionshare",
+        "orbot",
+        "kiwix-tools",
+        "kiwix-desktop",
+        "zim-p0",
+        "zim-p1",
+        "zim-p2"
+      ]
+    },
+    "M": {
+      "label": "M",
+      "budget_gb": 14,
+      "sources": [
+        "tor-browser",
+        "torproject-manual",
+        "siabguide",
+        "dfak",
+        "privacy-guides",
+        "saferjourno",
+        "educational-content",
+        "media-content",
+        "keys",
+        "tails",
+        "tails-doc",
+        "onionshare",
+        "orbot",
+        "kiwix-tools",
+        "kiwix-desktop",
+        "zim-p0",
+        "zim-p1",
+        "zim-p1-wikipedia"
+      ]
+    },
+    "S": {
+      "label": "S",
+      "budget_gb": 4,
+      "sources": [
+        "tor-browser",
+        "torproject-manual",
+        "siabguide",
+        "dfak",
+        "privacy-guides",
+        "educational-content",
+        "media-content",
+        "keys",
+        "orbot"
+      ]
+    }
+  },
+  "sources": {
+    "dfak": {
+      "type": "git",
+      "description": "Digital First Aid Kit — self-diagnosis tools for people facing digital threats (CC-BY-4.0)",
+      "version": "",
+      "commit": "b1a9fd8112b9b1c478a0996e69b5525fbbf7be22"
+    },
+    "educational-content": {
+      "type": "local",
+      "description": "Bundled guides and documentation",
+      "version": ""
+    },
+    "keys": {
+      "type": "local",
+      "description": "GPG signing keys for software verification",
+      "version": ""
+    },
+    "kiwix-desktop": {
+      "type": "http",
+      "description": "Kiwix Desktop — offline ZIM reader GUI (Windows, Linux)",
+      "version": "2.5.1"
+    },
+    "kiwix-tools": {
+      "type": "http",
+      "description": "Kiwix-serve — offline ZIM content server (Linux, macOS)",
+      "version": "3.8.2"
+    },
+    "media-content": {
+      "type": "local",
+      "description": "Image-only bundled content (not published to website)",
+      "version": ""
+    },
+    "onionshare": {
+      "type": "http",
+      "description": "OnionShare - Secure anonymous file sharing over Tor",
+      "version": "2.6.3"
+    },
+    "orbot": {
+      "type": "github-release",
+      "description": "Orbot - Tor proxy for Android (all apps)",
+      "version": "17.9.1-BETA-1-tor-0.4.9.5"
+    },
+    "privacy-guides": {
+      "type": "git",
+      "description": "Privacy Guides — community-maintained privacy tool recommendations (CC-BY-SA-4.0)",
+      "version": "",
+      "commit": "23b37858ab59af3cf648b1b353c5f5e886c23292"
+    },
+    "saferjourno": {
+      "type": "git",
+      "description": "SaferJourno — digital security guide for journalists (CC-BY-SA-4.0)",
+      "version": "",
+      "commit": "4c1e1ce0d54b4d162220fa9ed65cf68431bc9474"
+    },
+    "siabguide": {
+      "type": "git",
+      "description": "Security in a Box — digital security guides for human rights defenders (CC-BY-SA-3.0)",
+      "version": "",
+      "commit": "e3f2d01047abcf8b2830c74fe945c9ca299aace3"
+    },
+    "tails": {
+      "type": "rsync",
+      "description": "Tails OS (latest stable)",
+      "version": "7.5"
+    },
+    "tails-doc": {
+      "type": "site-mirror",
+      "description": "Tails OS documentation (CC-BY-SA-4.0)",
+      "version": ""
+    },
+    "tor-browser": {
+      "type": "rsync",
+      "description": "Tor Browser (latest stable, all platforms)",
+      "version": "15.0.7"
+    },
+    "torproject-manual": {
+      "type": "git",
+      "description": "Tor Browser Manual (built HTML, CC-BY-4.0)",
+      "version": "",
+      "commit": "9de1dea5bf5766f2c84be6c5de855a56151f6f77"
+    },
+    "zim-p0": {
+      "type": "kiwix-zim",
+      "description": "ZIM P0 — critical survival and medical content (~1 GB)",
+      "version": ""
+    },
+    "zim-p1": {
+      "type": "kiwix-zim",
+      "description": "ZIM P1 — core reference and education content for M and L tiers (~8 GB)",
+      "version": ""
+    },
+    "zim-p1-wikipedia": {
+      "type": "kiwix-zim",
+      "description": "ZIM P1 Wikipedia — Simple English Wikipedia for M tier (~3.1 GB)",
+      "version": ""
+    },
+    "zim-p2": {
+      "type": "kiwix-zim",
+      "description": "ZIM P2 — broader reference for L tier, includes Wikipedia mini (~26 GB)",
+      "version": ""
+    }
+  }
+}

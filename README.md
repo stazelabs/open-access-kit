@@ -19,26 +19,25 @@ Pre-built images are published on the [Releases](../../releases) page. Choose th
 
 | Tier | Drive Size | Contents |
 |------|-----------|----------|
-| 16GB | 16 GB | Tor Browser + guides + onion sites |
-| 32GB | 32 GB | + Tails OS |
-| 64GB | 64 GB | + Tails OS (more headroom) |
-| max  | Any | Everything, no size limit |
+| S | 4 GB | Tor Browser + guides + Orbot |
+| M | 16 GB | + Tails OS + OnionShare + Kiwix + ZIM content |
+| L | 32 GB | + expanded ZIM reference library |
 
 ### Build Your Own
 
 ```bash
 go install github.com/open-access-kit/oak/cmd/oak@latest
-oak build --tier 64
+oak build --tier M
 ```
 
 ## What's Inside
 
-| Content | 16GB | 32GB | 64GB | max |
-|---------|------|------|------|-----|
-| Tor Browser (all platforms) | Yes | Yes | Yes | Yes |
-| Educational guides | Yes | Yes | Yes | Yes |
-| Onion sites directory | Yes | Yes | Yes | Yes |
-| Tails OS | - | Yes | Yes | Yes |
+| Content | S | M | L |
+|---------|---|---|---|
+| Tor Browser (all platforms) | Yes | Yes | Yes |
+| Educational guides | Yes | Yes | Yes |
+| Onion sites directory | Yes | Yes | Yes |
+| Tails OS | - | Yes | Yes |
 
 ## How to Use OAK
 
@@ -60,8 +59,8 @@ cd oak
 make build
 
 # Run the full pipeline
-./oak build --tier 16 --dry-run      # preview what would happen
-./oak build --tier 16                 # actually build
+./oak build --tier S --dry-run      # preview what would happen
+./oak build --tier S                 # actually build
 ```
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for full architecture documentation.

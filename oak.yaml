@@ -1,4 +1,5 @@
 release: Q126
+download_root: https://releases.oak.stazelabs.com
 
 paths:
   mirror: ./mirror
@@ -6,8 +7,21 @@ paths:
   output: ./dist
 
 tiers:
-  "16":
-    label: "16GB"
+  S:
+    label: "S"
+    budget_gb: 4
+    sources:
+      - tor-browser
+      - torproject-manual
+      - siabguide
+      - dfak
+      - privacy-guides
+      - educational-content
+      - media-content
+      - keys
+      - orbot
+  M:
+    label: "M"
     budget_gb: 14
     sources:
       - tor-browser
@@ -15,12 +29,21 @@ tiers:
       - siabguide
       - dfak
       - privacy-guides
+      - saferjourno
       - educational-content
       - media-content
       - keys
+      - tails
+      - tails-doc
+      - onionshare
       - orbot
-  "32":
-    label: "32GB"
+      - kiwix-tools
+      - kiwix-desktop
+      - zim-p0
+      - zim-p1
+      - zim-p1-wikipedia
+  L:
+    label: "L"
     budget_gb: 29
     sources:
       - tor-browser
@@ -28,24 +51,6 @@ tiers:
       - siabguide
       - dfak
       - privacy-guides
-      - educational-content
-      - media-content
-      - keys
-      - tails
-      - tails-doc
-      - onionshare
-      - orbot
-      - kiwix-tools
-      - kiwix-desktop
-  "64":
-    label: "64GB"
-    budget_gb: 58
-    sources:
-      - tor-browser
-      - torproject-manual
-      - siabguide
-      - dfak
-      - privacy-guides
       - saferjourno
       - educational-content
       - media-content
@@ -56,25 +61,9 @@ tiers:
       - orbot
       - kiwix-tools
       - kiwix-desktop
-  max:
-    label: "Max"
-    budget_gb: 0
-    sources:
-      - tor-browser
-      - torproject-manual
-      - siabguide
-      - dfak
-      - privacy-guides
-      - saferjourno
-      - educational-content
-      - media-content
-      - keys
-      - tails
-      - tails-doc
-      - onionshare
-      - orbot
-      - kiwix-tools
-      - kiwix-desktop
+      - zim-p0
+      - zim-p1
+      - zim-p2
 
 sources:
   tor-browser:
@@ -247,6 +236,96 @@ sources:
     description: "Image-only bundled content (not published to website)"
     local_path: "./content/media/"
     stage_path: "guides/resources/"
+
+  zim-p0:
+    type: kiwix-zim
+    description: "ZIM P0 — critical survival and medical content (~1 GB)"
+    stage_path: "zim/"
+    zim_files:
+      - name: zimgit-medicine_en
+        category: zimgit
+        stage_subdir: medical
+      - name: zimgit-water_en
+        category: zimgit
+        stage_subdir: survival
+      - name: zimgit-knots_en
+        category: zimgit
+        stage_subdir: survival
+      - name: zimgit-food-preparation_en
+        category: zimgit
+        stage_subdir: survival
+      - name: librepathology_en_all_maxi
+        category: librepathology
+        stage_subdir: medical
+      - name: freecodecamp_en_all
+        category: freecodecamp
+        stage_subdir: education
+      - name: vikidia_en_all_maxi
+        category: vikidia
+        stage_subdir: education
+      - name: wiktionary_en_simple_all_nopic
+        category: wiktionary
+        stage_subdir: reference
+      - name: zimgit-post-disaster_en
+        category: zimgit
+        stage_subdir: survival
+
+  zim-p1-wikipedia:
+    type: kiwix-zim
+    description: "ZIM P1 Wikipedia — Simple English Wikipedia for M tier (~3.1 GB)"
+    stage_path: "zim/"
+    zim_files:
+      - name: wikipedia_en_simple_all_maxi
+        category: wikipedia
+        stage_subdir: reference
+
+  zim-p1:
+    type: kiwix-zim
+    description: "ZIM P1 — core reference and education content for M and L tiers (~8 GB)"
+    stage_path: "zim/"
+    zim_files:
+      - name: phet_en_all
+        category: phet
+        stage_subdir: education
+      - name: appropedia_en_all_maxi
+        category: other
+        stage_subdir: sustainability
+      - name: energypedia_en_all_nopic
+        category: other
+        stage_subdir: sustainability
+      - name: wikivoyage_en_all_maxi
+        category: wikivoyage
+        stage_subdir: reference
+      - name: ted_mul_ted-ed
+        category: ted
+        stage_subdir: education
+      - name: gutenberg_en_lcc-s
+        category: gutenberg
+        stage_subdir: literature
+
+  zim-p2:
+    type: kiwix-zim
+    description: "ZIM P2 — broader reference for L tier, includes Wikipedia mini (~26 GB)"
+    stage_path: "zim/"
+    zim_files:
+      - name: wikipedia_en_all_mini
+        category: wikipedia
+        stage_subdir: reference
+      - name: wikibooks_en_all_nopic
+        category: wikibooks
+        stage_subdir: education
+      - name: mdwiki_en_all_maxi
+        category: mdwiki
+        stage_subdir: medical
+      - name: wikiversity_en_all_maxi
+        category: wikiversity
+        stage_subdir: education
+      - name: superuser.com_en_all
+        category: stack_exchange
+        stage_subdir: tech
+      - name: gutenberg_en_lcc-h
+        category: gutenberg
+        stage_subdir: literature
 
 signing:
   enabled: true

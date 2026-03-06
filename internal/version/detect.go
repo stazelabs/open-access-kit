@@ -47,6 +47,8 @@ func RsyncList(ctx context.Context, url, pattern, selectMode string) (string, er
 	switch selectMode {
 	case "highest-semver", "":
 		return highestSemver(versions)
+	case "latest-date":
+		return latestDate(versions)
 	case "first":
 		return versions[0], nil
 	default:
@@ -98,11 +100,28 @@ func HTTPScrape(ctx context.Context, url, pattern, selectMode string) (string, e
 	switch selectMode {
 	case "highest-semver", "":
 		return highestSemver(versions)
+	case "latest-date":
+		return latestDate(versions)
 	case "first":
 		return versions[0], nil
 	default:
 		return "", fmt.Errorf("unknown select mode: %s", selectMode)
 	}
+}
+
+// latestDate returns the lexicographically greatest value from a list of
+// "YYYY-MM" date strings. Since the format is zero-padded, lex order == date order.
+func latestDate(dates []string) (string, error) {
+	if len(dates) == 0 {
+		return "", fmt.Errorf("no versions to compare")
+	}
+	best := dates[0]
+	for _, d := range dates[1:] {
+		if d > best {
+			best = d
+		}
+	}
+	return best, nil
 }
 
 // highestSemver returns the highest version from a list of "X.Y.Z" strings.

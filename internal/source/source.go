@@ -48,6 +48,8 @@ func New(name string, cfg config.SourceConfig) (Source, error) {
 		return newHTTP(name, cfg), nil
 	case "github-release":
 		return newGitHub(name, cfg), nil
+	case "kiwix-zim":
+		return newKiwix(name, cfg), nil
 	case "site-mirror":
 		return newSiteMirror(name, cfg), nil
 	default:

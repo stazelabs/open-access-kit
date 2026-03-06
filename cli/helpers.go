@@ -22,7 +22,7 @@ func loadConfig() (*config.Config, error) {
 func sourcesForTier(cfg *config.Config, tierKey string) ([]source.Source, error) {
 	t, ok := cfg.Tiers[tierKey]
 	if !ok {
-		return nil, fmt.Errorf("unknown tier %q (available: 16, 32, 64, max)", tierKey)
+		return nil, fmt.Errorf("unknown tier %q (available: S, M, L)", tierKey)
 	}
 	return buildSources(cfg, t.Sources)
 }
@@ -78,9 +78,9 @@ func effectiveImageDir(cfg *config.Config) string {
 }
 
 // effectiveReleaseImageDir returns the tier-specific staging directory,
-// e.g. image/OAK-Q126-16GB. Each tier gets its own directory so multiple
+// e.g. image/OAK-Q126-M. Each tier gets its own directory so multiple
 // tiers can coexist without overwriting each other.
-// tierLabel is the human label from the tier config (e.g. "16GB", "64GB").
+// tierLabel is the human label from the tier config (e.g. "S", "M", "L").
 func effectiveReleaseImageDir(cfg *config.Config, tierLabel string) string {
 	return filepath.Join(effectiveImageDir(cfg), "OAK-"+cfg.Release+"-"+tierLabel)
 }

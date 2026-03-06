@@ -26,7 +26,7 @@ var (
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "./oak.yaml", "path to configuration file")
-	rootCmd.PersistentFlags().StringVarP(&tier, "tier", "t", "64", "target tier: 16, 32, 64, max")
+	rootCmd.PersistentFlags().StringVarP(&tier, "tier", "t", "M", "target tier: S, M, L")
 	rootCmd.PersistentFlags().StringVar(&mirrorDir, "mirror-dir", "./mirror", "path to mirror directory")
 	rootCmd.PersistentFlags().StringVar(&imageDir, "image-dir", "./image", "path to image output directory")
 	rootCmd.PersistentFlags().StringVar(&release, "release", "", "release name override (e.g. Q126)")

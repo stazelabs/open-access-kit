@@ -97,10 +97,10 @@ open-access-kit/
 
 | Command | Description |
 |---------|-------------|
-| `oak build --tier 64` | Full pipeline: download → verify → stage → annotate → package → sign |
+| `oak build --tier M` | Full pipeline: download → verify → stage → annotate → package → sign |
 | `oak download [source]` | Fetch/mirror all sources for the tier, or a specific source by name |
 | `oak verify [source]` | Check GPG sigs + checksums of mirrored content |
-| `oak stage --tier 64` | Copy mirror → `image/OAK-{release}/` with tier size budget |
+| `oak stage --tier M` | Copy mirror → `image/OAK-{release}/` with tier size budget |
 | `oak annotate` | Generate `VERSION.txt`, `MANIFEST.txt`, `README.txt` into the staged image |
 | `oak package` | Zip staged image → `dist/OAK-{release}-{tier}.zip` + `.sha256` |
 | `oak sign [zipfile]` | GPG-sign a packaged ZIP → `.zip.asc` |
@@ -114,7 +114,7 @@ All steps are independently runnable. `oak build` orchestrates them end-to-end.
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--config, -c` | `./oak.yaml` | Path to configuration file |
-| `--tier, -t` | `64` | Target tier: `16`, `32`, `64`, `max` |
+| `--tier, -t` | `M` | Target tier: `S`, `M`, `L` |
 | `--mirror-dir` | `./mirror` | Path to mirror directory |
 | `--image-dir` | `./image` | Path to image output directory |
 | `--release` | auto (e.g., `Q126`) | Release name override |
@@ -157,32 +157,24 @@ paths:
   output: ./dist
 
 tiers:
-  16:
-    label: "16GB"
-    budget_gb: 14          # Usable space after filesystem overhead
+  S:
+    label: "S"
+    budget_gb: 4           # 4 GB hard cap
     sources:
       - tor-browser
       - onion-sites
       - educational-content
-  32:
-    label: "32GB"
-    budget_gb: 29
-    sources:
-      - tor-browser
-      - onion-sites
-      - educational-content
-      - tails
-  64:
-    label: "64GB"
-    budget_gb: 58
+  M:
+    label: "M"
+    budget_gb: 14          # 16 GB media, ~14 GB usable
     sources:
       - tor-browser
       - onion-sites
       - educational-content
       - tails
-  max:
-    label: "Max"
-    budget_gb: 0           # No limit
+  L:
+    label: "L"
+    budget_gb: 29          # 32 GB media, ~29 GB usable
     sources:
       - tor-browser
       - onion-sites
@@ -267,9 +259,9 @@ signing:
 Each step is also a standalone command. Download once, re-run later steps freely.
 
 **Output artifacts** (all in `dist/`, gitignored, published as GitHub release assets):
-- `dist/OAK-Q126-64GB.zip`
-- `dist/OAK-Q126-64GB.zip.sha256`
-- `dist/OAK-Q126-64GB.zip.asc` (if signed)
+- `dist/OAK-Q126-M.zip`
+- `dist/OAK-Q126-M.zip.sha256`
+- `dist/OAK-Q126-M.zip.asc` (if signed)
 
 **`oak build` flags:**
 - `--sign` — enable step 6
@@ -281,7 +273,7 @@ Each step is also a standalone command. Download once, re-run later steps freely
 ## 5. Image Layout
 
 ```
-OAK-Q126-64GB/
+OAK-Q126-M/
 ├── README.txt                    # Plain text — first thing users see (points to guides/)
 ├── VERSION.txt                   # Release name, build date, source versions
 ├── MANIFEST.txt                  # SHA256 of every file (sha256sum -c compatible)
@@ -296,12 +288,12 @@ OAK-Q126-64GB/
 │   │   ├── tor-browser-linux-x86_64-X.Y.Z.tar.xz.asc
 │   │   ├── tor-browser-android-aarch64-X.Y.Z.apk
 │   │   └── tor-browser-android-aarch64-X.Y.Z.apk.asc
-│   ├── tails/                    # 32GB+ tiers only
+│   ├── tails/                    # M and L tiers only
 │   │   ├── tails-amd64-X.Y.img
 │   │   ├── tails-amd64-X.Y.img.sig
 │   │   ├── tails-amd64-X.Y.iso
 │   │   └── tails-amd64-X.Y.iso.sig
-│   ├── onionshare/               # 32GB+ tiers only
+│   ├── onionshare/               # M and L tiers only
 │       ├── OnionShare-win64-X.Y.Z.msi
 │       ├── OnionShare-win64-X.Y.Z.msi.asc
 │       ├── OnionShare-X.Y.Z.dmg
@@ -388,7 +380,7 @@ The `internal/site/` package:
 After packaging, `oak build` GPG-signs the output ZIP:
 
 1. Builder provides their GPG key ID via `oak.yaml` `signing.key_id` or `--sign-key` flag
-2. Produces `dist/OAK-Q126-64GB.zip.asc` (detached signature)
+2. Produces `dist/OAK-Q126-M.zip.asc` (detached signature)
 3. Builder's public key is:
    - Embedded in the image at `keys/oak-signing.pub`
    - Published on the GitHub repository
@@ -446,7 +438,7 @@ How to add sources, contribute guides
 |------|-------------|
 | CLI | `oak build`, `download`, `verify`, `stage`, `status`, `version` |
 | Sources | Tor Browser (rsync + version detect), onion-sites (git), Tails (rsync), OnionShare (http + version detect), Orbot (github-release + version detect), educational content (local) |
-| Tiers | 16GB, 32GB, 64GB, max |
+| Tiers | S, M, L |
 | Verification | GPG verification of upstream Tor Browser + Tails |
 | Signing | GPG signing of output ZIP |
 | Website | Go-native companion site renderer |
@@ -475,8 +467,8 @@ How to add sources, contribute guides
 | Orbot (arm64-v8a + armeabi-v7a + sigs) | ~78 MB |
 | Educational guides + website | ~25 MB |
 | Keys, manifests, READMEs | ~1 MB |
-| **16GB tier total** | **~1.4 GB** |
-| **32GB+ tier total** | **~4.6 GB** |
+| **S tier total** | **~1.4 GB** |
+| **M/L tier total** | **~4.6 GB** |
 
 Significant headroom in all tiers — intentional for future content additions.
 
@@ -500,10 +492,10 @@ Significant headroom in all tiers — intentional for future content additions.
 
 | Test | Command |
 |------|---------|
-| Dry run | `oak build --tier 16 --dry-run` — correct source selection, no downloads |
+| Dry run | `oak build --tier S --dry-run` — correct source selection, no downloads |
 | Download + verify | `oak download && oak verify` — upstream GPG checks pass |
-| Full build | `oak build --tier 16` — inspect image layout matches spec |
+| Full build | `oak build --tier S` — inspect image layout matches spec |
 | Offline docs | Open `image/OAK-Q126/docs/index.html` from `file://` in browser |
 | Manifest check | `sha256sum -c image/OAK-Q126/MANIFEST.txt` |
-| Signature check | `gpg --verify dist/OAK-Q126-16GB.zip.asc` |
-| All tiers | Build 16/32/64/max, confirm size budgets respected |
+| Signature check | `gpg --verify dist/OAK-Q126-S.zip.asc` |
+| All tiers | Build S/M/L, confirm size budgets respected |

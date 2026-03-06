@@ -67,7 +67,7 @@ CONTENTS
 --------
   guides/                 Offline HTML documentation (start here)
   software/tor-browser/   Tor Browser for Windows, macOS, Linux, Android
-  software/tails/         Tails OS bootable image (32GB+ drives only)
+  software/tails/         Tails OS bootable image (M and L tiers)
   guides/resources/       Additional bundled resources and onion site directories
   keys/                   GPG public keys used to verify this software
 
