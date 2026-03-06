@@ -8,13 +8,21 @@ This document covers how to build OAK, set up a GPG signing key, publish the com
 - `gpg` (GnuPG) — for signing and verification
 - `rsync` — for mirroring Tor Browser and Tails
 - `git` — for cloning onion-sites and the Tor Browser Manual
-- `wrangler` (Cloudflare CLI) — for Pages and R2 deployments
+- `wrangler` (Cloudflare CLI) — for Pages deployments
+- `s5cmd` — for uploading large release artifacts to R2 (wrangler caps at ~300 MB)
 
 Install Wrangler:
 
 ```sh
 npm install -g wrangler
 wrangler login
+```
+
+Install s5cmd:
+
+```sh
+brew install peak/tap/s5cmd   # macOS
+# or download a release binary from https://github.com/peak/s5cmd/releases
 ```
 
 ## Building the CLI
@@ -304,25 +312,42 @@ Or create it in the Cloudflare dashboard under **R2 Object Storage**.
 Enable public access on the bucket so that download URLs work without authentication:
 in the dashboard, go to the bucket settings and turn on **Public access**, or bind a custom domain to the bucket.
 
+### Configure s5cmd for R2
+
+s5cmd uses the S3-compatible R2 API. Create an R2 API token in the Cloudflare dashboard
+(**R2 → Manage R2 API Tokens**) with **Object Read & Write** permissions on `oak-releases`.
+
+Export credentials before uploading (or store them in `~/.aws/credentials` under a named profile):
+
+```sh
+export AWS_ACCESS_KEY_ID=<your-r2-access-key-id>
+export AWS_SECRET_ACCESS_KEY=<your-r2-secret-access-key>
+export AWS_ENDPOINT_URL=https://<your-cloudflare-account-id>.r2.cloudflarestorage.com
+```
+
+Your Cloudflare account ID is shown in the dashboard URL (`dash.cloudflare.com/<account-id>`)
+and on the R2 overview page.
+
 ### Upload release artifacts
 
-After a successful `oak build --sign`, upload the `dist/` artifacts:
+After a successful `oak build --sign`, upload the `dist/` artifacts with s5cmd.
+Use `--acl public-read` only if your bucket has public access enabled via R2's S3 API;
+if you enabled public access through the dashboard instead, omit the flag.
+
+Upload a single tier:
 
 ```sh
 RELEASE=Q126
 TIER=M
 
-wrangler r2 object put oak-releases/${RELEASE}/${TIER}/OAK-${RELEASE}-${TIER}.zip \
-  --file dist/OAK-${RELEASE}-${TIER}.zip
-
-wrangler r2 object put oak-releases/${RELEASE}/${TIER}/OAK-${RELEASE}-${TIER}.zip.sha256 \
-  --file dist/OAK-${RELEASE}-${TIER}.zip.sha256
-
-wrangler r2 object put oak-releases/${RELEASE}/${TIER}/OAK-${RELEASE}-${TIER}.zip.asc \
-  --file dist/OAK-${RELEASE}-${TIER}.zip.asc
+for ext in .zip .zip.sha256 .zip.asc; do
+  file="dist/OAK-${RELEASE}-${TIER}${ext}"
+  [ -f "$file" ] || continue
+  s5cmd cp "$file" "s3://oak-releases/${RELEASE}/${TIER}/OAK-${RELEASE}-${TIER}${ext}"
+done
 ```
 
-Upload all tiers with a shell loop:
+Upload all tiers at once:
 
 ```sh
 RELEASE=Q126
@@ -330,11 +355,13 @@ for tier in S M L; do
   for ext in .zip .zip.sha256 .zip.asc; do
     file="dist/OAK-${RELEASE}-${tier}${ext}"
     [ -f "$file" ] || continue
-    wrangler r2 object put "oak-releases/${RELEASE}/${tier}/OAK-${RELEASE}-${tier}${ext}" \
-      --file "$file"
+    s5cmd cp "$file" "s3://oak-releases/${RELEASE}/${tier}/OAK-${RELEASE}-${tier}${ext}"
   done
 done
 ```
+
+s5cmd uploads in parallel by default and has no file-size limit, making it suitable for
+the multi-gigabyte L-tier archive.
 
 ### Public download URLs
 
@@ -357,7 +384,7 @@ Update the download links in the GitHub README and companion website to point at
 - [ ] Update `release:` in `oak.yaml` (e.g., `Q126` → `Q226`)
 - [ ] Run `./oak build --tier all --sign` for all tiers
 - [ ] Run `./oak site` to refresh the companion website
-- [ ] Upload `dist/` artifacts to R2: `wrangler r2 object put ...`
+- [ ] Upload `dist/` artifacts to R2: `s5cmd cp dist/... s3://oak-releases/...`
 - [ ] Deploy the updated site: `wrangler pages deploy docs --project-name open-access-kit`
 - [ ] Tag the release commit: `git tag Q226 && git push --tags`
 - [ ] Update download links in the README to point at the new R2 objects
