@@ -10,6 +10,9 @@ oak
 # Go module cache
 vendor/
 
+# Wrangler local state
+.wrangler/
+
 # Editor and OS files
 .DS_Store
 .idea/
