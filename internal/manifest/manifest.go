@@ -33,10 +33,16 @@ type TierManifest struct {
 
 // SourceEntry captures the identity and version of a single source at build time.
 type SourceEntry struct {
-	Type        string `json:"type"`
-	Description string `json:"description"`
-	Version     string `json:"version"`
-	Commit      string `json:"commit,omitempty"`
+	Type        string                  `json:"type"`
+	Description string                  `json:"description"`
+	Version     string                  `json:"version"`
+	Commit      string                  `json:"commit,omitempty"`
+	ZimFiles    []source.ZimFileEntry   `json:"zim_files,omitempty"`
+}
+
+// zimInfoProvider is implemented by kiwix sources to expose per-file ZIM metadata.
+type zimInfoProvider interface {
+	ZimInfo(mirrorDir string) ([]source.ZimFileEntry, error)
 }
 
 // Generate builds a Manifest from the current config, detecting versions
@@ -84,6 +90,13 @@ func Generate(ctx context.Context, cfg *config.Config, allSources []source.Sourc
 			commit, err := gitHeadCommit(filepath.Join(mirrorDir, name))
 			if err == nil {
 				entry.Commit = commit
+			}
+		}
+
+		// For kiwix-zim sources, collect per-file resolved metadata from the mirror.
+		if zp, ok := srcByName[name].(zimInfoProvider); ok {
+			if files, err := zp.ZimInfo(mirrorDir); err == nil {
+				entry.ZimFiles = files
 			}
 		}
 

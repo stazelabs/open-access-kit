@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+
+	"github.com/stazelabs/open-access-kit/internal/source"
 )
 
 // Diff describes the differences between two release manifests.
@@ -34,12 +36,22 @@ type AddedSource struct {
 
 // SourceUpdate describes a version or commit change for a source present in both releases.
 type SourceUpdate struct {
+	Name        string           `json:"name"`
+	Type        string           `json:"type"`
+	FromVersion string           `json:"from_version,omitempty"`
+	ToVersion   string           `json:"to_version,omitempty"`
+	FromCommit  string           `json:"from_commit,omitempty"`
+	ToCommit    string           `json:"to_commit,omitempty"`
+	ZimAdded    []string         `json:"zim_added,omitempty"`
+	ZimRemoved  []string         `json:"zim_removed,omitempty"`
+	ZimUpdated  []ZimFileUpdate  `json:"zim_updated,omitempty"`
+}
+
+// ZimFileUpdate describes a version change for a ZIM file present in both releases.
+type ZimFileUpdate struct {
 	Name        string `json:"name"`
-	Type        string `json:"type"`
-	FromVersion string `json:"from_version,omitempty"`
-	ToVersion   string `json:"to_version,omitempty"`
-	FromCommit  string `json:"from_commit,omitempty"`
-	ToCommit    string `json:"to_commit,omitempty"`
+	FromVersion string `json:"from_version"`
+	ToVersion   string `json:"to_version"`
 }
 
 // TiersDiff describes tier composition changes between releases.
@@ -68,7 +80,9 @@ func Compare(old, new *Manifest) *Diff {
 			})
 			continue
 		}
-		if oe.Version != ne.Version || oe.Commit != ne.Commit {
+		zimAdded, zimRemoved, zimUpdated := diffZimFiles(oe.ZimFiles, ne.ZimFiles)
+		if oe.Version != ne.Version || oe.Commit != ne.Commit ||
+			len(zimAdded) > 0 || len(zimRemoved) > 0 || len(zimUpdated) > 0 {
 			d.Sources.Updated = append(d.Sources.Updated, SourceUpdate{
 				Name:        name,
 				Type:        ne.Type,
@@ -76,6 +90,9 @@ func Compare(old, new *Manifest) *Diff {
 				ToVersion:   ne.Version,
 				FromCommit:  oe.Commit,
 				ToCommit:    ne.Commit,
+				ZimAdded:    zimAdded,
+				ZimRemoved:  zimRemoved,
+				ZimUpdated:  zimUpdated,
 			})
 		} else {
 			d.Sources.Unchanged = append(d.Sources.Unchanged, name)
@@ -157,6 +174,15 @@ func (d *Diff) Text() string {
 			} else {
 				fmt.Fprintf(&sb, "- **%s**: %s → %s\n", u.Name, shortCommit(u.FromCommit), shortCommit(u.ToCommit))
 			}
+			for _, z := range u.ZimUpdated {
+				fmt.Fprintf(&sb, "  - zim %s: %s → %s\n", z.Name, z.FromVersion, z.ToVersion)
+			}
+			for _, z := range u.ZimAdded {
+				fmt.Fprintf(&sb, "  - zim added: %s\n", z)
+			}
+			for _, z := range u.ZimRemoved {
+				fmt.Fprintf(&sb, "  - zim removed: %s\n", z)
+			}
 		}
 	}
 
@@ -202,6 +228,35 @@ func (d *Diff) Text() string {
 	}
 
 	return sb.String()
+}
+
+// diffZimFiles compares two ZIM file lists and returns added names, removed names,
+// and version changes for files present in both.
+func diffZimFiles(old, new []source.ZimFileEntry) (added, removed []string, updated []ZimFileUpdate) {
+	oldByName := make(map[string]source.ZimFileEntry, len(old))
+	for _, z := range old {
+		oldByName[z.Name] = z
+	}
+	newByName := make(map[string]source.ZimFileEntry, len(new))
+	for _, z := range new {
+		newByName[z.Name] = z
+	}
+	for _, z := range new {
+		if o, exists := oldByName[z.Name]; !exists {
+			added = append(added, z.Name)
+		} else if o.Version != z.Version {
+			updated = append(updated, ZimFileUpdate{Name: z.Name, FromVersion: o.Version, ToVersion: z.Version})
+		}
+	}
+	for _, z := range old {
+		if _, exists := newByName[z.Name]; !exists {
+			removed = append(removed, z.Name)
+		}
+	}
+	sort.Strings(added)
+	sort.Strings(removed)
+	sort.Slice(updated, func(i, j int) bool { return updated[i].Name < updated[j].Name })
+	return
 }
 
 func toSet(ss []string) map[string]bool {

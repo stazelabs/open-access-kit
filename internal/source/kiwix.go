@@ -54,6 +54,17 @@ type zimInfo struct {
 	downloadURL string // e.g. "https://download.kiwix.org/zim/zimgit/zimgit-medicine_en_2024-08.zim"
 }
 
+// ZimFileEntry records the resolved state of a single ZIM file at build time.
+// Exposed so the manifest package can include per-file detail in release JSON.
+type ZimFileEntry struct {
+	Name        string `json:"name"`
+	Version     string `json:"version"`
+	Filename    string `json:"filename"`
+	SHA256      string `json:"sha256"`
+	StageSubdir string `json:"stage_subdir"`
+	DownloadURL string `json:"download_url"`
+}
+
 // opdsNameCandidates returns OPDS lookup names to try, from most specific to
 // least specific, by progressively dropping trailing _xxx segments.
 // e.g. "librepathology_en_all_maxi" → ["librepathology_en_all_maxi",
@@ -202,4 +213,49 @@ func (s *kiwixSource) Stage(_ context.Context, mirrorDir, imageDir string, _ con
 		}
 	}
 	return nil
+}
+
+// ZimInfo returns resolved per-file metadata for every ZIM in this source,
+// read from the local mirror. Called by the manifest generator after download.
+func (s *kiwixSource) ZimInfo(mirrorDir string) ([]ZimFileEntry, error) {
+	dest := filepath.Join(mirrorDir, s.name)
+	entries := make([]ZimFileEntry, 0, len(s.cfg.ZimFiles))
+	for _, zf := range s.cfg.ZimFiles {
+		ver, err := resolveLocalVersion(dest, zf.Name)
+		if err != nil {
+			return nil, err
+		}
+		filename := zf.Name + "_" + ver + ".zim"
+		hash, err := readSidecarHash(filepath.Join(dest, filename+".sha256"))
+		if err != nil {
+			return nil, err
+		}
+		downloadURL := fmt.Sprintf("https://download.kiwix.org/zim/%s/%s", zf.Category, filename)
+		if zf.DownloadURL != "" {
+			downloadURL = zf.DownloadURL
+		}
+		entries = append(entries, ZimFileEntry{
+			Name:        zf.Name,
+			Version:     ver,
+			Filename:    filename,
+			SHA256:      hash,
+			StageSubdir: zf.StageSubdir,
+			DownloadURL: downloadURL,
+		})
+	}
+	return entries, nil
+}
+
+// readSidecarHash reads the hex SHA-256 from a .sha256 sidecar file
+// (sha256sum format: "{hash}  {filename}").
+func readSidecarHash(sidecarPath string) (string, error) {
+	content, err := os.ReadFile(sidecarPath)
+	if err != nil {
+		return "", fmt.Errorf("reading sha256 sidecar %s: %w", sidecarPath, err)
+	}
+	fields := strings.Fields(string(content))
+	if len(fields) < 1 {
+		return "", fmt.Errorf("invalid sha256 sidecar format in %s", sidecarPath)
+	}
+	return fields[0], nil
 }
