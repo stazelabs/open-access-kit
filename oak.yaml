@@ -1,5 +1,5 @@
 release: Q126
-download_root: https://releases.oak.stazelabs.com
+download_root: https://oak-releases.stazelabs.org
 
 paths:
   mirror: ./mirror

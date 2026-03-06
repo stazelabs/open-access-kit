@@ -1,6 +1,6 @@
 {
   "release": "Q126",
-  "built": "2026-03-06T16:10:31.990587Z",
+  "built": "2026-03-06T22:06:36.314077Z",
   "tiers": {
     "L": {
       "label": "L",
@@ -150,22 +150,206 @@
     "zim-p0": {
       "type": "kiwix-zim",
       "description": "ZIM P0 — critical survival and medical content (~1 GB)",
-      "version": ""
+      "version": "",
+      "zim_files": [
+        {
+          "name": "zimgit-medicine_en",
+          "version": "2024-08",
+          "filename": "zimgit-medicine_en_2024-08.zim",
+          "sha256": "a86c31b93e9800aae2cd812ef18cbf9c087a7537784c62fbc259db7f9f9d18c0",
+          "stage_subdir": "medical",
+          "download_url": "https://download.kiwix.org/zim/zimgit/zimgit-medicine_en_2024-08.zim"
+        },
+        {
+          "name": "zimgit-water_en",
+          "version": "2024-08",
+          "filename": "zimgit-water_en_2024-08.zim",
+          "sha256": "392c7bc970a44fddd61dd17f6eabf1f4e21936f2d5c27c83093e1dc475cb56b6",
+          "stage_subdir": "survival",
+          "download_url": "https://download.kiwix.org/zim/zimgit/zimgit-water_en_2024-08.zim"
+        },
+        {
+          "name": "zimgit-knots_en",
+          "version": "2024-08",
+          "filename": "zimgit-knots_en_2024-08.zim",
+          "sha256": "7c3120b19fc2dc190b5ebfee01af54150136643d7b9d29d7fa9a6ba29787a57b",
+          "stage_subdir": "survival",
+          "download_url": "https://download.kiwix.org/zim/zimgit/zimgit-knots_en_2024-08.zim"
+        },
+        {
+          "name": "zimgit-food-preparation_en",
+          "version": "2025-04",
+          "filename": "zimgit-food-preparation_en_2025-04.zim",
+          "sha256": "db92c6c9dac14ff30f1cbc15aa834a7c012c6e87d4ff0519f33a0902ab6e732b",
+          "stage_subdir": "survival",
+          "download_url": "https://download.kiwix.org/zim/zimgit/zimgit-food-preparation_en_2025-04.zim"
+        },
+        {
+          "name": "librepathology_en_all_maxi",
+          "version": "2025-09",
+          "filename": "librepathology_en_all_maxi_2025-09.zim",
+          "sha256": "0919890736744419e6bb7e94aa017f27595d5c70f6494d9d5104f4e974a738b5",
+          "stage_subdir": "medical",
+          "download_url": "https://download.kiwix.org/zim/librepathology/librepathology_en_all_maxi_2025-09.zim"
+        },
+        {
+          "name": "freecodecamp_en_all",
+          "version": "2026-02",
+          "filename": "freecodecamp_en_all_2026-02.zim",
+          "sha256": "8755ef7a16195810a2935b0eb935fa994878f14e8c5d44c5591417ebafd9d33d",
+          "stage_subdir": "education",
+          "download_url": "https://download.kiwix.org/zim/freecodecamp/freecodecamp_en_all_2026-02.zim"
+        },
+        {
+          "name": "vikidia_en_all_maxi",
+          "version": "2025-12",
+          "filename": "vikidia_en_all_maxi_2025-12.zim",
+          "sha256": "39c715cb578449820937ad6e23174d96a24f80eddae7013e2cd65b03ec38940f",
+          "stage_subdir": "education",
+          "download_url": "https://download.kiwix.org/zim/vikidia/vikidia_en_all_maxi_2025-12.zim"
+        },
+        {
+          "name": "wiktionary_en_simple_all_nopic",
+          "version": "2026-01",
+          "filename": "wiktionary_en_simple_all_nopic_2026-01.zim",
+          "sha256": "2d8d0b48bac5bbe4bcadbfccecbdcb99e1e0beb78667131b0d8e027ecdddc4cb",
+          "stage_subdir": "reference",
+          "download_url": "https://download.kiwix.org/zim/wiktionary/wiktionary_en_simple_all_nopic_2026-01.zim"
+        },
+        {
+          "name": "zimgit-post-disaster_en",
+          "version": "2024-05",
+          "filename": "zimgit-post-disaster_en_2024-05.zim",
+          "sha256": "0ba9bb358b768b94eb0d7920752fe356bf097de514ee61843f3a4da6cce174f8",
+          "stage_subdir": "survival",
+          "download_url": "https://download.kiwix.org/zim/zimgit/zimgit-post-disaster_en_2024-05.zim"
+        }
+      ]
     },
     "zim-p1": {
       "type": "kiwix-zim",
       "description": "ZIM P1 — core reference and education content for M and L tiers (~8 GB)",
-      "version": ""
+      "version": "",
+      "zim_files": [
+        {
+          "name": "phet_en_all",
+          "version": "2026-02",
+          "filename": "phet_en_all_2026-02.zim",
+          "sha256": "68569b5f6370cad4eabfcfa7974d00955af66d3c0eac915b1da08ed0b8bb7097",
+          "stage_subdir": "education",
+          "download_url": "https://download.kiwix.org/zim/phet/phet_en_all_2026-02.zim"
+        },
+        {
+          "name": "appropedia_en_all_maxi",
+          "version": "2026-02",
+          "filename": "appropedia_en_all_maxi_2026-02.zim",
+          "sha256": "dcf200ba723c27397e1c9a2e4891ff91fa13993df1fa285315190d8525a53469",
+          "stage_subdir": "sustainability",
+          "download_url": "https://download.kiwix.org/zim/other/appropedia_en_all_maxi_2026-02.zim"
+        },
+        {
+          "name": "energypedia_en_all_nopic",
+          "version": "2025-12",
+          "filename": "energypedia_en_all_nopic_2025-12.zim",
+          "sha256": "0fc3cd702d79925888824c9236bfae54907c6e3deeba14768ea3a33d465509d9",
+          "stage_subdir": "sustainability",
+          "download_url": "https://download.kiwix.org/zim/other/energypedia_en_all_nopic_2025-12.zim"
+        },
+        {
+          "name": "wikivoyage_en_all_maxi",
+          "version": "2025-12",
+          "filename": "wikivoyage_en_all_maxi_2025-12.zim",
+          "sha256": "3dea1843647e117a9f06e21b81e2f14cdf21fb332fe04e97cf754ed8f16aef38",
+          "stage_subdir": "reference",
+          "download_url": "https://download.kiwix.org/zim/wikivoyage/wikivoyage_en_all_maxi_2025-12.zim"
+        },
+        {
+          "name": "ted_mul_ted-ed",
+          "version": "2026-01",
+          "filename": "ted_mul_ted-ed_2026-01.zim",
+          "sha256": "ebbf26504eb6f748df0f0bf9782e1e1130a0a2091981609945a88ec8c059de0d",
+          "stage_subdir": "education",
+          "download_url": "https://download.kiwix.org/zim/ted/ted_mul_ted-ed_2026-01.zim"
+        },
+        {
+          "name": "gutenberg_en_lcc-s",
+          "version": "2026-03",
+          "filename": "gutenberg_en_lcc-s_2026-03.zim",
+          "sha256": "3012dfb7936d5bc8a5c3bdd0c9f864cd81e9514c28c40afc548415fd95272fcc",
+          "stage_subdir": "literature",
+          "download_url": "https://download.kiwix.org/zim/gutenberg/gutenberg_en_lcc-s_2026-03.zim"
+        }
+      ]
     },
     "zim-p1-wikipedia": {
       "type": "kiwix-zim",
       "description": "ZIM P1 Wikipedia — Simple English Wikipedia for M tier (~3.1 GB)",
-      "version": ""
+      "version": "",
+      "zim_files": [
+        {
+          "name": "wikipedia_en_simple_all_maxi",
+          "version": "2026-02",
+          "filename": "wikipedia_en_simple_all_maxi_2026-02.zim",
+          "sha256": "f0bcc10b23e89373f7169f0d8beb6c1e7f670d79128576029fd2bb503542bc17",
+          "stage_subdir": "reference",
+          "download_url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_simple_all_maxi_2026-02.zim"
+        }
+      ]
     },
     "zim-p2": {
       "type": "kiwix-zim",
       "description": "ZIM P2 — broader reference for L tier, includes Wikipedia mini (~26 GB)",
-      "version": ""
+      "version": "",
+      "zim_files": [
+        {
+          "name": "wikipedia_en_all_mini",
+          "version": "2025-12",
+          "filename": "wikipedia_en_all_mini_2025-12.zim",
+          "sha256": "5d33062346a101d239297b9b3c9491efa56864a36aad602d297050ca32166c65",
+          "stage_subdir": "reference",
+          "download_url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_all_mini_2025-12.zim"
+        },
+        {
+          "name": "wikibooks_en_all_nopic",
+          "version": "2026-01",
+          "filename": "wikibooks_en_all_nopic_2026-01.zim",
+          "sha256": "3ab4f69ac3f972029d2c76b7b7f43999e64004d230a818d7dfe266644683e55b",
+          "stage_subdir": "education",
+          "download_url": "https://download.kiwix.org/zim/wikibooks/wikibooks_en_all_nopic_2026-01.zim"
+        },
+        {
+          "name": "mdwiki_en_all_maxi",
+          "version": "2025-11",
+          "filename": "mdwiki_en_all_maxi_2025-11.zim",
+          "sha256": "ee51df7860dbcab8c628aad32cf9972726ab708d784cdaf3e217d596920edf80",
+          "stage_subdir": "medical",
+          "download_url": "https://download.kiwix.org/zim/mdwiki/mdwiki_en_all_maxi_2025-11.zim"
+        },
+        {
+          "name": "wikiversity_en_all_maxi",
+          "version": "2026-02",
+          "filename": "wikiversity_en_all_maxi_2026-02.zim",
+          "sha256": "fab0e7c948124c3089b1fe517ce439aa4b27c827ee50adeba0b4e843ec38fe3f",
+          "stage_subdir": "education",
+          "download_url": "https://download.kiwix.org/zim/wikiversity/wikiversity_en_all_maxi_2026-02.zim"
+        },
+        {
+          "name": "superuser.com_en_all",
+          "version": "2026-02",
+          "filename": "superuser.com_en_all_2026-02.zim",
+          "sha256": "976e8e1514734b53a8ce6db1dc9f3da4a23703166e36f3a4b7a04bc33409f99a",
+          "stage_subdir": "tech",
+          "download_url": "https://download.kiwix.org/zim/stack_exchange/superuser.com_en_all_2026-02.zim"
+        },
+        {
+          "name": "gutenberg_en_lcc-h",
+          "version": "2026-03",
+          "filename": "gutenberg_en_lcc-h_2026-03.zim",
+          "sha256": "ba6ea08ffc0e8e59cdfebbaa361e01ca3b548320440fe0fcdb49303db87bad1d",
+          "stage_subdir": "literature",
+          "download_url": "https://download.kiwix.org/zim/gutenberg/gutenberg_en_lcc-h_2026-03.zim"
+        }
+      ]
     }
   }
 }
