@@ -31,9 +31,10 @@ sha256sum -c MANIFEST.txt
 | **SaferJourno** | [OpenInternet/saferjourno](https://github.com/OpenInternet/saferjourno) | ~30 MB | Digital security curriculum for journalists, by Internews. CC-BY-SA-4.0. *(M and L tiers)* |
 | **Guides** | This repository | < 1 MB | Offline HTML documentation covering getting started, this manifest, a resource directory, and curated onion site listings. |
 | **ZIM P0 — survival & medical** | [Kiwix / zimgit](zim-content.md) | ~1.0 GB | Emergency medicine, water, knots, food safety, disaster prep, children's encyclopedia, FreeCodeCamp, Simple Wiktionary. *(M and L tiers)* |
-| **ZIM P1 — reference & education** | [Kiwix](zim-content.md) | ~5.5 GB | Simple English Wikipedia, PhET simulations, Appropedia, Energypedia, Wikivoyage. *(M and L tiers)* |
-| **ZIM P2 — deep reference** | [Kiwix](zim-content.md) | ~26 GB | Full English Wikipedia mini, Wikibooks, MDWiki, Wikiversity, SuperUser, Gutenberg social sciences. *(L tier only)* |
-| **ZIM P3 — extended** | [Kiwix](zim-content.md) | 48 GB+ | Wikipedia nopic, Wiktionary, Stack Exchange archives, TED science/health. *Deferred — future 64 GB+ tier.* |
+| **ZIM P1 — practical reference** | [Kiwix](zim-content.md) | ~2.5 GB | PhET simulations, Appropedia, Energypedia, Wikivoyage. *(M and L tiers)* |
+| **ZIM P1 — Simple Wikipedia** | [Kiwix](zim-content.md) | ~3.2 GB | Simple English Wikipedia. *(M tier only — L uses full Wikipedia mini instead)* |
+| **ZIM P2 — deep reference** | [Kiwix](zim-content.md) | ~22 GB | Full English Wikipedia mini, Wikibooks, WikiMed, Wikiversity, SuperUser. *(L tier only)* |
+| **ZIM P3 — extended** | [Kiwix](zim-content.md) | 30 GB+ | TED-Ed, Gutenberg literature, Wikipedia nopic, Stack Exchange archives. *Deferred — future 64 GB+ tier.* |
 
 ---
 
@@ -47,7 +48,7 @@ OAK is distributed in multiple sizes to fit different drives:
 | M | max 16 GB | Yes | Tails Documentation, SaferJourno |
 | L | max 32 GB | Yes | Tails Documentation, SaferJourno |
 
-All tiers include Tor Browser (all platforms), Orbot, Tor Browser Manual, Security in a Box, Privacy Guides, Digital First Aid Kit, and these guides. Tails, OnionShare, Tails Documentation, and SaferJourno are included in M and L tiers.
+All tiers include Tor Browser (all platforms), Orbot, Tor Browser Manual, Security in a Box, Privacy Guides, Digital First Aid Kit, and these guides. Tails, OnionShare, Tails Documentation, SaferJourno, Kiwix, and ZIM P0/P1 content are included in M and L tiers. ZIM P2 (Wikipedia mini and additional reference) is L tier only.
 
 ---
 

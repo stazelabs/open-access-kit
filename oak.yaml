@@ -148,8 +148,7 @@ sources:
     files:
       - "tails-amd64-{version}.img"
       - "tails-amd64-{version}.img.sig"
-      - "tails-amd64-{version}.iso"
-      - "tails-amd64-{version}.iso.sig"
+      # .iso omitted — recipients boot from .img; ISO is a VM format not needed on removable media
     verify:
       method: gpg
       keyring: keys/tails-signing.gpg
@@ -281,7 +280,7 @@ sources:
 
   zim-p1:
     type: kiwix-zim
-    description: "ZIM P1 — core reference and education content for M and L tiers (~8 GB)"
+    description: "ZIM P1 — practical reference content for M and L tiers (~2.5 GB)"
     stage_path: "zim/"
     zim_files:
       - name: phet_en_all
@@ -296,16 +295,11 @@ sources:
       - name: wikivoyage_en_all_maxi
         category: wikivoyage
         stage_subdir: reference
-      - name: ted_mul_ted-ed
-        category: ted
-        stage_subdir: education
-      - name: gutenberg_en_lcc-s
-        category: gutenberg
-        stage_subdir: literature
+      # ted_mul_ted-ed (5.3 GB) and gutenberg_en_lcc-s (4.2 GB) deferred to P3 / XL tier
 
   zim-p2:
     type: kiwix-zim
-    description: "ZIM P2 — broader reference for L tier, includes Wikipedia mini (~26 GB)"
+    description: "ZIM P2 — deep reference for L tier: Wikipedia mini, Wikibooks, WikiMed, Wikiversity, SuperUser (~22 GB)"
     stage_path: "zim/"
     zim_files:
       - name: wikipedia_en_all_mini
@@ -323,9 +317,7 @@ sources:
       - name: superuser.com_en_all
         category: stack_exchange
         stage_subdir: tech
-      - name: gutenberg_en_lcc-h
-        category: gutenberg
-        stage_subdir: literature
+      # gutenberg_en_lcc-h (4.2 GB) deferred to P3 / XL tier
 
 signing:
   enabled: true

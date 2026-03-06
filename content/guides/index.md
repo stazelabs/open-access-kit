@@ -16,8 +16,8 @@ living under censorship or surveillance. Everything you need fits on removable m
 OAK comes in three sizes to fit the removable media you have:
 
 - **S (max 4 GB)** — Tor Browser (all platforms), Orbot, offline security guides.
-- **M (max 16 GB)** — Everything in S, plus Tails OS, OnionShare, Kiwix with offline
-  Wikipedia, medical references, and educational content.
+- **M (max 16 GB)** — Everything in S, plus OnionShare, Kiwix with Simple Wikipedia and
+  practical references (PhET, Appropedia, Wikivoyage, Energypedia), and educational content.
 - **L (max 32 GB)** — Everything in M, plus full Wikipedia mini, Wikibooks, and expanded
   reference libraries.
 
