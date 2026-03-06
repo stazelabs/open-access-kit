@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Release Manifest — Q1 2026 (Q126) — Open Access Kit</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
 :root {
   --bg: #0d1117;
@@ -33,12 +34,75 @@ header {
   align-items: center;
   gap: 1em;
 }
-header a { color: var(--heading); text-decoration: none; font-weight: 600; }
-header a:hover { text-decoration: none; }
+header a.home { color: var(--heading); text-decoration: none; font-weight: 600; }
+header a.home:hover { text-decoration: none; }
+.mobile-nav { display: none; margin-left: auto; }
+.mobile-nav summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: .875em;
+  list-style: none;
+  padding: .4em .75em;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.mobile-nav summary::-webkit-details-marker { display: none; }
+.mobile-nav nav {
+  position: absolute;
+  right: 1em;
+  top: 3.5em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .75em 1em;
+  z-index: 10;
+  min-width: 200px;
+}
+.layout {
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  padding: 1.5em 1em;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.nav-section h3 {
+  font-size: .7em;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin: 1.5em 0 .4em;
+}
+.nav-section h3:first-child { margin-top: .5em; }
+.nav-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.nav-section li a {
+  display: block;
+  padding: .25em .5em;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: .875em;
+}
+.nav-section li a:hover {
+  background: var(--surface);
+  color: var(--link);
+}
 main {
+  flex: 1;
+  min-width: 0;
   max-width: 820px;
-  margin: 2em auto;
-  padding: 0 1.5em 4em;
+  padding: 2em 1.5em 4em;
 }
 h1, h2, h3, h4 {
   color: var(--heading);
@@ -81,16 +145,83 @@ footer {
   padding: 2em 1em;
   border-top: 1px solid var(--border);
 }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-nav { display: block; }
+  .layout { display: block; }
+  main { max-width: 100%; padding: 1.5em 1em 3em; }
+}
 </style>
 </head>
 <body>
 <header>
-  <a href="index.html">&#127795; Open Access Kit</a>
+  <a class="home" href="index.html">&#127795; Open Access Kit</a>
+  <details class="mobile-nav">
+    <summary>Menu</summary>
+    <nav>
+      <div class="nav-section">
+        <h3>Using OAK</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="onionshare.html">OnionShare</a></li>
+          <li><a href="orbot.html">Orbot</a></li>
+          <li><a href="kiwix.html">Kiwix & Offline Content</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <h3>Reference</h3>
+        <ul>
+          <li><a href="manifest.html">What's Included</a></li>
+          <li><a href="verify.html">Verify Signatures</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
+          <li><a href="license.html">License</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <h3>For Builders</h3>
+        <ul>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+        </ul>
+      </div>
+    </nav>
+  </details>
 </header>
-<main>
+<div class="layout">
+  <nav class="sidebar" aria-label="Site navigation">
+    <div class="nav-section">
+      <h3>Using OAK</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+        <li><a href="onionshare.html">OnionShare</a></li>
+        <li><a href="orbot.html">Orbot</a></li>
+        <li><a href="kiwix.html">Kiwix & Offline Content</a></li>
+        <li><a href="resources.html">Resources</a></li>
+      </ul>
+    </div>
+    <div class="nav-section">
+      <h3>Reference</h3>
+      <ul>
+        <li><a href="manifest.html">What's Included</a></li>
+        <li><a href="verify.html">Verify Signatures</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="license.html">License</a></li>
+      </ul>
+    </div>
+    <div class="nav-section">
+      <h3>For Builders</h3>
+      <ul>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="contributing.html">Contributing</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
 <h1>Release Manifest — Q1 2026 (Q126)</h1>
-<p>→ <a href="index.html">Back to Home</a> · <a href="getting-started.html">Getting Started</a></p>
-<hr>
 <p>This page describes the contents of the Q126 distribution. For cryptographic checksums
 of every file on the drive, see <code>MANIFEST.txt</code> in the root of the removable media and verify
 with:</p>
@@ -121,14 +252,14 @@ with:</p>
 <td>latest stable</td>
 <td>x86-64 (bootable removable media)</td>
 <td>~1.7 GB</td>
-<td>A live operating system that runs from the removable media and leaves no trace. Includes Tor Browser, Thunderbird, and additional privacy tools. GPG-verified against the Tails signing key. <em>(32 GB+ tiers only)</em></td>
+<td>A live operating system that runs from the removable media and leaves no trace. Includes Tor Browser, Thunderbird, and additional privacy tools. GPG-verified against the Tails signing key. <em>(M and L tiers)</em></td>
 </tr>
 <tr>
 <td><strong>OnionShare</strong></td>
 <td>latest stable</td>
 <td>Windows, macOS, Linux</td>
 <td>~385 MB</td>
-<td>Share files, host websites, and chat anonymously over the Tor network. GPG-verified against the OnionShare signing keys. <em>(32 GB+ tiers only)</em></td>
+<td>Share files, host websites, and chat anonymously over the Tor network. GPG-verified against the OnionShare signing keys. <em>(M and L tiers)</em></td>
 </tr>
 <tr>
 <td><strong>Orbot</strong></td>
@@ -178,19 +309,43 @@ with:</p>
 <td><strong>Tails Documentation</strong></td>
 <td><a href="https://tails.net/doc/">tails.net/doc</a></td>
 <td>~80 MB</td>
-<td>Full Tails OS documentation — installation, usage, security. CC-BY-SA-4.0. <em>(32 GB+ tiers only)</em></td>
+<td>Full Tails OS documentation — installation, usage, security. CC-BY-SA-4.0. <em>(M and L tiers)</em></td>
 </tr>
 <tr>
 <td><strong>SaferJourno</strong></td>
 <td><a href="https://github.com/OpenInternet/saferjourno">OpenInternet/saferjourno</a></td>
 <td>~30 MB</td>
-<td>Digital security curriculum for journalists, by Internews. CC-BY-SA-4.0. <em>(64 GB+ tiers only)</em></td>
+<td>Digital security curriculum for journalists, by Internews. CC-BY-SA-4.0. <em>(M and L tiers)</em></td>
 </tr>
 <tr>
 <td><strong>Guides</strong></td>
 <td>This repository</td>
 <td>&lt; 1 MB</td>
 <td>Offline HTML documentation covering getting started, this manifest, a resource directory, and curated onion site listings.</td>
+</tr>
+<tr>
+<td><strong>ZIM P0 — survival &amp; medical</strong></td>
+<td><a href="zim-content.html">Kiwix / zimgit</a></td>
+<td>~1.0 GB</td>
+<td>Emergency medicine, water, knots, food safety, disaster prep, children's encyclopedia, FreeCodeCamp, Simple Wiktionary. <em>(M and L tiers)</em></td>
+</tr>
+<tr>
+<td><strong>ZIM P1 — reference &amp; education</strong></td>
+<td><a href="zim-content.html">Kiwix</a></td>
+<td>~5.5 GB</td>
+<td>Simple English Wikipedia, PhET simulations, Appropedia, Energypedia, Wikivoyage. <em>(M and L tiers)</em></td>
+</tr>
+<tr>
+<td><strong>ZIM P2 — deep reference</strong></td>
+<td><a href="zim-content.html">Kiwix</a></td>
+<td>~26 GB</td>
+<td>Full English Wikipedia mini, Wikibooks, MDWiki, Wikiversity, SuperUser, Gutenberg social sciences. <em>(L tier only)</em></td>
+</tr>
+<tr>
+<td><strong>ZIM P3 — extended</strong></td>
+<td><a href="zim-content.html">Kiwix</a></td>
+<td>48 GB+</td>
+<td>Wikipedia nopic, Wiktionary, Stack Exchange archives, TED science/health. <em>Deferred — future 64 GB+ tier.</em></td>
 </tr>
 </tbody>
 </table>
@@ -208,41 +363,35 @@ with:</p>
 </thead>
 <tbody>
 <tr>
-<td>16 GB</td>
-<td>~14 GB usable</td>
+<td>S</td>
+<td>max 4 GB</td>
 <td>No</td>
 <td>—</td>
 </tr>
 <tr>
-<td>32 GB</td>
-<td>~29 GB usable</td>
-<td>Yes</td>
-<td>Tails Documentation</td>
-</tr>
-<tr>
-<td>64 GB</td>
-<td>~58 GB usable</td>
+<td>M</td>
+<td>max 16 GB</td>
 <td>Yes</td>
 <td>Tails Documentation, SaferJourno</td>
 </tr>
 <tr>
-<td>Max</td>
-<td>No limit</td>
+<td>L</td>
+<td>max 32 GB</td>
 <td>Yes</td>
 <td>Tails Documentation, SaferJourno</td>
 </tr>
 </tbody>
 </table>
-<p>All tiers include Tor Browser (all platforms), Orbot, Tor Browser Manual, Security in a Box, Privacy Guides, Digital First Aid Kit, and these guides. Tails, OnionShare, and Tails Documentation are included in 32 GB and larger tiers. SaferJourno is included in 64 GB and larger tiers.</p>
+<p>All tiers include Tor Browser (all platforms), Orbot, Tor Browser Manual, Security in a Box, Privacy Guides, Digital First Aid Kit, and these guides. Tails, OnionShare, Tails Documentation, and SaferJourno are included in M and L tiers.</p>
 <hr>
 <h2>Verification</h2>
 <p>All software is verified against upstream GPG signing keys before packaging. The signing
 keys for Tor Browser, Tails, OnionShare, and Orbot are bundled in <code>keys/</code> on this drive.
 The OAK image itself is signed with the OAK release key.</p>
 <p>→ <a href="verify.html">Step-by-step signature verification guide</a></p>
-<p>→ <a href="index.html">Back to Home</a> · <a href="getting-started.html">Getting Started</a></p>
 
-</main>
+  </main>
+</div>
 <footer>
   Open Access Kit &mdash;
   Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>

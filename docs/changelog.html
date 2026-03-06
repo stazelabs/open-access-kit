@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OnionShare — Open Access Kit</title>
+<title>Changelog — Open Access Kit</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
 :root {
@@ -221,123 +221,18 @@ footer {
     </div>
   </nav>
   <main>
-<h1>OnionShare</h1>
-<p>OnionShare lets you share files, receive files, host a website, and chat — all anonymously
-over the Tor network. There is no central server: your computer becomes a temporary onion
-service that only the people you invite can reach.</p>
-<p>OnionShare is bundled on this removable media in the <code>software/onionshare/</code> folder
-(M and L tier distributions only).</p>
-<hr>
-<h2>Install OnionShare</h2>
-<p>Open <code>software/onionshare/</code> on this removable media and install the file for your
-operating system:</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Operating System</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>OnionShare-win64-*.msi</code></td>
-<td>Windows</td>
-</tr>
-<tr>
-<td><code>OnionShare-*.dmg</code></td>
-<td>macOS</td>
-</tr>
-<tr>
-<td><code>OnionShare-*.flatpak</code></td>
-<td>Linux</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Windows:</strong> Run the <code>.msi</code> installer and follow the prompts. Administrator access is
-required.</p>
-<p><strong>macOS:</strong> Open the <code>.dmg</code>, drag OnionShare to your Applications folder, and launch it.
-macOS may ask you to approve the app from an unidentified developer — go to
-<strong>System Settings → Privacy &amp; Security</strong> and click <strong>Open Anyway</strong>.</p>
-<p><strong>Linux (Flatpak):</strong> Install with:</p>
-<pre><code>flatpak install --user OnionShare-*.flatpak
-</code></pre>
-<p>If Flatpak is not installed, your distribution's package manager can add it:
-<code>sudo apt install flatpak</code> (Debian/Ubuntu) or <code>sudo dnf install flatpak</code> (Fedora).</p>
-<hr>
-<h2>Verify the Installation (Optional)</h2>
-<p>Every file in <code>software/onionshare/</code> is accompanied by a <code>.asc</code> signature file.
-You can verify the download against the OnionShare signing keys bundled in <code>keys/onionshare-signing.gpg</code>:</p>
-<pre><code>gpg --no-default-keyring --keyring /path/to/keys/onionshare-signing.gpg \
-    --verify OnionShare-*.msi.asc OnionShare-*.msi
-</code></pre>
-<p>A good result shows <code>Good signature from &quot;Micah Lee&quot;</code>, <code>&quot;Saptak Sengupta&quot;</code>, or <code>&quot;Miguel Jacq&quot;</code>.
-See <a href="verify.html">Verifying Signatures</a> for a full walkthrough.</p>
-<hr>
-<h2>Send Files</h2>
-<p>Use <strong>Send</strong> mode to share files with someone. OnionShare creates a temporary onion
-address; anyone with that address can download your files through Tor Browser.</p>
-<ol>
-<li>Launch OnionShare and select <strong>Share Files</strong>.</li>
-<li>Drag files or folders into the window and click <strong>Start sharing</strong>.</li>
-<li>Copy the <code>.onion</code> address shown and send it to your recipient through a secure channel
-(Signal, an encrypted email, etc.).</li>
-<li><strong>Keep OnionShare open</strong> until the recipient confirms they have downloaded everything.
-Closing it ends the transfer.</li>
-</ol>
-<p>By default, OnionShare stops sharing after the first download. Uncheck <strong>Stop sharing
-after files have been sent</strong> if multiple people need to download.</p>
-<hr>
-<h2>Receive Files</h2>
-<p>Use <strong>Receive</strong> mode to let someone upload files to you without revealing your IP address
-to them.</p>
-<ol>
-<li>Select <strong>Receive Files</strong> in OnionShare.</li>
-<li>Click <strong>Start Receive Mode</strong>.</li>
-<li>Share the <code>.onion</code> address with the person sending you files.</li>
-<li>Received files appear in your Downloads folder. You will see a notification when
-a transfer completes.</li>
-</ol>
-<hr>
-<h2>Host a Website</h2>
-<p>Use <strong>Host a Website</strong> mode to serve static HTML files as an anonymous onion site.</p>
-<ol>
-<li>Select <strong>Host a Website</strong>.</li>
-<li>Add your HTML files (and any images, CSS, etc.).</li>
-<li>Click <strong>Start sharing</strong>.</li>
-<li>The <code>.onion</code> address is your website — share it with anyone who should be able to
-visit it through Tor Browser.</li>
-</ol>
-<p>This is useful for publishing documents or resources when you need to protect both your
-identity and the identity of your readers.</p>
-<hr>
-<h2>Anonymous Chat</h2>
-<p>Use <strong>Chat</strong> mode for a temporary, encrypted group chat room that requires no account.</p>
-<ol>
-<li>Select <strong>Chat</strong> in OnionShare.</li>
-<li>Click <strong>Start chat server</strong>.</li>
-<li>Share the <code>.onion</code> address with participants — they open it in Tor Browser.</li>
-<li>Messages are end-to-end encrypted and leave no server logs. When you close OnionShare,
-the chat room ceases to exist.</li>
-</ol>
-<hr>
-<h2>Security Tips</h2>
+<h1>Changelog</h1>
+<h2>Q1 2026 (Q126) — First Release</h2>
+<p>Initial public release of Open Access Kit.</p>
+<h3>What's included</h3>
 <ul>
-<li><strong>Share <code>.onion</code> addresses through a secure channel.</strong> Anyone who intercepts the address
-can access your share. Use Signal, an encrypted email, or another private channel.</li>
-<li><strong>OnionShare must stay open.</strong> Your computer is the server. If you close OnionShare or
-lose power, the session ends. For large transfers, plug in and disable sleep mode.</li>
-<li><strong>OnionShare protects your IP, not your identity.</strong> Do not upload files containing
-personal metadata (EXIF data in photos, document author fields, etc.) if anonymity
-matters. Consider scrubbing metadata first with a tool like <a href="https://0xacab.org/jvoisin/mat2">MAT2</a>.</li>
-<li><strong>Use Tor Browser to access OnionShare links.</strong> Your regular browser does not support
-<code>.onion</code> addresses.</li>
-</ul>
-<hr>
-<h2>More Information</h2>
-<ul>
-<li>OnionShare documentation: <a href="https://docs.onionshare.org">docs.onionshare.org</a></li>
-<li>OnionShare source code: <a href="https://github.com/onionshare/onionshare">github.com/onionshare/onionshare</a></li>
-<li>License: GPL-3.0</li>
+<li>S, M, and L tier distributions</li>
+<li>Tor Browser (all platforms), Orbot, OnionShare, Tails OS</li>
+<li>Offline guides: Tor Browser Manual, Security in a Box, Privacy Guides,
+Digital First Aid Kit, Tails Documentation, SaferJourno</li>
+<li>OAK guides: getting started, release manifest, resources, onion site directory</li>
+<li>ZIM offline reference content (P0 + P1 in M tier; P0 + P1 + P2 in L tier)</li>
+<li>GPG-verified downloads; OAK release key signature on final image</li>
 </ul>
 
   </main>

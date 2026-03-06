@@ -2,10 +2,10 @@ package cli
 
 import (
 	"fmt"
-	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/stazelabs/open-access-kit/internal/config"
 	"github.com/stazelabs/open-access-kit/internal/site"
 )
 
@@ -49,6 +49,13 @@ Example:
 		opts := site.Options{
 			TemplatePath: siteTemplatePath,
 			BaseURL:      siteBaseURL,
+			ShowBuilders: true,
+		}
+		if cfg, err := config.Load("./oak.yaml"); err == nil {
+			opts.Vars = map[string]any{
+				"DownloadRoot": cfg.DownloadRoot,
+				"Release":      cfg.Release,
+			}
 		}
 		if err := site.Render(siteSrcDir, siteDstDir, opts); err != nil {
 			return fmt.Errorf("site render: %w", err)
@@ -57,7 +64,7 @@ Example:
 		// Render repo-root docs (CONTRIBUTING.md, ARCHITECTURE.md) into docs/
 		// so they appear on the companion website without moving the canonical files.
 		for _, f := range rootDocs {
-			dst := filepath.Join(siteDstDir, strings.ToLower(strings.TrimSuffix(f, ".md"))+".html")
+			dst := siteDstDir + "/" + strings.ToLower(strings.TrimSuffix(f, ".md")) + ".html"
 			fmt.Printf("    publishing %s -> %s\n", f, dst)
 			if err := site.RenderFile(f, dst, opts); err != nil {
 				return fmt.Errorf("rendering %s: %w", f, err)

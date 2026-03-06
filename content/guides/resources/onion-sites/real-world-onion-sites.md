@@ -361,8 +361,3 @@ lack a Github account, try messaging `@alecmuffett` on Twitter.
 
 ----
 [Back to Top](#real-world-onion-sites)
-
-
----
-
-→ [Onion Sites](index.md) · [Home](../../index.md) · [Resources](../../resources.md)

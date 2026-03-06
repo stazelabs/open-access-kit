@@ -1,9 +1,5 @@
 # License
 
-→ [Back to Home](index.md)
-
----
-
 Open Access Kit uses dual licensing — one for code, one for content.
 
 ---
@@ -46,6 +42,3 @@ Under the following terms:
 
 Full license text: [LICENSE-CONTENT](license-content.html) · [creativecommons.org](https://creativecommons.org/licenses/by-sa/4.0/)
 
----
-
-→ [Back to Home](index.md)

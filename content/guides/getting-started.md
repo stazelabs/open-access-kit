@@ -1,9 +1,5 @@
 # Getting Started
 
-→ [Back to Home](index.md) · [Resources](resources.md)
-
----
-
 This guide is for someone who just received Open Access Kit removable media. Follow these
 steps to start browsing safely and privately.
 
@@ -63,7 +59,7 @@ Tor Browser.
 
 ---
 
-## Step 4: Boot Tails (32 GB+ drives only)
+## Step 4: Boot Tails (M and L tiers only)
 
 Tails is a live operating system that runs entirely from this removable media and leaves
 no trace on the computer you use. Use it when you need stronger guarantees than Tor Browser
@@ -77,7 +73,7 @@ alone can provide.
 3. Select this removable media from the boot menu.
 4. Tails will start and walk you through connecting to Tor.
 
-> **Note:** Tails is only available on 32 GB and larger OAK distributions. The `software/tails/`
+> **Note:** Tails is only available on M and L tier OAK distributions. The `software/tails/`
 > folder on smaller distributions will be absent.
 
 ---
@@ -91,4 +87,4 @@ alone can provide.
 
 → Advanced: [Verify software signatures](verify.md)
 
-→ [Back to Home](index.md) · [Resources](resources.md)
+→ M and L tier users: explore the bundled offline libraries with [Kiwix](kiwix.md).

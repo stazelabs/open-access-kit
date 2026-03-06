@@ -1,9 +1,5 @@
 # Verifying Software Signatures
 
-→ [Back to Home](index.md) · [What's Included](manifest.md)
-
----
-
 This page is for advanced users who want to independently verify the authenticity of
 software on this drive. Verification is optional — the OAK build pipeline checks
 all signatures automatically before packaging — but it lets you confirm the software
@@ -46,7 +42,7 @@ you received this drive from an unknown source.
 
 ## Verify Tails
 
-Tails images are signed by the Tails signing key. *(32 GB+ tiers only.)*
+Tails images are signed by the Tails signing key. *(M and L tiers only.)*
 
 ```
 # Import the Tails signing key
@@ -75,7 +71,7 @@ signature before extracting:
 gpg --import keys/oak-signing.pub
 
 # Verify the archive
-gpg --verify OAK-Q126-64GB.zip.asc OAK-Q126-64GB.zip
+gpg --verify OAK-Q126-M.zip.asc OAK-Q126-M.zip
 ```
 
 > **Note:** `keys/oak-signing.pub` is added to the image at release time. It will not
@@ -99,6 +95,3 @@ official sources:
 - **Tails key**: [tails.net/install/download/](https://tails.net/install/download/)
 - **OAK key**: [github.com/stazelabs/open-access-kit](https://github.com/stazelabs/open-access-kit)
 
----
-
-→ [Back to Home](index.md) · [What's Included](manifest.md)

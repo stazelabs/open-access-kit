@@ -1,15 +1,11 @@
 # OnionShare
 
-→ [Back to Home](index.md) · [Resources](resources.md)
-
----
-
 OnionShare lets you share files, receive files, host a website, and chat — all anonymously
 over the Tor network. There is no central server: your computer becomes a temporary onion
 service that only the people you invite can reach.
 
 OnionShare is bundled on this removable media in the `software/onionshare/` folder
-(32 GB and larger distributions only).
+(M and L tier distributions only).
 
 ---
 
@@ -131,5 +127,3 @@ Use **Chat** mode for a temporary, encrypted group chat room that requires no ac
 - OnionShare documentation: [docs.onionshare.org](https://docs.onionshare.org)
 - OnionShare source code: [github.com/onionshare/onionshare](https://github.com/onionshare/onionshare)
 - License: GPL-3.0
-
-→ [Back to Home](index.md) · [Resources](resources.md)

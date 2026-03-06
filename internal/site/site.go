@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	txttemplate "text/template"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
@@ -27,6 +28,13 @@ type Options struct {
 	BaseURL string
 	// ExcludeDirs lists directory names to skip during the walk (e.g. ".git").
 	ExcludeDirs []string
+	// Vars are passed as template data when pre-processing Markdown files as
+	// Go templates before rendering. Use {{.DownloadRoot}}, {{.Release}}, etc.
+	// If nil, Markdown files are not pre-processed.
+	Vars map[string]any
+	// ShowBuilders includes the "For Builders" nav section in the sidebar.
+	// Set to true for web rendering (oak site), leave false for USB builds.
+	ShowBuilders bool
 }
 
 // Render walks srcDir for Markdown files, converts them to HTML, and writes
@@ -65,8 +73,7 @@ func Render(srcDir, dstDir string, opts Options) error {
 		}
 
 		if strings.ToLower(filepath.Ext(path)) == ".md" {
-			return renderFile(md, tmpl, path, htmlDst(dst), opts.BaseURL,
-				rootFileURL(rel, "index.html"), rootFileURL(rel, "license.html"))
+			return renderFile(md, tmpl, path, htmlDst(dst), rel, opts)
 		}
 		return copyFile(path, dst)
 	})
@@ -83,7 +90,7 @@ func RenderFile(srcPath, dstPath string, opts Options) error {
 	if err != nil {
 		return err
 	}
-	return renderFile(md, tmpl, srcPath, dstPath, opts.BaseURL, "index.html", "license.html")
+	return renderFile(md, tmpl, srcPath, dstPath, filepath.Base(srcPath), opts)
 }
 
 // htmlDst replaces the .md extension with .html.
@@ -102,10 +109,23 @@ func rootFileURL(rel, filename string) string {
 	return strings.Repeat("../", depth) + filename
 }
 
-func renderFile(md goldmark.Markdown, tmpl *template.Template, src, dst, baseURL, homeURL, licenseURL string) error {
+func renderFile(md goldmark.Markdown, tmpl *template.Template, src, dst, rel string, opts Options) error {
 	raw, err := os.ReadFile(src)
 	if err != nil {
 		return err
+	}
+
+	// Pre-process the Markdown as a Go template if Vars are provided.
+	if len(opts.Vars) > 0 {
+		t, err := txttemplate.New("md").Parse(string(raw))
+		if err != nil {
+			return err
+		}
+		var buf bytes.Buffer
+		if err := t.Execute(&buf, opts.Vars); err != nil {
+			return err
+		}
+		raw = buf.Bytes()
 	}
 
 	// Rewrite .md links to .html before parsing so goldmark renders them correctly.
@@ -128,12 +148,22 @@ func renderFile(md goldmark.Markdown, tmpl *template.Template, src, dst, baseURL
 	}
 	defer f.Close()
 
+	// Compute path prefix for sidebar navigation links.
+	pathPrefix := ""
+	dir := filepath.Dir(rel)
+	if dir != "." {
+		depth := len(strings.Split(dir, string(filepath.Separator)))
+		pathPrefix = strings.Repeat("../", depth)
+	}
+
 	return tmpl.Execute(f, map[string]any{
-		"Title":      title,
-		"Body":       template.HTML(body.String()),
-		"BaseURL":    baseURL,
-		"HomeURL":    homeURL,
-		"LicenseURL": licenseURL,
+		"Title":        title,
+		"Body":         template.HTML(body.String()),
+		"BaseURL":      opts.BaseURL,
+		"HomeURL":      rootFileURL(rel, "index.html"),
+		"LicenseURL":   rootFileURL(rel, "license.html"),
+		"PathPrefix":   pathPrefix,
+		"ShowBuilders": opts.ShowBuilders,
 	})
 }
 

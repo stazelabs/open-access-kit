@@ -1,9 +1,5 @@
 # Orbot
 
-→ [Back to Home](index.md) · [Resources](resources.md)
-
----
-
 Orbot routes your Android device's internet traffic through the Tor network. Where Tor
 Browser for Android anonymizes only your browsing, Orbot can protect other apps too —
 messaging clients, email, podcast apps, and more — by tunneling their connections through
@@ -94,7 +90,7 @@ See [Verifying Signatures](verify.md) for a full walkthrough.
   reveal your identity through your account, device fingerprint, or content of messages.
 - **Keep Orbot running** while using apps you want protected. When Orbot is stopped or
   disconnected, those apps will fall back to your regular internet connection.
-- **In high-risk situations, use Tails instead.** Tails (included on 32 GB+ distributions)
+- **In high-risk situations, use Tails instead.** Tails (included on M and L tier distributions)
   routes all traffic system-wide through Tor by default, with stronger isolation guarantees.
 - **Keep Orbot updated.** New versions ship on this removable media each quarter.
 
@@ -106,5 +102,3 @@ See [Verifying Signatures](verify.md) for a full walkthrough.
 - Source code: [github.com/guardianproject/orbot-android](https://github.com/guardianproject/orbot-android)
 - Guardian Project: [guardianproject.info](https://guardianproject.info)
 - License: GPL-3.0
-
-→ [Back to Home](index.md) · [Resources](resources.md)

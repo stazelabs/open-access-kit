@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>License — Open Access Kit</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
 :root {
   --bg: #0d1117;
@@ -33,12 +34,75 @@ header {
   align-items: center;
   gap: 1em;
 }
-header a { color: var(--heading); text-decoration: none; font-weight: 600; }
-header a:hover { text-decoration: none; }
+header a.home { color: var(--heading); text-decoration: none; font-weight: 600; }
+header a.home:hover { text-decoration: none; }
+.mobile-nav { display: none; margin-left: auto; }
+.mobile-nav summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: .875em;
+  list-style: none;
+  padding: .4em .75em;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.mobile-nav summary::-webkit-details-marker { display: none; }
+.mobile-nav nav {
+  position: absolute;
+  right: 1em;
+  top: 3.5em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .75em 1em;
+  z-index: 10;
+  min-width: 200px;
+}
+.layout {
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  padding: 1.5em 1em;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.nav-section h3 {
+  font-size: .7em;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin: 1.5em 0 .4em;
+}
+.nav-section h3:first-child { margin-top: .5em; }
+.nav-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.nav-section li a {
+  display: block;
+  padding: .25em .5em;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: .875em;
+}
+.nav-section li a:hover {
+  background: var(--surface);
+  color: var(--link);
+}
 main {
+  flex: 1;
+  min-width: 0;
   max-width: 820px;
-  margin: 2em auto;
-  padding: 0 1.5em 4em;
+  padding: 2em 1.5em 4em;
 }
 h1, h2, h3, h4 {
   color: var(--heading);
@@ -81,16 +145,83 @@ footer {
   padding: 2em 1em;
   border-top: 1px solid var(--border);
 }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-nav { display: block; }
+  .layout { display: block; }
+  main { max-width: 100%; padding: 1.5em 1em 3em; }
+}
 </style>
 </head>
 <body>
 <header>
-  <a href="index.html">&#127795; Open Access Kit</a>
+  <a class="home" href="index.html">&#127795; Open Access Kit</a>
+  <details class="mobile-nav">
+    <summary>Menu</summary>
+    <nav>
+      <div class="nav-section">
+        <h3>Using OAK</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="onionshare.html">OnionShare</a></li>
+          <li><a href="orbot.html">Orbot</a></li>
+          <li><a href="kiwix.html">Kiwix & Offline Content</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <h3>Reference</h3>
+        <ul>
+          <li><a href="manifest.html">What's Included</a></li>
+          <li><a href="verify.html">Verify Signatures</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
+          <li><a href="license.html">License</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <h3>For Builders</h3>
+        <ul>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+        </ul>
+      </div>
+    </nav>
+  </details>
 </header>
-<main>
+<div class="layout">
+  <nav class="sidebar" aria-label="Site navigation">
+    <div class="nav-section">
+      <h3>Using OAK</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+        <li><a href="onionshare.html">OnionShare</a></li>
+        <li><a href="orbot.html">Orbot</a></li>
+        <li><a href="kiwix.html">Kiwix & Offline Content</a></li>
+        <li><a href="resources.html">Resources</a></li>
+      </ul>
+    </div>
+    <div class="nav-section">
+      <h3>Reference</h3>
+      <ul>
+        <li><a href="manifest.html">What's Included</a></li>
+        <li><a href="verify.html">Verify Signatures</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="license.html">License</a></li>
+      </ul>
+    </div>
+    <div class="nav-section">
+      <h3>For Builders</h3>
+      <ul>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="contributing.html">Contributing</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
 <h1>License</h1>
-<p>→ <a href="index.html">Back to Home</a></p>
-<hr>
 <p>Open Access Kit uses dual licensing — one for code, one for content.</p>
 <hr>
 <h2>Code — GNU General Public License v3.0</h2>
@@ -120,10 +251,9 @@ indicate if changes were made.</li>
 your contributions under the same license.</li>
 </ul>
 <p>Full license text: <a href="license-content.html">LICENSE-CONTENT</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">creativecommons.org</a></p>
-<hr>
-<p>→ <a href="index.html">Back to Home</a></p>
 
-</main>
+  </main>
+</div>
 <footer>
   Open Access Kit &mdash;
   Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OnionShare — Open Access Kit</title>
+<title>Kiwix &amp; Offline Content — Open Access Kit</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
 :root {
@@ -221,124 +221,109 @@ footer {
     </div>
   </nav>
   <main>
-<h1>OnionShare</h1>
-<p>OnionShare lets you share files, receive files, host a website, and chat — all anonymously
-over the Tor network. There is no central server: your computer becomes a temporary onion
-service that only the people you invite can reach.</p>
-<p>OnionShare is bundled on this removable media in the <code>software/onionshare/</code> folder
-(M and L tier distributions only).</p>
+<h1>Kiwix &amp; Offline Content</h1>
+<p>Kiwix is an offline content reader that lets you browse Wikipedia, educational
+resources, medical references, and more — without any internet connection. OAK
+bundles Kiwix along with curated ZIM files on M and L tier distributions.</p>
+<blockquote>
+<p>Kiwix and ZIM content are only available on <strong>M and L</strong> tier distributions.
+If you have the S tier, this section does not apply.</p>
+</blockquote>
 <hr>
-<h2>Install OnionShare</h2>
-<p>Open <code>software/onionshare/</code> on this removable media and install the file for your
-operating system:</p>
+<h2>What are ZIM files?</h2>
+<p>ZIM is an open format for storing web content offline. Each <code>.zim</code> file is a
+self-contained archive of a website — Wikipedia, a medical encyclopedia, coding
+tutorials, and so on. Kiwix reads these files and lets you search and browse
+them just like you would online.</p>
+<hr>
+<h2>Opening Kiwix</h2>
+<h3>Windows</h3>
+<ol>
+<li>Open the <code>software/kiwix-desktop/</code> folder on this removable media.</li>
+<li>Extract <code>kiwix-desktop_windows_x64_*.zip</code>.</li>
+<li>Run <code>kiwix-desktop.exe</code> from the extracted folder.</li>
+</ol>
+<h3>Linux</h3>
+<ol>
+<li>Open the <code>software/kiwix-desktop/</code> folder on this removable media.</li>
+<li>Make the AppImage executable: <code>chmod +x kiwix-desktop_x86_64_*.appimage</code></li>
+<li>Run: <code>./kiwix-desktop_x86_64_*.appimage</code></li>
+</ol>
+<h3>macOS / Linux (command line)</h3>
+<p>Kiwix-serve provides a browser-based reader:</p>
+<ol>
+<li>Open the <code>software/kiwix/</code> folder on this removable media.</li>
+<li>Extract the archive for your platform.</li>
+<li>Start the server pointing at the ZIM directory:</li>
+</ol>
+<pre><code>./kiwix-serve --port 8080 /path/to/zim/**/*.zim
+</code></pre>
+<ol start="4">
+<li>Open <code>http://localhost:8080</code> in any browser.</li>
+</ol>
+<hr>
+<h2>Browsing ZIM content</h2>
+<p>Once Kiwix is open:</p>
+<ol>
+<li>Click <strong>Open file</strong> (or use File &gt; Open).</li>
+<li>Navigate to the <code>zim/</code> folder on this removable media.</li>
+<li>Select any <code>.zim</code> file to open it.</li>
+<li>Use the search bar to find articles within the loaded content.</li>
+</ol>
+<p>You can open multiple ZIM files and switch between them using the tabs or
+library view.</p>
+<hr>
+<h2>What's included</h2>
 <table>
 <thead>
 <tr>
-<th>File</th>
-<th>Operating System</th>
+<th>Priority</th>
+<th>Category</th>
+<th>Examples</th>
+<th>Tier</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>OnionShare-win64-*.msi</code></td>
-<td>Windows</td>
+<td><strong>P0</strong> — Survival &amp; medical</td>
+<td>Emergency medicine, water, food safety, disaster prep, children's encyclopedia, FreeCodeCamp</td>
+<td>zimgit-medicine, librepathology, vikidia, freecodecamp</td>
+<td>M, L</td>
 </tr>
 <tr>
-<td><code>OnionShare-*.dmg</code></td>
-<td>macOS</td>
+<td><strong>P1</strong> — Reference &amp; education</td>
+<td>Simple English Wikipedia, PhET simulations, Appropedia, Wikivoyage, TED-Ed</td>
+<td>wikipedia_en_simple, phet, ted_ed</td>
+<td>M, L</td>
 </tr>
 <tr>
-<td><code>OnionShare-*.flatpak</code></td>
-<td>Linux</td>
+<td><strong>P2</strong> — Deep reference</td>
+<td>Full Wikipedia mini, Wikibooks, MDWiki medical, Wikiversity, SuperUser</td>
+<td>wikipedia_en_all_mini, mdwiki, wikibooks</td>
+<td>L only</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Windows:</strong> Run the <code>.msi</code> installer and follow the prompts. Administrator access is
-required.</p>
-<p><strong>macOS:</strong> Open the <code>.dmg</code>, drag OnionShare to your Applications folder, and launch it.
-macOS may ask you to approve the app from an unidentified developer — go to
-<strong>System Settings → Privacy &amp; Security</strong> and click <strong>Open Anyway</strong>.</p>
-<p><strong>Linux (Flatpak):</strong> Install with:</p>
-<pre><code>flatpak install --user OnionShare-*.flatpak
-</code></pre>
-<p>If Flatpak is not installed, your distribution's package manager can add it:
-<code>sudo apt install flatpak</code> (Debian/Ubuntu) or <code>sudo dnf install flatpak</code> (Fedora).</p>
+<p>ZIM files are organized in subdirectories under <code>zim/</code> by topic: <code>medical/</code>,
+<code>survival/</code>, <code>education/</code>, <code>reference/</code>, <code>sustainability/</code>, <code>literature/</code>, and
+<code>tech/</code>.</p>
+<blockquote>
+<p>For the full catalog of ZIM files with sizes and selection criteria, see the
+<a href="zim-content.html">ZIM Content Catalog</a>.</p>
+</blockquote>
 <hr>
-<h2>Verify the Installation (Optional)</h2>
-<p>Every file in <code>software/onionshare/</code> is accompanied by a <code>.asc</code> signature file.
-You can verify the download against the OnionShare signing keys bundled in <code>keys/onionshare-signing.gpg</code>:</p>
-<pre><code>gpg --no-default-keyring --keyring /path/to/keys/onionshare-signing.gpg \
-    --verify OnionShare-*.msi.asc OnionShare-*.msi
-</code></pre>
-<p>A good result shows <code>Good signature from &quot;Micah Lee&quot;</code>, <code>&quot;Saptak Sengupta&quot;</code>, or <code>&quot;Miguel Jacq&quot;</code>.
-See <a href="verify.html">Verifying Signatures</a> for a full walkthrough.</p>
-<hr>
-<h2>Send Files</h2>
-<p>Use <strong>Send</strong> mode to share files with someone. OnionShare creates a temporary onion
-address; anyone with that address can download your files through Tor Browser.</p>
-<ol>
-<li>Launch OnionShare and select <strong>Share Files</strong>.</li>
-<li>Drag files or folders into the window and click <strong>Start sharing</strong>.</li>
-<li>Copy the <code>.onion</code> address shown and send it to your recipient through a secure channel
-(Signal, an encrypted email, etc.).</li>
-<li><strong>Keep OnionShare open</strong> until the recipient confirms they have downloaded everything.
-Closing it ends the transfer.</li>
-</ol>
-<p>By default, OnionShare stops sharing after the first download. Uncheck <strong>Stop sharing
-after files have been sent</strong> if multiple people need to download.</p>
-<hr>
-<h2>Receive Files</h2>
-<p>Use <strong>Receive</strong> mode to let someone upload files to you without revealing your IP address
-to them.</p>
-<ol>
-<li>Select <strong>Receive Files</strong> in OnionShare.</li>
-<li>Click <strong>Start Receive Mode</strong>.</li>
-<li>Share the <code>.onion</code> address with the person sending you files.</li>
-<li>Received files appear in your Downloads folder. You will see a notification when
-a transfer completes.</li>
-</ol>
-<hr>
-<h2>Host a Website</h2>
-<p>Use <strong>Host a Website</strong> mode to serve static HTML files as an anonymous onion site.</p>
-<ol>
-<li>Select <strong>Host a Website</strong>.</li>
-<li>Add your HTML files (and any images, CSS, etc.).</li>
-<li>Click <strong>Start sharing</strong>.</li>
-<li>The <code>.onion</code> address is your website — share it with anyone who should be able to
-visit it through Tor Browser.</li>
-</ol>
-<p>This is useful for publishing documents or resources when you need to protect both your
-identity and the identity of your readers.</p>
-<hr>
-<h2>Anonymous Chat</h2>
-<p>Use <strong>Chat</strong> mode for a temporary, encrypted group chat room that requires no account.</p>
-<ol>
-<li>Select <strong>Chat</strong> in OnionShare.</li>
-<li>Click <strong>Start chat server</strong>.</li>
-<li>Share the <code>.onion</code> address with participants — they open it in Tor Browser.</li>
-<li>Messages are end-to-end encrypted and leave no server logs. When you close OnionShare,
-the chat room ceases to exist.</li>
-</ol>
-<hr>
-<h2>Security Tips</h2>
+<h2>Tips</h2>
 <ul>
-<li><strong>Share <code>.onion</code> addresses through a secure channel.</strong> Anyone who intercepts the address
-can access your share. Use Signal, an encrypted email, or another private channel.</li>
-<li><strong>OnionShare must stay open.</strong> Your computer is the server. If you close OnionShare or
-lose power, the session ends. For large transfers, plug in and disable sleep mode.</li>
-<li><strong>OnionShare protects your IP, not your identity.</strong> Do not upload files containing
-personal metadata (EXIF data in photos, document author fields, etc.) if anonymity
-matters. Consider scrubbing metadata first with a tool like <a href="https://0xacab.org/jvoisin/mat2">MAT2</a>.</li>
-<li><strong>Use Tor Browser to access OnionShare links.</strong> Your regular browser does not support
-<code>.onion</code> addresses.</li>
+<li><strong>Search is fast.</strong> Kiwix indexes every article. Use the search bar to jump
+directly to topics.</li>
+<li><strong>Kiwix-serve for shared access.</strong> Run <code>kiwix-serve</code> on one computer and let
+others on the same local network browse the content from their own browsers.</li>
+<li><strong>Mobile.</strong> Kiwix is also available for Android and iOS. You can copy
+individual <code>.zim</code> files to a phone and open them in the Kiwix app.</li>
 </ul>
-<hr>
-<h2>More Information</h2>
-<ul>
-<li>OnionShare documentation: <a href="https://docs.onionshare.org">docs.onionshare.org</a></li>
-<li>OnionShare source code: <a href="https://github.com/onionshare/onionshare">github.com/onionshare/onionshare</a></li>
-<li>License: GPL-3.0</li>
-</ul>
+<blockquote>
+<p><a href="manifest.html">Full manifest with versions and sizes</a></p>
+</blockquote>
 
   </main>
 </div>

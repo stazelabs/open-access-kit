@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZIM File Priority Analysis for OAK — Open Access Kit</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --link: #58a6ff;
+  --heading: #f0f6fc;
+  --code-bg: #1c2128;
+  --accent: #388bfd;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.65;
+}
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: .75em 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+header a.home { color: var(--heading); text-decoration: none; font-weight: 600; }
+header a.home:hover { text-decoration: none; }
+.mobile-nav { display: none; margin-left: auto; }
+.mobile-nav summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: .875em;
+  list-style: none;
+  padding: .4em .75em;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.mobile-nav summary::-webkit-details-marker { display: none; }
+.mobile-nav nav {
+  position: absolute;
+  right: 1em;
+  top: 3.5em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .75em 1em;
+  z-index: 10;
+  min-width: 200px;
+}
+.layout {
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  padding: 1.5em 1em;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.nav-section h3 {
+  font-size: .7em;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin: 1.5em 0 .4em;
+}
+.nav-section h3:first-child { margin-top: .5em; }
+.nav-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.nav-section li a {
+  display: block;
+  padding: .25em .5em;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: .875em;
+}
+.nav-section li a:hover {
+  background: var(--surface);
+  color: var(--link);
+}
+main {
+  flex: 1;
+  min-width: 0;
+  max-width: 820px;
+  padding: 2em 1.5em 4em;
+}
+h1, h2, h3, h4 {
+  color: var(--heading);
+  line-height: 1.25;
+  margin-top: 1.5em;
+}
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .15em .4em;
+  font-size: .875em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1em 1.25em;
+  overflow-x: auto;
+  font-size: .875em;
+}
+pre code { background: none; border: none; padding: 0; }
+blockquote {
+  border-left: 3px solid var(--border);
+  margin: 1em 0;
+  padding: .5em 1em;
+  color: var(--muted);
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: .5em .75em; text-align: left; }
+th { background: var(--surface); color: var(--heading); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+footer {
+  text-align: center;
+  font-size: .8em;
+  color: var(--muted);
+  padding: 2em 1em;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-nav { display: block; }
+  .layout { display: block; }
+  main { max-width: 100%; padding: 1.5em 1em 3em; }
+}
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="index.html">&#127795; Open Access Kit</a>
+  <details class="mobile-nav">
+    <summary>Menu</summary>
+    <nav>
+      <div class="nav-section">
+        <h3>Using OAK</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="onionshare.html">OnionShare</a></li>
+          <li><a href="orbot.html">Orbot</a></li>
+          <li><a href="kiwix.html">Kiwix & Offline Content</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <h3>Reference</h3>
+        <ul>
+          <li><a href="manifest.html">What's Included</a></li>
+          <li><a href="verify.html">Verify Signatures</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
+          <li><a href="license.html">License</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <h3>For Builders</h3>
+        <ul>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="contributing.html">Contributing</a></li>
+        </ul>
+      </div>
+    </nav>
+  </details>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Site navigation">
+    <div class="nav-section">
+      <h3>Using OAK</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+        <li><a href="onionshare.html">OnionShare</a></li>
+        <li><a href="orbot.html">Orbot</a></li>
+        <li><a href="kiwix.html">Kiwix & Offline Content</a></li>
+        <li><a href="resources.html">Resources</a></li>
+      </ul>
+    </div>
+    <div class="nav-section">
+      <h3>Reference</h3>
+      <ul>
+        <li><a href="manifest.html">What's Included</a></li>
+        <li><a href="verify.html">Verify Signatures</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="license.html">License</a></li>
+      </ul>
+    </div>
+    <div class="nav-section">
+      <h3>For Builders</h3>
+      <ul>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="contributing.html">Contributing</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+<h1>ZIM File Priority Analysis for OAK</h1>
+<blockquote>
+<p><strong>Reference appendix.</strong> For a guide on using Kiwix and ZIM content, see
+<a href="kiwix.html">Kiwix &amp; Offline Content</a>.</p>
+</blockquote>
+<h2>Purpose</h2>
+<p>This document identifies and prioritizes Kiwix ZIM files for inclusion in OAK
+releases. The goal is to maximize offline utility for people in disconnected or
+crisis settings — those who need factual information, medical guidance, practical
+survival knowledge, and educational resources — while respecting the tight space
+budgets of removable media.</p>
+<h2>Methodology</h2>
+<h3>Evaluation criteria</h3>
+<p>Each ZIM file was scored across four dimensions:</p>
+<ol>
+<li>
+<p><strong>Crisis relevance</strong> — Does this content help someone survive, stay healthy,
+or navigate an emergency? Medical references, water purification, food
+safety, and disaster preparedness score highest.</p>
+</li>
+<li>
+<p><strong>Knowledge breadth</strong> — How much general-purpose factual information does
+this provide? Wikipedia variants and encyclopedic references score high.</p>
+</li>
+<li>
+<p><strong>Practical skills</strong> — Does the content teach actionable skills (agriculture,
+energy, computing, navigation)? Hands-on content outranks purely academic
+material.</p>
+</li>
+<li>
+<p><strong>Size efficiency</strong> — What is the utility-per-gigabyte? A 67 MB medical
+encyclopedia that could save lives scores infinitely higher per-byte than a
+168 GB video archive, however valuable the latter may be.</p>
+</li>
+</ol>
+<h3>Variant selection strategy</h3>
+<p>Kiwix publishes many ZIM files in multiple variants:</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Description</th>
+<th>Typical size vs. maxi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>maxi</strong></td>
+<td>Full content with all images and media</td>
+<td>100% (baseline)</td>
+</tr>
+<tr>
+<td><strong>nopic</strong></td>
+<td>Full article text, no images</td>
+<td>~30-40%</td>
+</tr>
+<tr>
+<td><strong>mini</strong></td>
+<td>Reduced article set with minimal images</td>
+<td>~10-15%</td>
+</tr>
+<tr>
+<td><strong>top</strong></td>
+<td>Only highest-traffic articles, full media</td>
+<td>varies</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Our strategy</strong>: prefer <em>nopic</em> for large reference works (Wikipedia,
+Wiktionary) since text carries most informational value in crisis settings.
+Use <em>maxi</em> for small, visually dependent content (medical atlases, PhET
+simulations, children's content). Use <em>mini</em> when nopic isn't available or
+when the full article set is too large for the target tier.</p>
+<h3>Data sources</h3>
+<ul>
+<li>Kiwix OPDS catalog: <code>https://library.kiwix.org/catalog/v2/entries</code></li>
+<li>Download mirrors: <code>https://download.kiwix.org/zim/{category}/</code></li>
+<li>File sizes verified against directory listings as of March 2026</li>
+</ul>
+<hr>
+<h2>Key Tradeoffs</h2>
+<h3>Wikipedia: which variant?</h3>
+<p>The single most important decision. English Wikipedia ranges from 3.1 GB
+(Simple English, maxi) to 115 GB (full, maxi):</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Size</th>
+<th>Articles</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wikipedia_en_simple_all_maxi</code></td>
+<td>3.1G</td>
+<td>~240K</td>
+<td>M tier, learners, non-native speakers</td>
+</tr>
+<tr>
+<td><code>wikipedia_en_top_maxi</code></td>
+<td>7.6G</td>
+<td>~50K</td>
+<td>Quick reference with images</td>
+</tr>
+<tr>
+<td><code>wikipedia_en_all_mini</code></td>
+<td>11G</td>
+<td>6.9M+</td>
+<td>L tier, full coverage compressed</td>
+</tr>
+<tr>
+<td><code>wikipedia_en_all_nopic</code></td>
+<td>48G</td>
+<td>6.9M+</td>
+<td>Future XL/Max tier, full text</td>
+</tr>
+<tr>
+<td><code>wikipedia_en_all_maxi</code></td>
+<td>115G</td>
+<td>6.9M+</td>
+<td>Future Max tier only</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decision</strong>: Simple English for M, mini for L. Larger variants deferred
+until demand justifies a 64GB+ tier. Simple English is underrated — it's
+written at an accessible reading level, making it ideal for non-native
+speakers and young readers.</p>
+<h3>Breadth vs. depth</h3>
+<p>Including one massive resource (Wikipedia nopic at 48G) vs. many smaller
+ones is a constant tension. We favor <strong>breadth at lower tiers</strong> (many small,
+high-impact ZIMs) and <strong>depth at higher tiers</strong> (larger comprehensive
+references). An M-tier kit with medical guides, survival content, Simple
+Wikipedia, and TED-Ed videos is more useful than one with just Wikipedia mini
+and nothing else.</p>
+<h3>Language coverage</h3>
+<p>This analysis focuses on English-language content. Multilingual and
+non-English ZIMs are noted where they exist but are not included in tier
+allocations. Future work should create language-specific profiles.</p>
+<h3>Video content</h3>
+<p>Video ZIMs (TED, Khan Academy, Crash Course) are extremely large relative
+to text. TED-Ed at 5.3G is the most space-efficient video offering. Khan
+Academy (168G) and Crash Course (21G) are Max-tier only. Video is valuable
+for education but text content wins on information density per byte.</p>
+<hr>
+<h2>Space Budget</h2>
+<h3>Existing source usage (estimated)</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Approx. size</th>
+<th>Present in tiers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tor Browser (all platforms)</td>
+<td>400 MB</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Tails (img + iso)</td>
+<td>3.0 GB</td>
+<td>M, L</td>
+</tr>
+<tr>
+<td>OnionShare (all platforms)</td>
+<td>200 MB</td>
+<td>M, L</td>
+</tr>
+<tr>
+<td>Orbot</td>
+<td>50 MB</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Kiwix tools + desktop</td>
+<td>100 MB</td>
+<td>M, L</td>
+</tr>
+<tr>
+<td>Git repos (manuals, guides)</td>
+<td>500 MB</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Keys, local content</td>
+<td>50 MB</td>
+<td>all</td>
+</tr>
+</tbody>
+</table>
+<h3>Available ZIM budget per tier</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Total budget</th>
+<th>Existing sources</th>
+<th>Available for ZIM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S (4 GB hard cap)</td>
+<td>4 GB</td>
+<td>~1 GB</td>
+<td><strong>~3 GB</strong></td>
+</tr>
+<tr>
+<td>M (16 GB media)</td>
+<td>14 GB</td>
+<td>~4.5 GB</td>
+<td><strong>~9.5 GB</strong></td>
+</tr>
+<tr>
+<td>L (32 GB media)</td>
+<td>29 GB</td>
+<td>~4.5 GB</td>
+<td><strong>~24.5 GB</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Note: S tier has no Kiwix tools/desktop or ZIM files — it is a pure privacy
+toolkit. ZIM content starts at the M tier, which includes kiwix-tools and
+kiwix-desktop.</p>
+<hr>
+<h2>Curated Priority List</h2>
+<p>Files are grouped by priority level. Within each level, they are ordered by
+utility-per-byte (highest first).</p>
+<h3>P0 — Critical (include in M and L tiers)</h3>
+<p>Tiny, high-impact survival and medical content. Total: ~1 GB.
+S tier has no ZIM budget — P0 starts at M.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Category</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>zimgit-medicine_en_2024-08.zim</code></td>
+<td>67 MB</td>
+<td>Medical</td>
+<td>Offline medical encyclopedia; could save lives</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>wikem_en_all_maxi_2021-02.zim</code></td>
+<td>42 MB</td>
+<td>Medical</td>
+<td>Emergency medicine wiki (WikEM) — <strong>not in OPDS catalog; removed from oak.yaml pending URL verification</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>zimgit-water_en_2024-08.zim</code></td>
+<td>20 MB</td>
+<td>Survival</td>
+<td>Water purification and management</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>zimgit-knots_en_2024-08.zim</code></td>
+<td>27 MB</td>
+<td>Survival</td>
+<td>Practical knot-tying reference</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>zimgit-food-preparation_en_2025-04.zim</code></td>
+<td>93 MB</td>
+<td>Survival</td>
+<td>Food safety and preparation</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>librepathology_en_all_maxi_2025-09.zim</code></td>
+<td>76 MB</td>
+<td>Medical</td>
+<td>Pathology reference with images</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>freecodecamp_en_all_2026-02.zim</code></td>
+<td>7.6 MB</td>
+<td>Education</td>
+<td>Full programming curriculum, incredibly compact</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>vikidia_en_all_maxi_2025-12.zim</code></td>
+<td>66 MB</td>
+<td>Education</td>
+<td>Children's encyclopedia (age-appropriate)</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>wiktionary_en_simple_all_nopic_2026-01.zim</code></td>
+<td>25 MB</td>
+<td>Reference</td>
+<td>Simple English dictionary</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>zimgit-post-disaster_en_2024-05.zim</code></td>
+<td>615 MB</td>
+<td>Survival</td>
+<td>Disaster preparedness and recovery</td>
+</tr>
+</tbody>
+</table>
+<p><strong>P0 subtotal: ~1.04 GB</strong></p>
+<h3>P1 — High priority (include starting at M tier)</h3>
+<p>Core reference and education content to fill the M-tier budget. Combined with
+P0, targets ~9.5 GB.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Category</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td><code>wikipedia_en_simple_all_maxi_2025-11.zim</code></td>
+<td>3.1 GB</td>
+<td>Reference</td>
+<td>Accessible English encyclopedia with images</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>phet_en_all_2026-02.zim</code></td>
+<td>102 MB</td>
+<td>Education</td>
+<td>Interactive science/math simulations</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>appropedia_en_all_maxi_2026-02.zim</code></td>
+<td>555 MB</td>
+<td>Sustainability</td>
+<td>Appropriate technology, permaculture, development</td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>energypedia_en_all_nopic_2025-12.zim</code></td>
+<td>689 MB</td>
+<td>Sustainability</td>
+<td>Energy access and renewable energy</td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>wikivoyage_en_all_maxi_2025-12.zim</code></td>
+<td>1.1 GB</td>
+<td>Reference</td>
+<td>World geography and travel knowledge</td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>ted_mul_ted-ed_2026-01.zim</code></td>
+<td>5.3 GB</td>
+<td>Education</td>
+<td>Educational video lessons across subjects</td>
+</tr>
+<tr>
+<td>17</td>
+<td><code>gutenberg_en_lcc-s_2025-12.zim</code></td>
+<td>4.2 GB</td>
+<td>Literature</td>
+<td>Agriculture and rural life (practical)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>P0 + P1 subtotal: ~12.2 GB</strong> (exceeds M tier's ~9.5 GB ZIM budget — need
+to drop TED-Ed or Gutenberg agriculture from M, or accept a tighter fit by
+trimming P1 picks. See tier allocation summary below.)</p>
+<h3>P2 — Medium priority (include starting at L tier)</h3>
+<p>Broader reference, structured learning, and community Q&amp;A. Combined with
+P0+P1, targets ~24.5 GB.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Category</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>18</td>
+<td><code>wikipedia_en_all_mini_2025-12.zim</code></td>
+<td>11 GB</td>
+<td>Reference</td>
+<td>Full English Wikipedia, compressed (replaces Simple English)</td>
+</tr>
+<tr>
+<td>19</td>
+<td><code>wikibooks_en_all_nopic_2026-01.zim</code></td>
+<td>2.9 GB</td>
+<td>Education</td>
+<td>Textbooks on every subject</td>
+</tr>
+<tr>
+<td>20</td>
+<td><code>mdwiki_en_all_maxi_2025-11.zim</code></td>
+<td>2.1 GB</td>
+<td>Medical</td>
+<td>Comprehensive medical database with images</td>
+</tr>
+<tr>
+<td>21</td>
+<td><code>wikiversity_en_all_maxi_2026-02.zim</code></td>
+<td>2.2 GB</td>
+<td>Education</td>
+<td>University-level learning materials</td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>superuser.com_en_all_2026-02.zim</code></td>
+<td>3.7 GB</td>
+<td>Tech</td>
+<td>Computer troubleshooting Q&amp;A</td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>gutenberg_en_lcc-h_2025-12.zim</code></td>
+<td>4.2 GB</td>
+<td>Literature</td>
+<td>Social sciences (economics, sociology)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>P0 + P1 + P2 subtotal: ~23.5 GB</strong> (adjustments below)</p>
+<p><strong>L tier note</strong>: At L, <code>wikipedia_en_all_mini</code> (11G) replaces
+<code>wikipedia_en_simple_all_maxi</code> (3.1G) from P1, so the net add is ~7.9G,
+not 11G. Adjusted total: ~20.4 GB within 24.5 GB budget. Remaining ~4 GB
+could accommodate additional P2+ picks from the expansion list below.</p>
+<h3>P3 — Extended (deferred — future 64 GB+ tier)</h3>
+<p>Comprehensive references and richer educational content. Not included in
+current S/M/L tiers. Revisit when demand justifies a larger tier.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Category</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24</td>
+<td><code>wikipedia_en_all_nopic_2025-12.zim</code></td>
+<td>48 GB</td>
+<td>Reference</td>
+<td>Complete English Wikipedia, all articles (replaces mini)</td>
+</tr>
+<tr>
+<td>25</td>
+<td><code>wiktionary_en_all_nopic_2026-02.zim</code></td>
+<td>8.2 GB</td>
+<td>Reference</td>
+<td>Complete English dictionary</td>
+</tr>
+<tr>
+<td>26</td>
+<td><code>math.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>6.9 GB</td>
+<td>Education</td>
+<td>Mathematics Q&amp;A archive</td>
+</tr>
+<tr>
+<td>27</td>
+<td><code>electronics.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>3.9 GB</td>
+<td>Tech</td>
+<td>Electronics engineering Q&amp;A</td>
+</tr>
+<tr>
+<td>28</td>
+<td><code>ted_mul_science_2026-02.zim</code></td>
+<td>13 GB</td>
+<td>Education</td>
+<td>Science-focused TED talks</td>
+</tr>
+<tr>
+<td>29</td>
+<td><code>ted_mul_health_2026-01.zim</code></td>
+<td>7.0 GB</td>
+<td>Medical</td>
+<td>Health-focused TED talks</td>
+</tr>
+<tr>
+<td>30</td>
+<td><code>gutenberg_en_lcc-q_2025-12.zim</code></td>
+<td>16 GB</td>
+<td>Literature</td>
+<td>Science books</td>
+</tr>
+<tr>
+<td>31</td>
+<td><code>gutenberg_en_lcc-t_2025-12.zim</code></td>
+<td>12 GB</td>
+<td>Literature</td>
+<td>Technology books</td>
+</tr>
+<tr>
+<td>32</td>
+<td><code>wikibooks_en_all_maxi_2026-01.zim</code></td>
+<td>5.1 GB</td>
+<td>Education</td>
+<td>Textbooks with images (replaces nopic)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Future 64 GB tier note</strong>: If published, <code>wikipedia_en_all_nopic</code> (48G)
+would replace <code>wikipedia_en_all_mini</code> (11G), net add ~37G.
+<code>wikibooks_en_all_maxi</code> (5.1G) replaces nopic (2.9G), net add ~2.2G. A
+64 GB tier couldn't fit everything in P3 — prioritize Wikipedia nopic +
+Wiktionary + one TED collection + one Gutenberg collection. Estimated fit:
+items 24-27 + item 29 ≈ ~52 GB ZIM total.</p>
+<h3>P4 — Future Max tier only</h3>
+<p>Large archives that provide tremendous depth but require hundreds of
+gigabytes. Deferred until demand justifies publishing a Max tier.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Category</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>33</td>
+<td><code>wikipedia_en_all_maxi_2026-02.zim</code></td>
+<td>115 GB</td>
+<td>Reference</td>
+<td>Complete Wikipedia with all images</td>
+</tr>
+<tr>
+<td>34</td>
+<td><code>stackoverflow.com_en_all_2023-11.zim</code></td>
+<td>75 GB</td>
+<td>Tech</td>
+<td>Complete Stack Overflow archive</td>
+</tr>
+<tr>
+<td>35</td>
+<td><code>ted_mul_all_2025-08.zim</code></td>
+<td>79 GB</td>
+<td>Education</td>
+<td>All TED talks, all languages</td>
+</tr>
+<tr>
+<td>36</td>
+<td><code>crashcourse_en_all_2026-02.zim</code></td>
+<td>21 GB</td>
+<td>Education</td>
+<td>Crash Course video series</td>
+</tr>
+<tr>
+<td>37</td>
+<td><code>gutenberg_en_all_2025-11.zim</code></td>
+<td>206 GB</td>
+<td>Literature</td>
+<td>Complete Project Gutenberg (70K+ books)</td>
+</tr>
+<tr>
+<td>38</td>
+<td><code>khanacademy_en_all_2023-03.zim</code></td>
+<td>168 GB</td>
+<td>Education</td>
+<td>Complete Khan Academy</td>
+</tr>
+<tr>
+<td>39</td>
+<td><code>wikipedia_es_all_maxi_2026-02.zim</code></td>
+<td>38 GB</td>
+<td>Reference</td>
+<td>Spanish Wikipedia</td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>wikipedia_ar_all_maxi_2026-02.zim</code></td>
+<td>17 GB</td>
+<td>Reference</td>
+<td>Arabic Wikipedia</td>
+</tr>
+<tr>
+<td>41</td>
+<td><code>wikipedia_fr_all_maxi_2026-02.zim</code></td>
+<td>~50 GB</td>
+<td>Reference</td>
+<td>French Wikipedia</td>
+</tr>
+<tr>
+<td>42</td>
+<td><code>wikipedia_de_all_maxi_2026-01.zim</code></td>
+<td>49 GB</td>
+<td>Reference</td>
+<td>German Wikipedia</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Expansion List (ranks 43-100)</h2>
+<p>Additional ZIM files for consideration, especially at higher tiers or for
+language-specific builds. Ordered by estimated priority.</p>
+<h3>Medical &amp; health (43-48)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>43</td>
+<td><code>africanstorybook.org_mul_all_2025-01.zim</code></td>
+<td>8.1 GB</td>
+<td>Multilingual children's literacy</td>
+</tr>
+<tr>
+<td>44</td>
+<td><code>skinofcolorsociety_en_all_maxi_2024-05.zim</code></td>
+<td>821 MB</td>
+<td>Dermatology reference, diverse skin tones</td>
+</tr>
+<tr>
+<td>45</td>
+<td><code>who.int_en_all_2025-02.zim</code></td>
+<td>~500 MB</td>
+<td>WHO health guidelines (if available)</td>
+</tr>
+<tr>
+<td>46</td>
+<td><code>mdwiki_en_all_2025-11.zim</code></td>
+<td>10 GB</td>
+<td>Full MDWiki (larger variant with more media)</td>
+</tr>
+</tbody>
+</table>
+<h3>Practical skills &amp; sustainability (47-55)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>47</td>
+<td><code>gutenberg_en_lcc-s_2025-12.zim</code></td>
+<td>4.2 GB</td>
+<td>Agriculture (already in P1)</td>
+</tr>
+<tr>
+<td>48</td>
+<td><code>gutenberg_en_lcc-g_2025-12.zim</code></td>
+<td>7.5 GB</td>
+<td>Geography and anthropology</td>
+</tr>
+<tr>
+<td>49</td>
+<td><code>gutenberg_en_lcc-e_2026-03.zim</code></td>
+<td>9.5 GB</td>
+<td>American history</td>
+</tr>
+<tr>
+<td>50</td>
+<td><code>gutenberg_en_lcc-d_2025-12.zim</code></td>
+<td>37 GB</td>
+<td>World history</td>
+</tr>
+<tr>
+<td>51</td>
+<td><code>gutenberg_en_lcc-pz_2025-12.zim</code></td>
+<td>18 GB</td>
+<td>Fiction and literature</td>
+</tr>
+<tr>
+<td>52</td>
+<td><code>gutenberg_en_lcc-pr_2025-12.zim</code></td>
+<td>15 GB</td>
+<td>English literature</td>
+</tr>
+<tr>
+<td>53</td>
+<td><code>gutenberg_en_lcc-n_2025-12.zim</code></td>
+<td>21 GB</td>
+<td>Fine arts</td>
+</tr>
+<tr>
+<td>54</td>
+<td><code>gutenberg_en_lcc-a_2026-03.zim</code></td>
+<td>9.1 GB</td>
+<td>General reference works</td>
+</tr>
+<tr>
+<td>55</td>
+<td><code>gutenberg_en_lcc-m_2025-12.zim</code></td>
+<td>3.7 GB</td>
+<td>Music</td>
+</tr>
+</tbody>
+</table>
+<h3>Education &amp; video (56-65)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>56</td>
+<td><code>ted_mul_social-change_2026-01.zim</code></td>
+<td>10 GB</td>
+<td>Social change talks</td>
+</tr>
+<tr>
+<td>57</td>
+<td><code>ted_mul_technology_2026-01.zim</code></td>
+<td>15 GB</td>
+<td>Technology talks</td>
+</tr>
+<tr>
+<td>58</td>
+<td><code>ted_mul_education_2026-01.zim</code></td>
+<td>7.2 GB</td>
+<td>Education talks</td>
+</tr>
+<tr>
+<td>59</td>
+<td><code>ted_mul_psychology_2026-01.zim</code></td>
+<td>4.8 GB</td>
+<td>Psychology talks</td>
+</tr>
+<tr>
+<td>60</td>
+<td><code>ted_mul_ted-conference_2026-02.zim</code></td>
+<td>17 GB</td>
+<td>Main TED conference talks</td>
+</tr>
+<tr>
+<td>61</td>
+<td><code>ted_mul_business_2026-01.zim</code></td>
+<td>8.9 GB</td>
+<td>Business and economics talks</td>
+</tr>
+<tr>
+<td>62</td>
+<td><code>ted_mul_sustainability_2026-02.zim</code></td>
+<td>5.4 GB</td>
+<td>Sustainability talks</td>
+</tr>
+<tr>
+<td>63</td>
+<td><code>ted_mul_history_2026-01.zim</code></td>
+<td>5.4 GB</td>
+<td>History talks</td>
+</tr>
+<tr>
+<td>64</td>
+<td><code>ted_mul_culture_2026-01.zim</code></td>
+<td>10 GB</td>
+<td>Culture talks</td>
+</tr>
+<tr>
+<td>65</td>
+<td><code>ted_mul_creativity_2026-01.zim</code></td>
+<td>5.1 GB</td>
+<td>Creativity talks</td>
+</tr>
+</tbody>
+</table>
+<h3>Stack Exchange communities (66-75)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>66</td>
+<td><code>tex.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>4.2 GB</td>
+<td>LaTeX/document preparation</td>
+</tr>
+<tr>
+<td>67</td>
+<td><code>blender.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>2.6 GB</td>
+<td>3D modeling</td>
+</tr>
+<tr>
+<td>68</td>
+<td><code>askubuntu.com_en_all_2026-02.zim</code></td>
+<td>~5 GB</td>
+<td>Ubuntu/Linux help</td>
+</tr>
+<tr>
+<td>69</td>
+<td><code>serverfault.com_en_all_2026-02.zim</code></td>
+<td>~4 GB</td>
+<td>Server administration</td>
+</tr>
+<tr>
+<td>70</td>
+<td><code>dba.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>~2 GB</td>
+<td>Database administration</td>
+</tr>
+<tr>
+<td>71</td>
+<td><code>unix.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>~4 GB</td>
+<td>Unix/Linux Q&amp;A</td>
+</tr>
+<tr>
+<td>72</td>
+<td><code>physics.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>~3 GB</td>
+<td>Physics Q&amp;A</td>
+</tr>
+<tr>
+<td>73</td>
+<td><code>chemistry.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>~2 GB</td>
+<td>Chemistry Q&amp;A</td>
+</tr>
+<tr>
+<td>74</td>
+<td><code>biology.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>~2 GB</td>
+<td>Biology Q&amp;A</td>
+</tr>
+<tr>
+<td>75</td>
+<td><code>security.stackexchange.com_en_all_2026-02.zim</code></td>
+<td>~3 GB</td>
+<td>Information security (relevant to OAK mission)</td>
+</tr>
+</tbody>
+</table>
+<h3>Reference &amp; languages (76-90)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>76</td>
+<td><code>wiktionary_fr_all_nopic_2026-02.zim</code></td>
+<td>~3 GB</td>
+<td>French dictionary</td>
+</tr>
+<tr>
+<td>77</td>
+<td><code>wiktionary_es_all_nopic_2026-02.zim</code></td>
+<td>~2 GB</td>
+<td>Spanish dictionary</td>
+</tr>
+<tr>
+<td>78</td>
+<td><code>wikivoyage_de_all_maxi_2026-01.zim</code></td>
+<td>1.2 GB</td>
+<td>German travel guide</td>
+</tr>
+<tr>
+<td>79</td>
+<td><code>wikivoyage_fr_all_maxi_2025-12.zim</code></td>
+<td>273 MB</td>
+<td>French travel guide</td>
+</tr>
+<tr>
+<td>80</td>
+<td><code>wikipedia_en_simple_all_nopic_2025-11.zim</code></td>
+<td>~1.5 GB</td>
+<td>Simple English nopic (lighter alternative)</td>
+</tr>
+<tr>
+<td>81</td>
+<td><code>wikiversity_de_all_maxi_2026-01.zim</code></td>
+<td>1.3 GB</td>
+<td>German educational content</td>
+</tr>
+<tr>
+<td>82</td>
+<td><code>wikiversity_fr_all_maxi_2026-02.zim</code></td>
+<td>488 MB</td>
+<td>French educational content</td>
+</tr>
+<tr>
+<td>83</td>
+<td><code>gutenberg_fr_all_2026-01.zim</code></td>
+<td>9.8 GB</td>
+<td>French literature</td>
+</tr>
+<tr>
+<td>84</td>
+<td><code>gutenberg_de_all_2026-01.zim</code></td>
+<td>10 GB</td>
+<td>German literature</td>
+</tr>
+<tr>
+<td>85</td>
+<td><code>gutenberg_es_all_2026-01.zim</code></td>
+<td>1.7 GB</td>
+<td>Spanish literature</td>
+</tr>
+<tr>
+<td>86</td>
+<td><code>wikibooks_de_all_maxi_2026-01.zim</code></td>
+<td>3.4 GB</td>
+<td>German textbooks</td>
+</tr>
+<tr>
+<td>87</td>
+<td><code>wikibooks_fr_all_maxi_2026-01.zim</code></td>
+<td>1.9 GB</td>
+<td>French textbooks</td>
+</tr>
+<tr>
+<td>88</td>
+<td><code>wikibooks_es_all_maxi_2025-10.zim</code></td>
+<td>333 MB</td>
+<td>Spanish textbooks</td>
+</tr>
+<tr>
+<td>89</td>
+<td><code>wikipedia_pt_all_maxi_2026-02.zim</code></td>
+<td>~20 GB</td>
+<td>Portuguese Wikipedia</td>
+</tr>
+<tr>
+<td>90</td>
+<td><code>wikipedia_ru_all_maxi_2026-02.zim</code></td>
+<td>~25 GB</td>
+<td>Russian Wikipedia</td>
+</tr>
+</tbody>
+</table>
+<h3>Specialized &amp; niche (91-100)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Size</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>91</td>
+<td><code>chopin.lib.uchicago.edu_en_all_2025-01.zim</code></td>
+<td>8.2 GB</td>
+<td>Classical music archive</td>
+</tr>
+<tr>
+<td>92</td>
+<td><code>freecodecamp_es_all_2026-02.zim</code></td>
+<td>7.6 MB</td>
+<td>Spanish programming</td>
+</tr>
+<tr>
+<td>93</td>
+<td><code>freecodecamp_fr_all_2026-02.zim</code></td>
+<td>7.6 MB</td>
+<td>French programming</td>
+</tr>
+<tr>
+<td>94</td>
+<td><code>freecodecamp_pt_all_2026-02.zim</code></td>
+<td>7.6 MB</td>
+<td>Portuguese programming</td>
+</tr>
+<tr>
+<td>95</td>
+<td><code>phet_mul_all_2026-02.zim</code></td>
+<td>227 MB</td>
+<td>PhET simulations (all languages)</td>
+</tr>
+<tr>
+<td>96</td>
+<td><code>vikidia_fr_all_maxi_2025-12.zim</code></td>
+<td>966 MB</td>
+<td>French children's encyclopedia</td>
+</tr>
+<tr>
+<td>97</td>
+<td><code>vikidia_es_all_maxi_2025-12.zim</code></td>
+<td>91 MB</td>
+<td>Spanish children's encyclopedia</td>
+</tr>
+<tr>
+<td>98</td>
+<td><code>khanacademy_es_all_2023-03.zim</code></td>
+<td>150 GB</td>
+<td>Spanish Khan Academy</td>
+</tr>
+<tr>
+<td>99</td>
+<td><code>gutenberg_mul_all_2025-11.zim</code></td>
+<td>236 GB</td>
+<td>Multilingual complete Gutenberg</td>
+</tr>
+<tr>
+<td>100</td>
+<td><code>wikipedia_zh_all_maxi_2026-02.zim</code></td>
+<td>~22 GB</td>
+<td>Chinese Wikipedia</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Tier Allocation Summary</h2>
+<h3>S tier (4 GB hard cap — no ZIM)</h3>
+<p>The S tier is a pure privacy toolkit. No Kiwix tools or ZIM files are
+included. Total content is ~1 GB (Tor Browser, Orbot, guides, keys),
+leaving comfortable margin within the 4 GB hard cap.</p>
+<h3>M tier (~9.5 GB ZIM budget)</h3>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Files</th>
+<th>ZIM total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>Items 1-10</td>
+<td>1.04 GB</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Items 11-14 (Simple Wikipedia, PhET, Appropedia, Energypedia)</td>
+<td>4.4 GB</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Item 15 (Wikivoyage)</td>
+<td>1.1 GB</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>15 ZIM files</strong></td>
+<td><strong>~6.5 GB</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Margin: ~3 GB. Can selectively add TED-Ed (5.3 GB, item 16) if it fits, or
+Gutenberg agriculture (4.2 GB, item 17) — but not both. Alternatively, keep
+the margin for quarterly growth.</p>
+<h3>L tier (~24.5 GB ZIM budget)</h3>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Files</th>
+<th>ZIM total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>Items 1-10</td>
+<td>1.04 GB</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Items 12-17 (keep, except Simple Wiki replaced by mini)</td>
+<td>7.9 GB</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Items 18-23</td>
+<td>15.1 GB</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>22 ZIM files</strong></td>
+<td><strong>~20.4 GB</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Margin: ~4.1 GB. Can add 1-2 items from expansion list (e.g., items 44+55
+= 4.5 GB, or item 59 = 4.8 GB).</p>
+<p><strong>L tier note</strong>: At this tier, <code>wikipedia_en_all_mini</code> (11G) replaces
+<code>wikipedia_en_simple_all_maxi</code> (3.1G) from P1, so the net add is ~7.9G.</p>
+<h3>Future tiers (64 GB+, Max)</h3>
+<p>Not currently published. If demand warrants it, a 64 GB tier could add
+Wikipedia nopic (48G) and a Max tier could include the full P3/P4 lists.
+See P3 and P4 sections above for candidate content.</p>
+<hr>
+<h2>Integration Notes</h2>
+<h3>Relationship to oak.yaml</h3>
+<p>ZIM files would be added as new sources in <code>oak.yaml</code>, likely as <code>type: http</code>
+sources downloading from <code>download.kiwix.org</code>. Each ZIM file (or group) would
+be a separate source entry with appropriate <code>stage_path</code> under a <code>zim/</code>
+directory.</p>
+<p>Kiwix tools and desktop are included in the M and L tiers. The S tier has
+no ZIM content and therefore does not need Kiwix software.</p>
+<h3>Suggested stage layout</h3>
+<pre><code>zim/
+  reference/
+    wikipedia_en_*.zim
+    wiktionary_en_*.zim
+    wikivoyage_en_*.zim
+  medical/
+    zimgit-medicine_en_*.zim
+    wikem_en_*.zim
+    mdwiki_en_*.zim
+    librepathology_en_*.zim
+  survival/
+    zimgit-post-disaster_en_*.zim
+    zimgit-water_en_*.zim
+    zimgit-knots_en_*.zim
+    zimgit-food-preparation_en_*.zim
+  education/
+    freecodecamp_en_*.zim
+    phet_en_*.zim
+    ted_mul_*.zim
+    wikibooks_en_*.zim
+    wikiversity_en_*.zim
+    vikidia_en_*.zim
+  sustainability/
+    appropedia_en_*.zim
+    energypedia_en_*.zim
+  literature/
+    gutenberg_en_*.zim
+  tech/
+    superuser.com_en_*.zim
+    stackoverflow.com_en_*.zim
+    *.stackexchange.com_en_*.zim
+</code></pre>
+<h3>Version management</h3>
+<p>ZIM filenames include dates (e.g., <code>_2026-02</code>). The download process should
+fetch the latest available version. This could be implemented via:</p>
+<ul>
+<li>OPDS catalog query to resolve current filename</li>
+<li>Directory listing scrape of <code>download.kiwix.org/zim/{category}/</code></li>
+<li>Pattern matching similar to existing <code>version_detect</code> in oak.yaml</li>
+</ul>
+<h3>Verification</h3>
+<p>Kiwix provides SHA-256 checksums alongside ZIM files. The download source
+type should verify checksums after download.</p>
+<hr>
+<h2>Open Questions</h2>
+<ol>
+<li>
+<p><strong>Language profiles</strong>: Should OAK support language-variant builds (e.g.,
+an Arabic-focused L tier)? This would change the ZIM selection
+significantly.</p>
+</li>
+<li>
+<p><strong>Update frequency</strong>: ZIM files are updated monthly to quarterly. Should
+OAK pin specific versions or always fetch latest?</p>
+</li>
+<li>
+<p><strong>Demand for larger tiers</strong>: If users request 64 GB+ builds, which
+Wikipedia variant should anchor it — nopic (48G, all articles, no images)
+or mini (11G) plus many more supplementary resources?</p>
+</li>
+</ol>
+
+  </main>
+</div>
+<footer>
+  Open Access Kit &mdash;
+  Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>
+  &nbsp;&middot;&nbsp;
+  Content: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+  &nbsp;&middot;&nbsp;
+  <a href="license.html">License</a>
+</footer>
+</body>
+</html>

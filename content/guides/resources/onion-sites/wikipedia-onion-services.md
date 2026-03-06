@@ -1,9 +1,5 @@
 # Wikipedia: List of Tor Onion Services
 
-→ [Onion Sites](index.md) · [Home](../../index.md) · [Resources](../../resources.md)
-
----
-
 <!-- AUTO-GENERATED CONTENT — sourced from Wikipedia -->
 <!--
   Manually derived from the Wikipedia article "List of Tor onion services".
@@ -81,7 +77,6 @@
 | Service | Notes |
 |---------|-------|
 | [Central Intelligence Agency](https://www.cia.gov) | Official CIA onion site for secure contact and tip submission |
-| [Foreign Intelligence Service of Russia (SVR)](https://en.wikipedia.org/wiki/Foreign_Intelligence_Service_(Russia)) | Address is only for whistleblowing via SecureDrop |
 
 ## Hosting, Infrastructure and VPN
 
@@ -212,5 +207,3 @@ sources and whistleblowers.*
 The Commerce section was omitted as all entries were defunct.*
 
 ---
-
-→ [Onion Sites](index.md) · [Home](../../index.md) · [Resources](../../resources.md)

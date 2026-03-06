@@ -1,36 +1,31 @@
-# 🌳 Open Access Kit (OAK)
+# Open Access Kit (OAK)
 
 A portable, offline-first collection of privacy tools and educational content for people
 living under censorship or surveillance. Everything you need fits on removable media.
 
-**Latest Release: Q1 2026 (Q126)** — [Download from GitHub](https://github.com/stazelabs/open-access-kit/releases/latest)
+**Latest Release: {{.Release}}**
 
-[What's Included](manifest.md) · [Getting Started](getting-started.md) · [Resources](resources.md)
+- `OAK-{{.Release}}-S.zip` · max 4 GB — [Download]({{.DownloadRoot}}/{{.Release}}/S/OAK-{{.Release}}-S.zip) · [SHA256]({{.DownloadRoot}}/{{.Release}}/S/OAK-{{.Release}}-S.zip.sha256) · [Signature]({{.DownloadRoot}}/{{.Release}}/S/OAK-{{.Release}}-S.zip.asc)
+- `OAK-{{.Release}}-M.zip` · max 16 GB — [Download]({{.DownloadRoot}}/{{.Release}}/M/OAK-{{.Release}}-M.zip) · [SHA256]({{.DownloadRoot}}/{{.Release}}/M/OAK-{{.Release}}-M.zip.sha256) · [Signature]({{.DownloadRoot}}/{{.Release}}/M/OAK-{{.Release}}-M.zip.asc)
+- `OAK-{{.Release}}-L.zip` · max 32 GB — [Download]({{.DownloadRoot}}/{{.Release}}/L/OAK-{{.Release}}-L.zip) · [SHA256]({{.DownloadRoot}}/{{.Release}}/L/OAK-{{.Release}}-L.zip.sha256) · [Signature]({{.DownloadRoot}}/{{.Release}}/L/OAK-{{.Release}}-L.zip.asc)
 
 ---
 
-## For End Users
+## What's on this drive?
 
-OAK distributions are sized for the removable media you have available. All tiers include
-Tor Browser for every platform and these guides.
+OAK comes in three sizes to fit the removable media you have:
 
-| | 16 GB | 32 GB | 64 GB | Max |
-|---|:---:|:---:|:---:|:---:|
-| Tor Browser (Win / macOS / Linux / Android) | ✓ | ✓ | ✓ | ✓ |
-| Tor Browser Manual (offline HTML) | ✓ | ✓ | ✓ | ✓ |
-| Security in a Box (offline HTML) | ✓ | ✓ | ✓ | ✓ |
-| Privacy Guides (offline HTML) | ✓ | ✓ | ✓ | ✓ |
-| Digital First Aid Kit (offline HTML) | ✓ | ✓ | ✓ | ✓ |
-| Orbot (Android) | ✓ | ✓ | ✓ | ✓ |
-| Guides (this folder) | ✓ | ✓ | ✓ | ✓ |
-| Tails OS (bootable live system) | — | ✓ | ✓ | ✓ |
-| OnionShare (Win / macOS / Linux) | — | ✓ | ✓ | ✓ |
-| Tails Documentation (offline HTML) | — | ✓ | ✓ | ✓ |
-| SaferJourno (offline HTML) | — | — | ✓ | ✓ |
+- **S (max 4 GB)** — Tor Browser (all platforms), Orbot, offline security guides.
+- **M (max 16 GB)** — Everything in S, plus Tails OS, OnionShare, Kiwix with offline
+  Wikipedia, medical references, and educational content.
+- **L (max 32 GB)** — Everything in M, plus full Wikipedia mini, Wikibooks, and expanded
+  reference libraries.
 
-→ [Full manifest with versions and checksums](manifest.md)
+> [Full manifest with versions, sizes, and checksums](manifest.md)
 
-### Getting started
+---
+
+## Getting started
 
 1. Open the `software/tor-browser/` folder on this removable media.
 2. Install Tor Browser for your operating system.
@@ -38,16 +33,11 @@ Tor Browser for every platform and these guides.
 4. You're connected. Browse `.onion` sites using the
    [Onion Sites directory](resources/onion-sites/index.md), or read the guides in this folder.
 
-→ [Full step-by-step instructions](getting-started.md)
+> [Full step-by-step instructions](getting-started.md)
 
 ---
 
-## For Builders & Contributors
+## Contact
 
-OAK is a Go CLI tool that downloads, verifies, stages, and packages quarterly offline
-distributions of privacy tools. It is entirely configuration-driven via `oak.yaml`, and
-designed to be auditable, reproducible, and easy to extend with new sources or guides.
-
-- [Architecture](architecture.md) — how the build pipeline works
-- [Contributing](contributing.md) — how to add sources, guides, or fixes
-- [GitHub](https://github.com/stazelabs/open-access-kit) — source code, releases, and issue tracker
+Questions? Comments? Requests? Reach us at
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#111;&#97;&#107;&#64;&#115;&#116;&#97;&#122;&#101;&#108;&#97;&#98;&#115;&#46;&#99;&#111;&#109;">&#111;&#97;&#107;&#64;&#115;&#116;&#97;&#122;&#101;&#108;&#97;&#98;&#115;&#46;&#99;&#111;&#109;</a>.
