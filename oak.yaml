@@ -11,32 +11,70 @@ tiers:
     budget_gb: 14
     sources:
       - tor-browser
-      - onion-sites
+      - torproject-manual
+      - siabguide
+      - dfak
+      - privacy-guides
       - educational-content
+      - media-content
+      - keys
+      - orbot
   "32":
     label: "32GB"
     budget_gb: 29
     sources:
       - tor-browser
-      - onion-sites
+      - torproject-manual
+      - siabguide
+      - dfak
+      - privacy-guides
       - educational-content
+      - media-content
+      - keys
       - tails
+      - tails-doc
+      - onionshare
+      - orbot
+      - kiwix-tools
+      - kiwix-desktop
   "64":
     label: "64GB"
     budget_gb: 58
     sources:
       - tor-browser
-      - onion-sites
+      - torproject-manual
+      - siabguide
+      - dfak
+      - privacy-guides
+      - saferjourno
       - educational-content
+      - media-content
+      - keys
       - tails
+      - tails-doc
+      - onionshare
+      - orbot
+      - kiwix-tools
+      - kiwix-desktop
   max:
     label: "Max"
     budget_gb: 0
     sources:
       - tor-browser
-      - onion-sites
+      - torproject-manual
+      - siabguide
+      - dfak
+      - privacy-guides
+      - saferjourno
       - educational-content
+      - media-content
+      - keys
       - tails
+      - tails-doc
+      - onionshare
+      - orbot
+      - kiwix-tools
+      - kiwix-desktop
 
 sources:
   tor-browser:
@@ -62,12 +100,52 @@ sources:
       keyring: keys/torproject-signing.gpg
     stage_path: "software/tor-browser/"
 
-  onion-sites:
+  torproject-manual:
     type: git
-    description: "Real-world onion sites directory"
-    git_url: "https://github.com/alecmuffett/real-world-onion-sites.git"
+    description: "Tor Browser Manual (built HTML, CC-BY-4.0)"
+    git_url: "https://github.com/torproject/manual.git"
+    git_branch: "gh-pages"
     shallow: true
-    stage_path: "resources/onion-sites/"
+    stage_path: "guides/resources/torproject-manual/"
+
+  siabguide:
+    type: git
+    description: "Security in a Box — digital security guides for human rights defenders (CC-BY-SA-3.0)"
+    git_url: "https://github.com/securityinabox/siabguide.git"
+    shallow: true
+    render_markdown: true
+    stage_path: "guides/resources/siabguide/"
+
+  dfak:
+    type: git
+    description: "Digital First Aid Kit — self-diagnosis tools for people facing digital threats (CC-BY-4.0)"
+    git_url: "https://gitlab.com/rarenet/dfak_2020.git"
+    shallow: true
+    render_markdown: true
+    stage_path: "guides/resources/dfak/"
+
+  privacy-guides:
+    type: git
+    description: "Privacy Guides — community-maintained privacy tool recommendations (CC-BY-SA-4.0)"
+    git_url: "https://github.com/privacyguides/privacyguides.org.git"
+    shallow: true
+    render_markdown: true
+    exclude_dirs: [".cache"]
+    stage_path: "guides/resources/privacy-guides/"
+
+  saferjourno:
+    type: git
+    description: "SaferJourno — digital security guide for journalists (CC-BY-SA-4.0)"
+    git_url: "https://github.com/OpenInternet/saferjourno.git"
+    shallow: true
+    render_markdown: true
+    stage_path: "guides/resources/saferjourno/"
+
+  tails-doc:
+    type: site-mirror
+    description: "Tails OS documentation (CC-BY-SA-4.0)"
+    mirror_url: "https://tails.net/doc/"
+    stage_path: "guides/resources/tails-doc/"
 
   tails:
     type: rsync
@@ -88,11 +166,87 @@ sources:
       keyring: keys/tails-signing.gpg
     stage_path: "software/tails/"
 
+  onionshare:
+    type: http
+    description: "OnionShare - Secure anonymous file sharing over Tor"
+    version_detect:
+      method: http-scrape
+      url: "https://onionshare.org/dist/"
+      pattern: 'href="([0-9]+\.[0-9]+(?:\.[0-9]+)?)/"'
+      select: highest-semver
+    rsync_base: "https://onionshare.org/dist/{version}/"
+    files:
+      - "OnionShare-win64-{version}.msi"
+      - "OnionShare-win64-{version}.msi.asc"
+      - "OnionShare-{version}.dmg"
+      - "OnionShare-{version}.dmg.asc"
+      - "OnionShare-{version}.flatpak"
+      - "OnionShare-{version}.flatpak.asc"
+    verify:
+      method: gpg
+      keyring: keys/onionshare-signing.gpg
+    stage_path: "software/onionshare/"
+
+  orbot:
+    type: github-release
+    description: "Orbot - Tor proxy for Android (all apps)"
+    github_repo: "guardianproject/orbot-android"
+    asset_patterns:
+      - 'fullperm-arm64-v8a-release\.apk$'
+      - 'fullperm-arm64-v8a-release\.apk\.asc$'
+      - 'fullperm-armeabi-v7a-release\.apk$'
+      - 'fullperm-armeabi-v7a-release\.apk\.asc$'
+    verify:
+      method: gpg
+      keyring: keys/orbot-signing.gpg
+    stage_path: "software/orbot/"
+
+  kiwix-tools:
+    type: http
+    description: "Kiwix-serve — offline ZIM content server (Linux, macOS)"
+    version_detect:
+      method: http-scrape
+      url: "https://download.kiwix.org/release/kiwix-tools/"
+      pattern: 'kiwix-tools_linux-x86_64-([0-9]+\.[0-9]+\.[0-9]+)\.tar\.gz'
+      select: highest-semver
+    rsync_base: "https://download.kiwix.org/release/kiwix-tools/"
+    files:
+      - "kiwix-tools_linux-x86_64-{version}.tar.gz"
+      - "kiwix-tools_macos-arm64-{version}.tar.gz"
+      - "kiwix-tools_macos-x86_64-{version}.tar.gz"
+    stage_path: "software/kiwix/"
+
+  kiwix-desktop:
+    type: http
+    description: "Kiwix Desktop — offline ZIM reader GUI (Windows, Linux)"
+    version_detect:
+      method: http-scrape
+      url: "https://download.kiwix.org/release/kiwix-desktop/"
+      pattern: 'kiwix-desktop_windows_x64_([0-9]+\.[0-9]+\.[0-9]+)\.zip'
+      select: highest-semver
+    rsync_base: "https://download.kiwix.org/release/kiwix-desktop/"
+    files:
+      - "kiwix-desktop_windows_x64_{version}.zip"
+      - "kiwix-desktop_x86_64_{version}.appimage"
+    stage_path: "software/kiwix-desktop/"
+
+  keys:
+    type: local
+    description: "GPG signing keys for software verification"
+    local_path: "./keys/"
+    stage_path: "keys/"
+
   educational-content:
     type: local
     description: "Bundled guides and documentation"
     local_path: "./content/guides/"
     stage_path: "guides/"
+
+  media-content:
+    type: local
+    description: "Image-only bundled content (not published to website)"
+    local_path: "./content/media/"
+    stage_path: "guides/resources/"
 
 signing:
   enabled: true

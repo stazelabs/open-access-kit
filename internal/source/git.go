@@ -2,11 +2,13 @@ package source
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
 
 	"github.com/stazelabs/open-access-kit/internal/config"
+	"github.com/stazelabs/open-access-kit/internal/site"
 )
 
 type gitSource struct {
@@ -52,6 +54,9 @@ func (s *gitSource) Download(ctx context.Context, mirrorDir string, opts Downloa
 	if s.cfg.Shallow {
 		args = append(args, "--depth=1")
 	}
+	if s.cfg.GitBranch != "" {
+		args = append(args, "--branch", s.cfg.GitBranch, "--single-branch")
+	}
 	args = append(args, s.cfg.GitURL, dest)
 
 	cmd := exec.CommandContext(ctx, "git", args...)
@@ -70,8 +75,19 @@ func (s *gitSource) Size(mirrorDir string) (int64, error) {
 }
 
 func (s *gitSource) Stage(ctx context.Context, mirrorDir, imageDir string, tier config.TierConfig) error {
+	if s.cfg.StagePath == "" {
+		// No stage_path: source is consumed by a generate step, not staged directly.
+		return nil
+	}
 	src := filepath.Join(mirrorDir, s.name)
+	if _, err := os.Stat(src); os.IsNotExist(err) {
+		return fmt.Errorf("mirror not found at %s — run \"oak download\" first", src)
+	}
 	dst := filepath.Join(imageDir, s.cfg.StagePath)
+	if s.cfg.RenderMarkdown {
+		excludeDirs := append([]string{".git"}, s.cfg.ExcludeDirs...)
+		return site.Render(src, dst, site.Options{ExcludeDirs: excludeDirs})
+	}
 	// Exclude .git metadata from the staged image
 	return copyDirExclude(src, dst, ".git")
 }

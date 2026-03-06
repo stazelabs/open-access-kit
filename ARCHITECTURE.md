@@ -71,7 +71,9 @@ open-access-kit/
 │
 ├── keys/                         # Upstream GPG public keys (checked in)
 │   ├── torproject-signing.gpg
-│   └── tails-signing.gpg
+│   ├── tails-signing.gpg
+│   ├── onionshare-signing.gpg
+│   └── orbot-signing.gpg
 │
 ├── scripts/                      # Legacy bash scripts (reference only)
 │
@@ -276,71 +278,73 @@ Each step is also a standalone command. Download once, re-run later steps freely
 
 ---
 
-## 5. Image Layout (USB Drive Structure)
+## 5. Image Layout
 
 ```
-OAK-Q126/
-├── README.txt                    # Plain text — first thing users see
-├── README.html                   # Rich version with links to docs/
+OAK-Q126-64GB/
+├── README.txt                    # Plain text — first thing users see (points to guides/)
 ├── VERSION.txt                   # Release name, build date, source versions
 ├── MANIFEST.txt                  # SHA256 of every file (sha256sum -c compatible)
 │
 ├── software/
 │   ├── tor-browser/
-│   │   ├── README.txt            # What is Tor Browser + install instructions
-│   │   ├── windows/
-│   │   │   ├── tor-browser-windows-x86_64-portable-X.Y.Z.exe
-│   │   │   └── tor-browser-windows-x86_64-portable-X.Y.Z.exe.asc
-│   │   ├── macos/
-│   │   │   ├── tor-browser-macos-X.Y.Z.dmg
-│   │   │   └── tor-browser-macos-X.Y.Z.dmg.asc
-│   │   ├── linux/
-│   │   │   ├── tor-browser-linux-x86_64-X.Y.Z.tar.xz
-│   │   │   └── tor-browser-linux-x86_64-X.Y.Z.tar.xz.asc
-│   │   └── android/
-│   │       ├── tor-browser-android-aarch64-X.Y.Z.apk
-│   │       └── tor-browser-android-aarch64-X.Y.Z.apk.asc
-│   └── tails/                    # 32GB+ tiers only
-│       ├── README.txt            # What is Tails + how to flash
-│       ├── tails-amd64-X.Y.img
-│       ├── tails-amd64-X.Y.img.sig
-│       ├── tails-amd64-X.Y.iso
-│       └── tails-amd64-X.Y.iso.sig
+│   │   ├── tor-browser-windows-x86_64-portable-X.Y.Z.exe
+│   │   ├── tor-browser-windows-x86_64-portable-X.Y.Z.exe.asc
+│   │   ├── tor-browser-macos-X.Y.Z.dmg
+│   │   ├── tor-browser-macos-X.Y.Z.dmg.asc
+│   │   ├── tor-browser-linux-x86_64-X.Y.Z.tar.xz
+│   │   ├── tor-browser-linux-x86_64-X.Y.Z.tar.xz.asc
+│   │   ├── tor-browser-android-aarch64-X.Y.Z.apk
+│   │   └── tor-browser-android-aarch64-X.Y.Z.apk.asc
+│   ├── tails/                    # 32GB+ tiers only
+│   │   ├── tails-amd64-X.Y.img
+│   │   ├── tails-amd64-X.Y.img.sig
+│   │   ├── tails-amd64-X.Y.iso
+│   │   └── tails-amd64-X.Y.iso.sig
+│   ├── onionshare/               # 32GB+ tiers only
+│       ├── OnionShare-win64-X.Y.Z.msi
+│       ├── OnionShare-win64-X.Y.Z.msi.asc
+│       ├── OnionShare-X.Y.Z.dmg
+│       ├── OnionShare-X.Y.Z.dmg.asc
+│       ├── OnionShare-X.Y.Z.flatpak
+│       └── OnionShare-X.Y.Z.flatpak.asc
+│   └── orbot/                    # all tiers
+│       ├── Orbot-X.Y.Z-*-arm64-v8a-release.apk
+│       ├── Orbot-X.Y.Z-*-arm64-v8a-release.apk.asc
+│       ├── Orbot-X.Y.Z-*-armeabi-v7a-release.apk
+│       └── Orbot-X.Y.Z-*-armeabi-v7a-release.apk.asc
 │
-├── resources/
-│   └── onion-sites/              # Real-world onion sites directory
-│       ├── README.md
-│       └── ...
-│
-├── guides/                       # Standalone HTML guides (no JS required)
-│   ├── what-is-tor.html
-│   ├── using-tor-browser.html
-│   ├── what-is-tails.html
-│   ├── privacy-basics.html
-│   └── censorship-circumvention.html
-│
-├── docs/                         # Companion website (self-contained)
-│   ├── index.html                # Start here
-│   ├── about/
-│   ├── getting-started/
-│   ├── tools/
-│   └── css/style.css
+├── guides/                       # Offline HTML documentation (open index.html first)
+│   ├── index.html                # Start here — what OAK is, tier table, quick start
+│   ├── getting-started.html      # Step-by-step: install Tor Browser, connect, boot Tails
+│   ├── manifest.html             # Release manifest — software versions and checksums
+│   ├── resources.html            # Curated privacy tools and content inventory
+│   ├── verify.html               # GPG signature verification (advanced)
+│   ├── license.html
+│   └── resources/
+│       ├── onion-sites/
+│       │   ├── index.html        # Onion site directories listing
+│       │   ├── wikipedia-onion-services.html
+│       │   └── real-world-onion-sites.html
+│       └── torproject-manual/    # Tor Browser Manual (CC-BY-4.0, cloned gh-pages)
+│           └── ...
 │
 └── keys/
-    ├── torproject-signing.gpg
-    ├── tails-signing.gpg
-    ├── oak-signing.pub           # OAK builder's public key
-    └── README.txt                # How to verify signatures manually
+    ├── torproject-signing.gpg    # Tor Project release signing key
+    ├── tails-signing.gpg         # Tails OS release signing key
+    ├── onionshare-signing.gpg    # OnionShare release signing keys (3 developers)
+    ├── orbot-signing.gpg         # Guardian Project signing keys (2 developers)
+    ├── oak-signing.pub           # OAK builder's public key (added at release time)
+    └── README.txt
 ```
 
 ### Key Decisions
 
-- **README.txt at root** — universal, works on any OS with any text editor
-- **README.html** — richer experience with links to the companion website
-- **Platform subdirectories** under `software/tor-browser/` — non-technical users find their OS easily
-- **`docs/` works from `file://`** — no JS routing, relative URLs only, no CDN dependencies
+- **README.txt at root** — plain text, readable on any OS without a browser
+- **`guides/index.html` is the entry point** — users are directed here from README.txt
+- **`guides/` rendered from `content/guides/`** — same Markdown source as the GitHub Pages site; `oak site` and `oak build` share the same renderer
 - **MANIFEST.txt** — offline-verifiable with `sha256sum -c MANIFEST.txt`
-- **Separation**: `software/` (installable executables), `resources/` (reference data), `guides/` (educational reading)
+- **`keys/` bundled on the drive** — recipients can re-verify software without internet access
 
 ---
 
@@ -441,7 +445,7 @@ How to add sources, contribute guides
 | Area | Deliverables |
 |------|-------------|
 | CLI | `oak build`, `download`, `verify`, `stage`, `status`, `version` |
-| Sources | Tor Browser (rsync + version detect), onion-sites (git), Tails (rsync), educational content (local) |
+| Sources | Tor Browser (rsync + version detect), onion-sites (git), Tails (rsync), OnionShare (http + version detect), Orbot (github-release + version detect), educational content (local) |
 | Tiers | 16GB, 32GB, 64GB, max |
 | Verification | GPG verification of upstream Tor Browser + Tails |
 | Signing | GPG signing of output ZIP |
@@ -467,10 +471,12 @@ How to add sources, contribute guides
 | Tor Browser (all platforms + sigs) | ~1.2 GB |
 | Onion sites directory | ~15 MB |
 | Tails ISO + IMG + sigs | ~2.8 GB |
+| OnionShare (Win + macOS + Flatpak + sigs) | ~390 MB |
+| Orbot (arm64-v8a + armeabi-v7a + sigs) | ~78 MB |
 | Educational guides + website | ~25 MB |
 | Keys, manifests, READMEs | ~1 MB |
-| **16GB tier total** | **~1.3 GB** |
-| **32GB+ tier total** | **~4.1 GB** |
+| **16GB tier total** | **~1.4 GB** |
+| **32GB+ tier total** | **~4.6 GB** |
 
 Significant headroom in all tiers — intentional for future content additions.
 

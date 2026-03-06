@@ -46,6 +46,10 @@ func New(name string, cfg config.SourceConfig) (Source, error) {
 		return newLocal(name, cfg), nil
 	case "http":
 		return newHTTP(name, cfg), nil
+	case "github-release":
+		return newGitHub(name, cfg), nil
+	case "site-mirror":
+		return newSiteMirror(name, cfg), nil
 	default:
 		return nil, &UnknownTypeError{Name: name, Type: cfg.Type}
 	}

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OAK Educational Content Sources — Open Access Kit</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --link: #58a6ff;
+  --heading: #f0f6fc;
+  --code-bg: #1c2128;
+  --accent: #388bfd;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.65;
+}
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: .75em 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+header a { color: var(--heading); text-decoration: none; font-weight: 600; }
+header nav { font-size: .9em; }
+header nav a { color: var(--link); margin-right: 1em; text-decoration: none; }
+header nav a:hover { text-decoration: underline; }
+main {
+  max-width: 820px;
+  margin: 2em auto;
+  padding: 0 1.5em 4em;
+}
+h1, h2, h3, h4 {
+  color: var(--heading);
+  line-height: 1.25;
+  margin-top: 1.5em;
+}
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .15em .4em;
+  font-size: .875em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1em 1.25em;
+  overflow-x: auto;
+  font-size: .875em;
+}
+pre code { background: none; border: none; padding: 0; }
+blockquote {
+  border-left: 3px solid var(--border);
+  margin: 1em 0;
+  padding: .5em 1em;
+  color: var(--muted);
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: .5em .75em; text-align: left; }
+th { background: var(--surface); color: var(--heading); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+footer {
+  text-align: center;
+  font-size: .8em;
+  color: var(--muted);
+  padding: 2em 1em;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<header>
+  <span>&#127795; Open Access Kit</span>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="https://github.com/stazelabs/open-access-kit">GitHub</a>
+  </nav>
+</header>
+<main>
+<h1>OAK Educational Content Sources</h1>
+<p>Inventory of freely-licensed educational resources suitable for offline bundling in OAK. Each source has been evaluated for license compatibility, offline feasibility, and relevance to OAK's mission of providing privacy tools and knowledge on removable media.</p>
+<hr>
+<h2>Source Inventory</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>License</th>
+<th>Format</th>
+<th>Fetch Method</th>
+<th>OAK Tier</th>
+<th>Est. Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tor Browser Manual</td>
+<td>CC-BY-4.0</td>
+<td>Markdown (Lektor)</td>
+<td>git clone</td>
+<td>16GB+</td>
+<td>~20 MB</td>
+</tr>
+<tr>
+<td>Tor Support Portal</td>
+<td>CC-BY-4.0</td>
+<td>HTML (multilingual)</td>
+<td>site mirror</td>
+<td>32GB+</td>
+<td>~50 MB</td>
+</tr>
+<tr>
+<td>Tor Training Materials</td>
+<td>CC-BY-SA-4.0</td>
+<td>HTML/slides</td>
+<td>site mirror</td>
+<td>32GB+</td>
+<td>~30 MB</td>
+</tr>
+<tr>
+<td>EFF Surveillance Self-Defense</td>
+<td>CC-BY</td>
+<td>HTML</td>
+<td>site mirror</td>
+<td>16GB+</td>
+<td>~40 MB</td>
+</tr>
+<tr>
+<td>Security in a Box</td>
+<td>CC-BY-SA-4.0</td>
+<td>Markdown</td>
+<td>git clone</td>
+<td>16GB+</td>
+<td>~25 MB</td>
+</tr>
+<tr>
+<td>Digital First Aid Kit</td>
+<td>CC-BY-4.0</td>
+<td>HTML (offline ZIP)</td>
+<td>HTTP download</td>
+<td>16GB+</td>
+<td>~15 MB</td>
+</tr>
+<tr>
+<td>Privacy Guides</td>
+<td>CC-BY-SA-4.0</td>
+<td>Markdown</td>
+<td>git clone</td>
+<td>16GB+</td>
+<td>~30 MB</td>
+</tr>
+<tr>
+<td>Access Now Guides</td>
+<td>CC-BY-3.0-US</td>
+<td>HTML (GitLab)</td>
+<td>git clone</td>
+<td>16GB+</td>
+<td>~20 MB</td>
+</tr>
+<tr>
+<td>Tails Documentation</td>
+<td>CC-BY-SA-4.0</td>
+<td>HTML</td>
+<td>site mirror</td>
+<td>32GB+</td>
+<td>~40 MB</td>
+</tr>
+<tr>
+<td>FLOSS Manuals: Bypassing Censorship</td>
+<td>GPL/CC</td>
+<td>PDF</td>
+<td>HTTP download</td>
+<td>32GB+</td>
+<td>~5 MB</td>
+</tr>
+<tr>
+<td>Citizen Lab Circumvention Guide</td>
+<td>Open access</td>
+<td>PDF</td>
+<td>HTTP download</td>
+<td>32GB+</td>
+<td>~3 MB</td>
+</tr>
+<tr>
+<td>OONI Educational Materials</td>
+<td>CC-BY-SA-4.0</td>
+<td>HTML/data</td>
+<td>site mirror</td>
+<td>64GB+</td>
+<td>~100 MB</td>
+</tr>
+<tr>
+<td>Access Now #KeepItOn Report</td>
+<td>Public</td>
+<td>PDF</td>
+<td>HTTP download</td>
+<td>32GB+</td>
+<td>~10 MB</td>
+</tr>
+<tr>
+<td>Onion Services Ecosystem</td>
+<td>CC-BY-3.0/MIT</td>
+<td>HTML (GitLab)</td>
+<td>git clone</td>
+<td>64GB+</td>
+<td>~15 MB</td>
+</tr>
+<tr>
+<td>Whonix Documentation</td>
+<td>OSI-approved</td>
+<td>Wiki/HTML</td>
+<td>site mirror</td>
+<td>max</td>
+<td>~80 MB</td>
+</tr>
+<tr>
+<td>RSF Digital Security Resources</td>
+<td>Open</td>
+<td>HTML/PDF</td>
+<td>site mirror</td>
+<td>64GB+</td>
+<td>~20 MB</td>
+</tr>
+<tr>
+<td>Real-World Onion Sites</td>
+<td>MIT</td>
+<td>Markdown</td>
+<td>git clone</td>
+<td>16GB+</td>
+<td>~15 MB</td>
+</tr>
+<tr>
+<td>Wikipedia: Onion Routing</td>
+<td>CC-BY-SA-3.0</td>
+<td>HTML</td>
+<td>HTTP download</td>
+<td>32GB+</td>
+<td>~2 MB</td>
+</tr>
+<tr>
+<td>SaferJourno (Internews)</td>
+<td>CC-BY-SA-4.0</td>
+<td>Markdown</td>
+<td>git clone</td>
+<td>64GB+</td>
+<td>~15 MB</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Detailed Source Descriptions</h2>
+<h3>Tor Browser Manual</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://tb-manual.torproject.org/">https://tb-manual.torproject.org/</a></li>
+<li><strong>Repository</strong>: <a href="https://github.com/torproject/manual">https://github.com/torproject/manual</a></li>
+<li><strong>License</strong>: CC-BY-4.0</li>
+<li><strong>Content</strong>: Installation, configuration, censorship circumvention settings, onion services, troubleshooting, mobile usage</li>
+<li><strong>Format</strong>: Markdown source built with Lektor framework; produces static HTML</li>
+<li><strong>Offline feasibility</strong>: Excellent -- clone repo, build with Lektor or render Markdown directly</li>
+<li><strong>Notes</strong>: Fundamental companion to Tor Browser binaries. Should always ship alongside them.</li>
+</ul>
+<h3>Tor Support Portal</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://support.torproject.org/">https://support.torproject.org/</a></li>
+<li><strong>License</strong>: CC-BY-4.0</li>
+<li><strong>Content</strong>: FAQ-style docs covering Tor basics, browser features, troubleshooting, relay operation. Multilingual (Spanish, Farsi, German, Turkish, Russian, Ukrainian, Arabic, Chinese, Japanese)</li>
+<li><strong>Format</strong>: HTML website</li>
+<li><strong>Offline feasibility</strong>: Good -- can be mirrored. Multilingual support is valuable for OAK's international audience.</li>
+</ul>
+<h3>Tor Training Materials</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://community.torproject.org/training/">https://community.torproject.org/training/</a></li>
+<li><strong>License</strong>: CC-BY-SA-4.0</li>
+<li><strong>Content</strong>: Slides, guides, fanzines, and digital security guides for educators and community organizers</li>
+<li><strong>Format</strong>: HTML, slides, PDF</li>
+<li><strong>Offline feasibility</strong>: High -- open-licensed, designed for redistribution</li>
+</ul>
+<h3>EFF Surveillance Self-Defense (SSD)</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://ssd.eff.org/">https://ssd.eff.org/</a></li>
+<li><strong>License</strong>: CC-BY (explicitly permits printing and sharing)</li>
+<li><strong>Content</strong>: Four sections -- Basics (surveillance countermeasures), Tool Guides (step-by-step), Further Learning (theory), Security Scenarios (role-based playlists for LGBTQ youth, journalists, activists, researchers)</li>
+<li><strong>Format</strong>: HTML with printable versions</li>
+<li><strong>Offline feasibility</strong>: Good -- explicitly permits offline sharing with attribution</li>
+</ul>
+<h3>Security in a Box</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://securityinabox.org/en/">https://securityinabox.org/en/</a></li>
+<li><strong>Repository</strong>: <a href="https://github.com/securityinabox/siabguide">https://github.com/securityinabox/siabguide</a></li>
+<li><strong>License</strong>: CC-BY-SA-4.0</li>
+<li><strong>Content</strong>: Modular guides on computer/phone security, encrypted storage, secure communication, privacy. Designed for human rights defenders, activists, journalists.</li>
+<li><strong>Format</strong>: Markdown source on GitHub; HTML website</li>
+<li><strong>Offline feasibility</strong>: Excellent -- explicitly designed for offline use and custom bundling (&quot;remixed with just the parts that most suit your particular needs&quot;)</li>
+<li><strong>Maintained by</strong>: Front Line Defenders + Tactical Technology Collective</li>
+</ul>
+<h3>Digital First Aid Kit</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://digitalfirstaid.org/">https://digitalfirstaid.org/</a></li>
+<li><strong>Repository</strong>: <a href="https://gitlab.com/metamorphosis-org-mk/dfak">https://gitlab.com/metamorphosis-org-mk/dfak</a></li>
+<li><strong>License</strong>: CC-BY-4.0</li>
+<li><strong>Content</strong>: Self-diagnostic tools for people facing digital threats: malware, compromised accounts, phishing, DDoS. Emergency response focus.</li>
+<li><strong>Format</strong>: HTML with official offline ZIP download (dfak-offline.zip)</li>
+<li><strong>Offline feasibility</strong>: Excellent -- provides pre-built offline bundle</li>
+</ul>
+<h3>Privacy Guides</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://www.privacyguides.org/">https://www.privacyguides.org/</a></li>
+<li><strong>Repository</strong>: <a href="https://code.privacyguides.dev/privacyguides/privacyguides.org">https://code.privacyguides.dev/privacyguides/privacyguides.org</a></li>
+<li><strong>License</strong>: CC-BY-SA-4.0</li>
+<li><strong>Content</strong>: Community-driven privacy tool comparisons and recommendations. Covers Tor, VPNs, DNS, messaging, email. Has a Tor onion address.</li>
+<li><strong>Format</strong>: Markdown source; static site</li>
+<li><strong>Offline feasibility</strong>: Very high -- CC-licensed, GitHub-hosted, can be cloned and built</li>
+</ul>
+<h3>Access Now Digital Security Guides</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://guides.accessnow.org/">https://guides.accessnow.org/</a></li>
+<li><strong>License</strong>: CC-BY-3.0-US</li>
+<li><strong>Content</strong>: Tool guides for password management, secure communications, device security, censorship circumvention. Available in English, French, Spanish, Portuguese, Turkish, Tibetan, Burmese.</li>
+<li><strong>Format</strong>: HTML; source on GitLab</li>
+<li><strong>Offline feasibility</strong>: Good -- open source, clonable</li>
+</ul>
+<h3>Tails Documentation</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://tails.net/doc/index.en.html">https://tails.net/doc/index.en.html</a></li>
+<li><strong>License</strong>: CC-BY-SA-4.0 (graphics/assets); GPL-v3+ (source code)</li>
+<li><strong>Content</strong>: Installation, usage, persistence, anonymity, security practices for Tails OS</li>
+<li><strong>Format</strong>: HTML with multi-language support</li>
+<li><strong>Offline feasibility</strong>: Moderate -- documentation can be mirrored; essential companion to Tails ISO</li>
+</ul>
+<h3>FLOSS Manuals: How to Bypass Internet Censorship</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://archive.flossmanuals.net/bypassing-censorship/">https://archive.flossmanuals.net/bypassing-censorship/</a></li>
+<li><strong>License</strong>: GPL / Creative Commons</li>
+<li><strong>Content</strong>: Comprehensive manual covering proxies, VPNs, Tor, bridges, and advanced circumvention. Translated to Russian, Burmese, Arabic.</li>
+<li><strong>Format</strong>: HTML (web archive), PDF</li>
+<li><strong>Offline feasibility</strong>: Very high -- available as free PDF download</li>
+</ul>
+<h3>Citizen Lab: Everyone's Guide to Bypassing Internet Censorship</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://citizenlab.ca/guides/everyones-guide-english.pdf">https://citizenlab.ca/guides/everyones-guide-english.pdf</a></li>
+<li><strong>License</strong>: Open access (publicly available PDF)</li>
+<li><strong>Content</strong>: Practical circumvention guide from University of Toronto's Citizen Lab</li>
+<li><strong>Format</strong>: PDF</li>
+<li><strong>Offline feasibility</strong>: Very high -- direct PDF download</li>
+</ul>
+<h3>OONI (Open Observatory of Network Interference)</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://ooni.org/">https://ooni.org/</a></li>
+<li><strong>Data</strong>: <a href="https://docs.ooni.org/data/">https://docs.ooni.org/data/</a></li>
+<li><strong>License</strong>: CC-BY-SA-4.0 (educational materials); CC-BY-NC-SA-4.0 (data)</li>
+<li><strong>Content</strong>: Country-level censorship reports, network interference documentation, research</li>
+<li><strong>Format</strong>: HTML, API, data exports (S3 bucket)</li>
+<li><strong>Offline feasibility</strong>: High -- country reports downloadable; data is CC-licensed</li>
+<li><strong>Notes</strong>: NC clause on data license -- verify compliance for OAK's use case</li>
+</ul>
+<h3>Access Now #KeepItOn Report</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://www.accessnow.org/campaign/keepiton/">https://www.accessnow.org/campaign/keepiton/</a></li>
+<li><strong>Report</strong>: <a href="https://www.accessnow.org/wp-content/uploads/2025/02/KeepItOn-2024-Internet-Shutdowns-Annual-Report.pdf">https://www.accessnow.org/wp-content/uploads/2025/02/KeepItOn-2024-Internet-Shutdowns-Annual-Report.pdf</a></li>
+<li><strong>License</strong>: Public (freely downloadable)</li>
+<li><strong>Content</strong>: Annual report on internet shutdowns worldwide (283+ shutdowns in 39+ countries in 2024)</li>
+<li><strong>Format</strong>: PDF</li>
+<li><strong>Offline feasibility</strong>: Very high -- direct PDF download</li>
+</ul>
+<h3>Onion Services Ecosystem</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://onionservices.torproject.org/">https://onionservices.torproject.org/</a></li>
+<li><strong>Repository</strong>: <a href="https://gitlab.torproject.org/tpo/onion-services/">https://gitlab.torproject.org/tpo/onion-services/</a></li>
+<li><strong>License</strong>: CC-BY-3.0-US / MIT / GPL-v3 (varies by component)</li>
+<li><strong>Content</strong>: Technical documentation for running onion services, applications, specifications</li>
+<li><strong>Format</strong>: HTML, GitLab repos</li>
+<li><strong>Offline feasibility</strong>: Moderate -- can clone repos; more technical/advanced content</li>
+</ul>
+<h3>Whonix Documentation</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://www.whonix.org/wiki/Documentation">https://www.whonix.org/wiki/Documentation</a></li>
+<li><strong>License</strong>: OSI-approved</li>
+<li><strong>Content</strong>: Tor configuration, bridge setup, onion services, anonymity practices for Whonix OS</li>
+<li><strong>Format</strong>: Wiki-based HTML</li>
+<li><strong>Offline feasibility</strong>: Medium-high -- can mirror wiki pages</li>
+</ul>
+<h3>RSF Digital Security Resources</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://safety.rsf.org/">https://safety.rsf.org/</a></li>
+<li><strong>Content</strong>: Digital security guides for journalists, censorship circumvention, Collateral Freedom program (restores access to 150+ censored news sites)</li>
+<li><strong>License</strong>: Open educational resources</li>
+<li><strong>Format</strong>: HTML, PDF</li>
+<li><strong>Offline feasibility</strong>: Medium-high</li>
+</ul>
+<h3>SaferJourno (Internews)</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://saferjourno.internews.org/">https://saferjourno.internews.org/</a></li>
+<li><strong>Repository</strong>: <a href="https://github.com/OpenInternet/saferjourno">https://github.com/OpenInternet/saferjourno</a></li>
+<li><strong>License</strong>: CC-BY-SA-4.0</li>
+<li><strong>Content</strong>: 6-module curriculum for media trainers: risk assessment, basic protection, mobile safety, data security, secure research, email protection</li>
+<li><strong>Format</strong>: Markdown on GitHub</li>
+<li><strong>Offline feasibility</strong>: Good -- designed for trainer distribution</li>
+</ul>
+<h3>Wikipedia: Onion Routing</h3>
+<ul>
+<li><strong>URL</strong>: <a href="https://en.wikipedia.org/wiki/Onion_routing">https://en.wikipedia.org/wiki/Onion_routing</a></li>
+<li><strong>Related</strong>: <a href="https://en.wikipedia.org/wiki/List_of_Tor_onion_services">https://en.wikipedia.org/wiki/List_of_Tor_onion_services</a></li>
+<li><strong>License</strong>: CC-BY-SA-3.0</li>
+<li><strong>Format</strong>: HTML</li>
+<li><strong>Offline feasibility</strong>: High -- can export individual articles</li>
+</ul>
+<hr>
+<h2>Summary URL List (for pipeline integration)</h2>
+<h3>Git Clone Sources</h3>
+<pre><code># Core docs (16GB+)
+https://github.com/torproject/manual
+https://github.com/securityinabox/siabguide
+https://code.privacyguides.dev/privacyguides/privacyguides.org
+https://github.com/alecmuffett/real-world-onion-sites.git
+
+# Extended (32GB+)
+https://gitlab.com/metamorphosis-org-mk/dfak
+
+# Reference (64GB+)
+https://gitlab.torproject.org/tpo/onion-services/ecosystem
+https://github.com/OpenInternet/saferjourno
+</code></pre>
+<h3>HTTP Downloads (PDF/ZIP)</h3>
+<pre><code># Core (16GB+)
+https://digitalfirstaid.org/dfak-offline.zip
+
+# Extended (32GB+)
+https://archive.flossmanuals.net/bypassing-censorship/bypassing-censorship.pdf
+https://citizenlab.ca/guides/everyones-guide-english.pdf
+https://www.accessnow.org/wp-content/uploads/2025/02/KeepItOn-2024-Internet-Shutdowns-Annual-Report.pdf
+</code></pre>
+<h3>Site Mirrors (wget/httrack)</h3>
+<pre><code># Core (16GB+)
+https://ssd.eff.org/
+
+# Extended (32GB+)
+https://support.torproject.org/
+https://community.torproject.org/training/
+https://tails.net/doc/
+https://guides.accessnow.org/
+
+# Reference (64GB+)
+https://ooni.org/reports/
+https://safety.rsf.org/
+https://onionservices.torproject.org/
+</code></pre>
+<h3>Wikipedia Articles (API export)</h3>
+<pre><code># Extended (32GB+)
+https://en.wikipedia.org/wiki/Onion_routing
+https://en.wikipedia.org/wiki/Tor_(network)
+https://en.wikipedia.org/wiki/List_of_Tor_onion_services
+https://en.wikipedia.org/wiki/Internet_censorship
+https://en.wikipedia.org/wiki/Pluggable_transport
+</code></pre>
+<hr>
+<h2>Tier Allocation Summary</h2>
+<h3>16GB Tier (~170 MB of educational content)</h3>
+<ul>
+<li>Tor Browser Manual (repo)</li>
+<li>EFF Surveillance Self-Defense (mirror)</li>
+<li>Security in a Box (repo)</li>
+<li>Digital First Aid Kit (offline ZIP)</li>
+<li>Privacy Guides (repo)</li>
+<li>Access Now Guides (repo)</li>
+<li>Real-World Onion Sites (repo, already included)</li>
+</ul>
+<h3>32GB Tier (adds ~140 MB)</h3>
+<ul>
+<li>Tor Support Portal (mirror, multilingual)</li>
+<li>Tor Training Materials (mirror)</li>
+<li>Tails Documentation (mirror)</li>
+<li>FLOSS Manuals: Bypassing Censorship (PDF)</li>
+<li>Citizen Lab circumvention guide (PDF)</li>
+<li>Access Now #KeepItOn report (PDF)</li>
+<li>Wikipedia articles (API export)</li>
+</ul>
+<h3>64GB Tier (adds ~150 MB)</h3>
+<ul>
+<li>OONI reports and educational materials (mirror)</li>
+<li>Onion Services Ecosystem docs (repo)</li>
+<li>RSF digital security resources (mirror)</li>
+<li>SaferJourno curriculum (repo)</li>
+</ul>
+<h3>Max Tier (adds ~80 MB)</h3>
+<ul>
+<li>Whonix Documentation (mirror)</li>
+<li>Additional OONI data exports</li>
+<li>Extended Wikipedia coverage</li>
+</ul>
+<hr>
+<h2>License Compliance Notes</h2>
+<p>All sources identified use permissive licenses that allow offline redistribution:</p>
+<ul>
+<li><strong>CC-BY-4.0 / CC-BY-3.0</strong>: Redistribute with attribution. Must credit original authors.</li>
+<li><strong>CC-BY-SA-4.0 / CC-BY-SA-3.0</strong>: Redistribute with attribution; derivative works must use same license.</li>
+<li><strong>CC-BY-NC-SA-4.0</strong> (OONI data only): Non-commercial use. OAK is non-commercial, but verify compliance.</li>
+<li><strong>MIT</strong>: Redistribute with license notice.</li>
+<li><strong>GPL-v3</strong>: Redistribute with source availability.</li>
+</ul>
+<p>OAK images must include an <code>ATTRIBUTION.txt</code> file crediting each bundled source with its name, URL, authors, and license. This file should be auto-generated during the <code>oak annotate</code> step.</p>
+<hr>
+<h2>Next Steps</h2>
+<ol>
+<li>Validate all URLs are still live and content is current</li>
+<li>Add these as source definitions in <code>oak.yaml</code> (new source types: <code>git</code>, <code>http-download</code>, <code>site-mirror</code>, <code>wikipedia-export</code>)</li>
+<li>Estimate actual sizes by performing test downloads</li>
+<li>Write <code>ATTRIBUTION.txt</code> template for license compliance</li>
+<li>Prioritize which sources to implement first for Q126</li>
+</ol>
+
+</main>
+<footer>
+  Open Access Kit &mdash;
+  Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>
+  &nbsp;&middot;&nbsp;
+  Content: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+  &nbsp;&middot;&nbsp;
+  <a href="license.html">License</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verifying Software Signatures — Open Access Kit</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --link: #58a6ff;
+  --heading: #f0f6fc;
+  --code-bg: #1c2128;
+  --accent: #388bfd;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.65;
+}
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: .75em 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+header a { color: var(--heading); text-decoration: none; font-weight: 600; }
+header a:hover { text-decoration: none; }
+main {
+  max-width: 820px;
+  margin: 2em auto;
+  padding: 0 1.5em 4em;
+}
+h1, h2, h3, h4 {
+  color: var(--heading);
+  line-height: 1.25;
+  margin-top: 1.5em;
+}
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .15em .4em;
+  font-size: .875em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1em 1.25em;
+  overflow-x: auto;
+  font-size: .875em;
+}
+pre code { background: none; border: none; padding: 0; }
+blockquote {
+  border-left: 3px solid var(--border);
+  margin: 1em 0;
+  padding: .5em 1em;
+  color: var(--muted);
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: .5em .75em; text-align: left; }
+th { background: var(--surface); color: var(--heading); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+footer {
+  text-align: center;
+  font-size: .8em;
+  color: var(--muted);
+  padding: 2em 1em;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">&#127795; Open Access Kit</a>
+</header>
+<main>
+<h1>Verifying Software Signatures</h1>
+<p>→ <a href="index.html">Back to Home</a> · <a href="manifest.html">What's Included</a></p>
+<hr>
+<p>This page is for advanced users who want to independently verify the authenticity of
+software on this drive. Verification is optional — the OAK build pipeline checks
+all signatures automatically before packaging — but it lets you confirm the software
+has not been tampered with after it left the build system.</p>
+<p>The GPG public keys you need are bundled in <code>keys/</code> on this drive.</p>
+<hr>
+<h2>Verify Tor Browser</h2>
+<p>Tor Browser installers are signed by the Tor Project. Each installer has a corresponding
+<code>.asc</code> signature file.</p>
+<pre><code># Import the Tor Project signing key
+gpg --import keys/torproject-signing.gpg
+
+# Verify the installer (substitute your platform and version)
+gpg --verify software/tor-browser/tor-browser-windows-x86_64-portable-*.exe.asc \
+              software/tor-browser/tor-browser-windows-x86_64-portable-*.exe
+
+gpg --verify software/tor-browser/tor-browser-macos-*.dmg.asc \
+              software/tor-browser/tor-browser-macos-*.dmg
+
+gpg --verify software/tor-browser/tor-browser-linux-x86_64-*.tar.xz.asc \
+              software/tor-browser/tor-browser-linux-x86_64-*.tar.xz
+
+gpg --verify software/tor-browser/tor-browser-android-aarch64-*.apk.asc \
+              software/tor-browser/tor-browser-android-aarch64-*.apk
+</code></pre>
+<p>A successful verification ends with <code>Good signature from &quot;Tor Browser Developers (signing key) &lt;torbrowser@torproject.org&gt;&quot;</code>.</p>
+<p>The canonical Tor Project signing key and its fingerprint are published at
+<a href="https://www.torproject.org/en/download/">torproject.org/en/download/</a> — cross-check if
+you received this drive from an unknown source.</p>
+<hr>
+<h2>Verify Tails</h2>
+<p>Tails images are signed by the Tails signing key. <em>(32 GB+ tiers only.)</em></p>
+<pre><code># Import the Tails signing key
+gpg --import keys/tails-signing.gpg
+
+# Verify the image (substitute version)
+gpg --verify software/tails/tails-amd64-*.img.sig \
+              software/tails/tails-amd64-*.img
+
+gpg --verify software/tails/tails-amd64-*.iso.sig \
+              software/tails/tails-amd64-*.iso
+</code></pre>
+<p>The canonical Tails signing key and fingerprint are published at
+<a href="https://tails.net/install/download/">tails.net/install/download/</a>.</p>
+<hr>
+<h2>Verify the OAK image itself</h2>
+<p>If you received OAK as a ZIP archive rather than pre-loaded media, verify the archive
+signature before extracting:</p>
+<pre><code># Import the OAK signing key (bundled on the drive or available from GitHub)
+gpg --import keys/oak-signing.pub
+
+# Verify the archive
+gpg --verify OAK-Q126-64GB.zip.asc OAK-Q126-64GB.zip
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> <code>keys/oak-signing.pub</code> is added to the image at release time. It will not
+be present in development builds or test images.</p>
+</blockquote>
+<p>The OAK signing key is also published in the source repository at
+<a href="https://github.com/stazelabs/open-access-kit/tree/main/keys">github.com/stazelabs/open-access-kit/tree/main/keys</a>.</p>
+<hr>
+<h2>About the bundled keys</h2>
+<p>The keys in <code>keys/</code> are checked into the OAK source repository as trust anchors — they
+are committed to git and auditable by anyone. Do not replace them without a corresponding
+commit explaining the change.</p>
+<p>If you want to verify the keys themselves, compare their fingerprints against the
+official sources:</p>
+<ul>
+<li><strong>Tor Project key</strong>: <a href="https://www.torproject.org/en/download/">torproject.org/en/download/</a></li>
+<li><strong>Tails key</strong>: <a href="https://tails.net/install/download/">tails.net/install/download/</a></li>
+<li><strong>OAK key</strong>: <a href="https://github.com/stazelabs/open-access-kit">github.com/stazelabs/open-access-kit</a></li>
+</ul>
+<hr>
+<p>→ <a href="index.html">Back to Home</a> · <a href="manifest.html">What's Included</a></p>
+
+</main>
+<footer>
+  Open Access Kit &mdash;
+  Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>
+  &nbsp;&middot;&nbsp;
+  Content: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+  &nbsp;&middot;&nbsp;
+  <a href="license.html">License</a>
+</footer>
+</body>
+</html>

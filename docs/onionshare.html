@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OnionShare — Open Access Kit</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --link: #58a6ff;
+  --heading: #f0f6fc;
+  --code-bg: #1c2128;
+  --accent: #388bfd;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.65;
+}
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: .75em 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+header a { color: var(--heading); text-decoration: none; font-weight: 600; }
+header a:hover { text-decoration: none; }
+main {
+  max-width: 820px;
+  margin: 2em auto;
+  padding: 0 1.5em 4em;
+}
+h1, h2, h3, h4 {
+  color: var(--heading);
+  line-height: 1.25;
+  margin-top: 1.5em;
+}
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .15em .4em;
+  font-size: .875em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1em 1.25em;
+  overflow-x: auto;
+  font-size: .875em;
+}
+pre code { background: none; border: none; padding: 0; }
+blockquote {
+  border-left: 3px solid var(--border);
+  margin: 1em 0;
+  padding: .5em 1em;
+  color: var(--muted);
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: .5em .75em; text-align: left; }
+th { background: var(--surface); color: var(--heading); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+footer {
+  text-align: center;
+  font-size: .8em;
+  color: var(--muted);
+  padding: 2em 1em;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">&#127795; Open Access Kit</a>
+</header>
+<main>
+<h1>OnionShare</h1>
+<p>→ <a href="index.html">Back to Home</a> · <a href="resources.html">Resources</a></p>
+<hr>
+<p>OnionShare lets you share files, receive files, host a website, and chat — all anonymously
+over the Tor network. There is no central server: your computer becomes a temporary onion
+service that only the people you invite can reach.</p>
+<p>OnionShare is bundled on this removable media in the <code>software/onionshare/</code> folder
+(32 GB and larger distributions only).</p>
+<hr>
+<h2>Install OnionShare</h2>
+<p>Open <code>software/onionshare/</code> on this removable media and install the file for your
+operating system:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Operating System</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OnionShare-win64-*.msi</code></td>
+<td>Windows</td>
+</tr>
+<tr>
+<td><code>OnionShare-*.dmg</code></td>
+<td>macOS</td>
+</tr>
+<tr>
+<td><code>OnionShare-*.flatpak</code></td>
+<td>Linux</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Windows:</strong> Run the <code>.msi</code> installer and follow the prompts. Administrator access is
+required.</p>
+<p><strong>macOS:</strong> Open the <code>.dmg</code>, drag OnionShare to your Applications folder, and launch it.
+macOS may ask you to approve the app from an unidentified developer — go to
+<strong>System Settings → Privacy &amp; Security</strong> and click <strong>Open Anyway</strong>.</p>
+<p><strong>Linux (Flatpak):</strong> Install with:</p>
+<pre><code>flatpak install --user OnionShare-*.flatpak
+</code></pre>
+<p>If Flatpak is not installed, your distribution's package manager can add it:
+<code>sudo apt install flatpak</code> (Debian/Ubuntu) or <code>sudo dnf install flatpak</code> (Fedora).</p>
+<hr>
+<h2>Verify the Installation (Optional)</h2>
+<p>Every file in <code>software/onionshare/</code> is accompanied by a <code>.asc</code> signature file.
+You can verify the download against the OnionShare signing keys bundled in <code>keys/onionshare-signing.gpg</code>:</p>
+<pre><code>gpg --no-default-keyring --keyring /path/to/keys/onionshare-signing.gpg \
+    --verify OnionShare-*.msi.asc OnionShare-*.msi
+</code></pre>
+<p>A good result shows <code>Good signature from &quot;Micah Lee&quot;</code>, <code>&quot;Saptak Sengupta&quot;</code>, or <code>&quot;Miguel Jacq&quot;</code>.
+See <a href="verify.html">Verifying Signatures</a> for a full walkthrough.</p>
+<hr>
+<h2>Send Files</h2>
+<p>Use <strong>Send</strong> mode to share files with someone. OnionShare creates a temporary onion
+address; anyone with that address can download your files through Tor Browser.</p>
+<ol>
+<li>Launch OnionShare and select <strong>Share Files</strong>.</li>
+<li>Drag files or folders into the window and click <strong>Start sharing</strong>.</li>
+<li>Copy the <code>.onion</code> address shown and send it to your recipient through a secure channel
+(Signal, an encrypted email, etc.).</li>
+<li><strong>Keep OnionShare open</strong> until the recipient confirms they have downloaded everything.
+Closing it ends the transfer.</li>
+</ol>
+<p>By default, OnionShare stops sharing after the first download. Uncheck <strong>Stop sharing
+after files have been sent</strong> if multiple people need to download.</p>
+<hr>
+<h2>Receive Files</h2>
+<p>Use <strong>Receive</strong> mode to let someone upload files to you without revealing your IP address
+to them.</p>
+<ol>
+<li>Select <strong>Receive Files</strong> in OnionShare.</li>
+<li>Click <strong>Start Receive Mode</strong>.</li>
+<li>Share the <code>.onion</code> address with the person sending you files.</li>
+<li>Received files appear in your Downloads folder. You will see a notification when
+a transfer completes.</li>
+</ol>
+<hr>
+<h2>Host a Website</h2>
+<p>Use <strong>Host a Website</strong> mode to serve static HTML files as an anonymous onion site.</p>
+<ol>
+<li>Select <strong>Host a Website</strong>.</li>
+<li>Add your HTML files (and any images, CSS, etc.).</li>
+<li>Click <strong>Start sharing</strong>.</li>
+<li>The <code>.onion</code> address is your website — share it with anyone who should be able to
+visit it through Tor Browser.</li>
+</ol>
+<p>This is useful for publishing documents or resources when you need to protect both your
+identity and the identity of your readers.</p>
+<hr>
+<h2>Anonymous Chat</h2>
+<p>Use <strong>Chat</strong> mode for a temporary, encrypted group chat room that requires no account.</p>
+<ol>
+<li>Select <strong>Chat</strong> in OnionShare.</li>
+<li>Click <strong>Start chat server</strong>.</li>
+<li>Share the <code>.onion</code> address with participants — they open it in Tor Browser.</li>
+<li>Messages are end-to-end encrypted and leave no server logs. When you close OnionShare,
+the chat room ceases to exist.</li>
+</ol>
+<hr>
+<h2>Security Tips</h2>
+<ul>
+<li><strong>Share <code>.onion</code> addresses through a secure channel.</strong> Anyone who intercepts the address
+can access your share. Use Signal, an encrypted email, or another private channel.</li>
+<li><strong>OnionShare must stay open.</strong> Your computer is the server. If you close OnionShare or
+lose power, the session ends. For large transfers, plug in and disable sleep mode.</li>
+<li><strong>OnionShare protects your IP, not your identity.</strong> Do not upload files containing
+personal metadata (EXIF data in photos, document author fields, etc.) if anonymity
+matters. Consider scrubbing metadata first with a tool like <a href="https://0xacab.org/jvoisin/mat2">MAT2</a>.</li>
+<li><strong>Use Tor Browser to access OnionShare links.</strong> Your regular browser does not support
+<code>.onion</code> addresses.</li>
+</ul>
+<hr>
+<h2>More Information</h2>
+<ul>
+<li>OnionShare documentation: <a href="https://docs.onionshare.org">docs.onionshare.org</a></li>
+<li>OnionShare source code: <a href="https://github.com/onionshare/onionshare">github.com/onionshare/onionshare</a></li>
+<li>License: GPL-3.0</li>
+</ul>
+<p>→ <a href="index.html">Back to Home</a> · <a href="resources.html">Resources</a></p>
+
+</main>
+<footer>
+  Open Access Kit &mdash;
+  Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>
+  &nbsp;&middot;&nbsp;
+  Content: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+  &nbsp;&middot;&nbsp;
+  <a href="license.html">License</a>
+</footer>
+</body>
+</html>

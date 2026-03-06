@@ -4,7 +4,7 @@ This document gives AI coding agents the context needed to work effectively on t
 
 ## Project Summary
 
-OAK is a Go CLI (`oak`) that curates, downloads, verifies, stages, and packages quarterly releases of privacy tools (Tor Browser, Tails OS) and educational content onto USB thumbdrives. The entire build pipeline is driven by `oak build`.
+OAK is a Go CLI (`oak`) that curates, downloads, verifies, stages, and packages quarterly releases of privacy tools (Tor Browser, Tails OS) and educational content onto portable storage devices. The entire build pipeline is driven by `oak build`.
 
 Target users: people in censorship/surveillance environments who need offline copies of privacy tools.
 

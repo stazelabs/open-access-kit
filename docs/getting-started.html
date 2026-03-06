@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started — Open Access Kit</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --link: #58a6ff;
+  --heading: #f0f6fc;
+  --code-bg: #1c2128;
+  --accent: #388bfd;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.65;
+}
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: .75em 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+header a { color: var(--heading); text-decoration: none; font-weight: 600; }
+header a:hover { text-decoration: none; }
+main {
+  max-width: 820px;
+  margin: 2em auto;
+  padding: 0 1.5em 4em;
+}
+h1, h2, h3, h4 {
+  color: var(--heading);
+  line-height: 1.25;
+  margin-top: 1.5em;
+}
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .15em .4em;
+  font-size: .875em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1em 1.25em;
+  overflow-x: auto;
+  font-size: .875em;
+}
+pre code { background: none; border: none; padding: 0; }
+blockquote {
+  border-left: 3px solid var(--border);
+  margin: 1em 0;
+  padding: .5em 1em;
+  color: var(--muted);
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: .5em .75em; text-align: left; }
+th { background: var(--surface); color: var(--heading); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+footer {
+  text-align: center;
+  font-size: .8em;
+  color: var(--muted);
+  padding: 2em 1em;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">&#127795; Open Access Kit</a>
+</header>
+<main>
+<h1>Getting Started</h1>
+<p>→ <a href="index.html">Back to Home</a> · <a href="resources.html">Resources</a></p>
+<hr>
+<p>This guide is for someone who just received Open Access Kit removable media. Follow these
+steps to start browsing safely and privately.</p>
+<hr>
+<h2>Step 1: Install Tor Browser</h2>
+<p>Open the <code>software/tor-browser/</code> folder on this removable media and install the version
+for your operating system:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Operating System</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tor-browser-windows-x86_64-portable-*.exe</code></td>
+<td>Windows</td>
+</tr>
+<tr>
+<td><code>tor-browser-macos-*.dmg</code></td>
+<td>macOS</td>
+</tr>
+<tr>
+<td><code>tor-browser-linux-x86_64-*.tar.xz</code></td>
+<td>Linux</td>
+</tr>
+<tr>
+<td><code>tor-browser-android-aarch64-*.apk</code></td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Windows / macOS:</strong> Run the installer and follow the prompts. Tor Browser does not
+require administrator access and installs only for your user account.</p>
+<p><strong>Linux:</strong> Extract the <code>.tar.xz</code> file, open the resulting folder, and run <code>./start-tor-browser.desktop</code> or the <code>Browser/start-tor-browser</code> script.</p>
+<p><strong>Android:</strong> You may need to allow installation from unknown sources in your device
+settings. Go to <strong>Settings → Security → Install unknown apps</strong> and allow your file manager.</p>
+<hr>
+<h2>Step 2: Connect to Tor</h2>
+<p>Launch Tor Browser. On the connection screen, click <strong>Connect</strong>.</p>
+<p>If direct access to Tor is blocked in your country, click <strong>Configure Connection</strong> and
+try one of the built-in <strong>bridges</strong> (Snowflake or obfs4 are good first choices).</p>
+<p>Once connected, the Tor Browser address bar will show a purple onion icon.</p>
+<hr>
+<h2>Step 3: Browse Safely</h2>
+<p>Tor Browser protects your anonymity at the network level, but a few habits will make
+you significantly safer:</p>
+<ul>
+<li><strong>Always use Tor Browser</strong> for sensitive browsing — do not open <code>.onion</code> links or
+sensitive sites in your regular browser.</li>
+<li><strong>Do not log in to personal accounts</strong> (Google, Facebook, etc.) while using Tor if
+you need to remain anonymous — login ties your activity to your identity.</li>
+<li><strong>Keep Tor Browser updated.</strong> New versions ship on this drive each quarter, or
+download from <a href="https://www.torproject.org">torproject.org</a> when you have access.</li>
+<li><strong>Do not install browser extensions.</strong> They can undermine Tor's anonymity protections.</li>
+</ul>
+<h3>Finding onion sites</h3>
+<p>The <a href="resources/onion-sites/index.html">Onion Sites directory</a> contains curated <code>.onion</code>
+addresses for news outlets, privacy tools, and other services — all reachable through
+Tor Browser.</p>
+<hr>
+<h2>Step 4: Boot Tails (32 GB+ drives only)</h2>
+<p>Tails is a live operating system that runs entirely from this removable media and leaves
+no trace on the computer you use. Use it when you need stronger guarantees than Tor Browser
+alone can provide.</p>
+<p><strong>To boot Tails:</strong></p>
+<ol>
+<li>Restart the computer.</li>
+<li>While the computer is starting up, press the boot menu key. This varies by
+manufacturer — common keys are <strong>F12</strong>, <strong>F8</strong>, <strong>Esc</strong>, or <strong>Del</strong>.</li>
+<li>Select this removable media from the boot menu.</li>
+<li>Tails will start and walk you through connecting to Tor.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Tails is only available on 32 GB and larger OAK distributions. The <code>software/tails/</code>
+folder on smaller distributions will be absent.</p>
+</blockquote>
+<hr>
+<h2>Need Help?</h2>
+<ul>
+<li><strong>Tor Browser support:</strong> <a href="https://tb-manual.torproject.org">tb-manual.torproject.org</a></li>
+<li><strong>Tails documentation:</strong> <a href="https://tails.net/doc">tails.net/doc</a></li>
+<li><strong>EFF Surveillance Self-Defense:</strong> <a href="https://ssd.eff.org">ssd.eff.org</a> — practical
+security advice for people of all threat levels.</li>
+</ul>
+<p>→ Advanced: <a href="verify.html">Verify software signatures</a></p>
+<p>→ <a href="index.html">Back to Home</a> · <a href="resources.html">Resources</a></p>
+
+</main>
+<footer>
+  Open Access Kit &mdash;
+  Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>
+  &nbsp;&middot;&nbsp;
+  Content: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+  &nbsp;&middot;&nbsp;
+  <a href="license.html">License</a>
+</footer>
+</body>
+</html>

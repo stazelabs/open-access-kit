@@ -2,8 +2,12 @@ package source
 
 import (
 	"context"
+	"io/fs"
+	"path/filepath"
+	"strings"
 
 	"github.com/stazelabs/open-access-kit/internal/config"
+	"github.com/stazelabs/open-access-kit/internal/site"
 )
 
 type localSource struct {
@@ -36,6 +40,23 @@ func (s *localSource) Size(mirrorDir string) (int64, error) {
 }
 
 func (s *localSource) Stage(ctx context.Context, mirrorDir, imageDir string, tier config.TierConfig) error {
-	dst := imageDir + "/" + s.cfg.StagePath
+	dst := filepath.Join(imageDir, s.cfg.StagePath)
+	if hasMarkdown(s.cfg.LocalPath) {
+		tmplPath := "./content/templates/site/base.html"
+		return site.Render(s.cfg.LocalPath, dst, site.Options{TemplatePath: tmplPath})
+	}
 	return copyDir(s.cfg.LocalPath, dst)
+}
+
+// hasMarkdown reports whether dir contains any .md files (recursively).
+func hasMarkdown(dir string) bool {
+	found := false
+	filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+		if err == nil && !d.IsDir() && strings.ToLower(filepath.Ext(path)) == ".md" {
+			found = true
+			return fs.SkipAll
+		}
+		return nil
+	})
+	return found
 }

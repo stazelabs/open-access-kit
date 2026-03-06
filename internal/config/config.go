@@ -38,13 +38,23 @@ type SourceConfig struct {
 	Files     []string `yaml:"files"`
 
 	// git sources
-	GitURL  string `yaml:"git_url"`
-	Shallow bool   `yaml:"shallow"`
+	GitURL         string `yaml:"git_url"`
+	GitBranch      string `yaml:"git_branch"`
+	Shallow        bool   `yaml:"shallow"`
+	RenderMarkdown bool   `yaml:"render_markdown"`
+
+	// site-mirror sources
+	MirrorURL string `yaml:"mirror_url"`
 
 	// local sources
 	LocalPath string `yaml:"local_path"`
 
+	// github-release sources
+	GitHubRepo    string   `yaml:"github_repo"`
+	AssetPatterns []string `yaml:"asset_patterns"`
+
 	// common
+	ExcludeDirs   []string            `yaml:"exclude_dirs"`
 	StagePath     string              `yaml:"stage_path"`
 	Verify        VerifyConfig        `yaml:"verify"`
 	VersionDetect VersionDetectConfig `yaml:"version_detect"`

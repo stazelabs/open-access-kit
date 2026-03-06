@@ -10,7 +10,7 @@ var rootCmd = &cobra.Command{
 	Use:   "oak",
 	Short: "Open Access Kit — build offline privacy tool images",
 	Long: `OAK curates, downloads, verifies, stages, and packages quarterly
-releases of privacy tools and educational content onto USB thumbdrives.`,
+releases of privacy tools and educational content onto removable media.`,
 }
 
 // Global flags

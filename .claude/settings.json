@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "Bash(./oak package --tier 16)"
+      "Bash(./oak package --tier 16)",
+      "WebFetch(domain:onionshare.org)",
+      "WebFetch(domain:tails.net)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.kiwix.org)",
+      "WebFetch(domain:get.kiwix.org)",
+      "WebFetch(domain:download.kiwix.org)",
+      "WebFetch(domain:library.kiwix.org)",
+      "WebFetch(domain:wiki.kiwix.org)"
     ]
   }
 }

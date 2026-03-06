@@ -58,25 +58,29 @@ func writeReadme(imageDir, release string) error {
 This drive contains privacy tools and educational resources for people
 facing censorship or surveillance.
 
+START HERE
+----------
+  Open guides/index.html in any web browser for full documentation,
+  getting started instructions, and a directory of onion sites.
+
 CONTENTS
 --------
+  guides/                 Offline HTML documentation (start here)
   software/tor-browser/   Tor Browser for Windows, macOS, Linux, Android
-  software/tails/         Tails OS (32GB+ drives only)
-  resources/onion-sites/  Directory of real-world .onion addresses
-  guides/                 Offline HTML guides (open in any browser)
-  docs/                   Companion website (open docs/index.html)
+  software/tails/         Tails OS bootable image (32GB+ drives only)
+  guides/resources/       Additional bundled resources and onion site directories
   keys/                   GPG public keys used to verify this software
 
-GETTING STARTED
----------------
-  1. Open guides/what-is-tor.html in any browser
-  2. Install Tor Browser from software/tor-browser/<your-os>/
-  3. Use Tor Browser to access the internet privately
+QUICK START
+-----------
+  1. Open guides/index.html in any browser
+  2. Install Tor Browser from software/tor-browser/
+  3. Launch Tor Browser and click Connect
 
 VERIFYING THIS DRIVE
 --------------------
-  sha256sum -c MANIFEST.txt        (verify file integrity)
-  gpg --verify OAK-*.zip.asc      (verify package signature, if present)
+  sha256sum -c MANIFEST.txt       (verify file integrity)
+  gpg --verify OAK-*.zip.asc     (verify package signature, if present)
 
 More information: https://github.com/stazelabs/open-access-kit
 `, release)

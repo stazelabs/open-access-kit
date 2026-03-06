@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbot — Open Access Kit</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --link: #58a6ff;
+  --heading: #f0f6fc;
+  --code-bg: #1c2128;
+  --accent: #388bfd;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.65;
+}
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: .75em 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+header a { color: var(--heading); text-decoration: none; font-weight: 600; }
+header a:hover { text-decoration: none; }
+main {
+  max-width: 820px;
+  margin: 2em auto;
+  padding: 0 1.5em 4em;
+}
+h1, h2, h3, h4 {
+  color: var(--heading);
+  line-height: 1.25;
+  margin-top: 1.5em;
+}
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .15em .4em;
+  font-size: .875em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1em 1.25em;
+  overflow-x: auto;
+  font-size: .875em;
+}
+pre code { background: none; border: none; padding: 0; }
+blockquote {
+  border-left: 3px solid var(--border);
+  margin: 1em 0;
+  padding: .5em 1em;
+  color: var(--muted);
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: .5em .75em; text-align: left; }
+th { background: var(--surface); color: var(--heading); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+footer {
+  text-align: center;
+  font-size: .8em;
+  color: var(--muted);
+  padding: 2em 1em;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">&#127795; Open Access Kit</a>
+</header>
+<main>
+<h1>Orbot</h1>
+<p>→ <a href="index.html">Back to Home</a> · <a href="resources.html">Resources</a></p>
+<hr>
+<p>Orbot routes your Android device's internet traffic through the Tor network. Where Tor
+Browser for Android anonymizes only your browsing, Orbot can protect other apps too —
+messaging clients, email, podcast apps, and more — by tunneling their connections through
+Tor as well.</p>
+<p>Orbot is included in the <code>software/orbot/</code> folder on this removable media.</p>
+<hr>
+<h2>Which APK to Install</h2>
+<p>Open <code>software/orbot/</code> on this removable media. You will find two APK variants:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Orbot-*-arm64-v8a-release.apk</code></td>
+<td>Most Android devices (2014 and newer, 64-bit ARM)</td>
+</tr>
+<tr>
+<td><code>Orbot-*-armeabi-v7a-release.apk</code></td>
+<td>Older or budget Android devices (32-bit ARM)</td>
+</tr>
+</tbody>
+</table>
+<p>If you are unsure which to use, install the <code>arm64-v8a</code> version. If it reports
+&quot;App not installed&quot; during setup, try the <code>armeabi-v7a</code> version instead.</p>
+<hr>
+<h2>Install Orbot</h2>
+<ol>
+<li>
+<p>On your Android device, go to <strong>Settings → Security</strong> (or <strong>Privacy</strong>) and enable
+<strong>Install from unknown sources</strong> (or <strong>Install unknown apps</strong> for the file manager you'll use).</p>
+</li>
+<li>
+<p>Copy the APK file from this removable media to your device (via USB cable, SD card, or
+a local file transfer app).</p>
+</li>
+<li>
+<p>Tap the APK file in your device's file manager and confirm the installation.</p>
+</li>
+<li>
+<p>Disable &quot;Install from unknown sources&quot; after installation to reduce risk from other apps.</p>
+</li>
+</ol>
+<hr>
+<h2>Enable Orbot</h2>
+<p>Launch Orbot and tap <strong>Start</strong>. Orbot will connect to the Tor network.</p>
+<h3>VPN Mode (Recommended)</h3>
+<p>Enable <strong>VPN Mode</strong> to route all apps through Tor automatically, without configuring each
+app individually. Orbot will appear as a VPN in your Android status bar.</p>
+<blockquote>
+<p><strong>Note:</strong> VPN mode routes all traffic through Tor. Apps that try to detect and block Tor
+(such as some banking or streaming apps) may not work while Orbot's VPN is active.</p>
+</blockquote>
+<h3>Per-App Selection</h3>
+<p>Alternatively, use <strong>Choose Apps</strong> to select only specific apps to route through Tor,
+leaving other apps on your regular internet connection.</p>
+<hr>
+<h2>Orbot and Tor Browser for Android</h2>
+<p><strong>Tor Browser for Android does not need Orbot.</strong> It includes its own Tor connection and
+is already fully anonymized. Running both simultaneously is harmless but redundant.</p>
+<p>Use Orbot for apps that do not have built-in Tor support — messaging apps, email clients,
+news readers, and so on.</p>
+<hr>
+<h2>Verify the APK (Optional)</h2>
+<p>Each APK in <code>software/orbot/</code> is accompanied by a <code>.asc</code> signature file. You can verify
+it against the Guardian Project signing keys bundled in <code>keys/orbot-signing.gpg</code>:</p>
+<pre><code>gpg --no-default-keyring --keyring /path/to/keys/orbot-signing.gpg \
+    --verify Orbot-*-arm64-v8a-release.apk.asc \
+             Orbot-*-arm64-v8a-release.apk
+</code></pre>
+<p>A good result shows <code>Good signature from &quot;Hans-Christoph Steiner&quot;</code> or
+<code>Good signature from &quot;Nathan of Guardian&quot;</code>.</p>
+<p>See <a href="verify.html">Verifying Signatures</a> for a full walkthrough.</p>
+<hr>
+<h2>Security Tips</h2>
+<ul>
+<li><strong>Orbot protects network-level identity, not app-level identity.</strong> An app can still
+reveal your identity through your account, device fingerprint, or content of messages.</li>
+<li><strong>Keep Orbot running</strong> while using apps you want protected. When Orbot is stopped or
+disconnected, those apps will fall back to your regular internet connection.</li>
+<li><strong>In high-risk situations, use Tails instead.</strong> Tails (included on 32 GB+ distributions)
+routes all traffic system-wide through Tor by default, with stronger isolation guarantees.</li>
+<li><strong>Keep Orbot updated.</strong> New versions ship on this removable media each quarter.</li>
+</ul>
+<hr>
+<h2>More Information</h2>
+<ul>
+<li>Orbot website: <a href="https://orbot.app">orbot.app</a></li>
+<li>Source code: <a href="https://github.com/guardianproject/orbot-android">github.com/guardianproject/orbot-android</a></li>
+<li>Guardian Project: <a href="https://guardianproject.info">guardianproject.info</a></li>
+<li>License: GPL-3.0</li>
+</ul>
+<p>→ <a href="index.html">Back to Home</a> · <a href="resources.html">Resources</a></p>
+
+</main>
+<footer>
+  Open Access Kit &mdash;
+  Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>
+  &nbsp;&middot;&nbsp;
+  Content: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+  &nbsp;&middot;&nbsp;
+  <a href="license.html">License</a>
+</footer>
+</body>
+</html>

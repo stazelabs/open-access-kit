@@ -85,7 +85,7 @@ func effectiveReleaseImageDir(cfg *config.Config, tierLabel string) string {
 	return filepath.Join(effectiveImageDir(cfg), "OAK-"+cfg.Release+"-"+tierLabel)
 }
 
-// zipRootName returns the directory name inside the ZIP (what appears on the USB drive).
+// zipRootName returns the directory name inside the ZIP (what appears on the removable media).
 // This is tier-agnostic — every tier extracts to OAK-{release}/.
 func zipRootName(cfg *config.Config) string {
 	return "OAK-" + cfg.Release

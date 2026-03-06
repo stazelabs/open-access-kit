@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌳 OAK (Open Access Kit) — Design Document — Open Access Kit</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --link: #58a6ff;
+  --heading: #f0f6fc;
+  --code-bg: #1c2128;
+  --accent: #388bfd;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.65;
+}
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: .75em 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+header a { color: var(--heading); text-decoration: none; font-weight: 600; }
+header a:hover { text-decoration: none; }
+main {
+  max-width: 820px;
+  margin: 2em auto;
+  padding: 0 1.5em 4em;
+}
+h1, h2, h3, h4 {
+  color: var(--heading);
+  line-height: 1.25;
+  margin-top: 1.5em;
+}
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .15em .4em;
+  font-size: .875em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1em 1.25em;
+  overflow-x: auto;
+  font-size: .875em;
+}
+pre code { background: none; border: none; padding: 0; }
+blockquote {
+  border-left: 3px solid var(--border);
+  margin: 1em 0;
+  padding: .5em 1em;
+  color: var(--muted);
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: .5em .75em; text-align: left; }
+th { background: var(--surface); color: var(--heading); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+footer {
+  text-align: center;
+  font-size: .8em;
+  color: var(--muted);
+  padding: 2em 1em;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">&#127795; Open Access Kit</a>
+</header>
+<main>
+<h1>🌳 OAK (Open Access Kit) — Design Document</h1>
+<h2>Context</h2>
+<p>OAK is a portable, offline-first collection of privacy tools, secure communication apps, and curated knowledge designed to fit on a single USB thumbdrive. The project needs tooling to curate, download, verify, stage, and package quarterly releases (e.g., Q126 = Q1 2026) across media size tiers. A single command — <code>oak build</code> — drives the entire quarterly update cycle: detect latest upstream versions, download everything, verify signatures, assemble the image, and package it.</p>
+<h3>Problem</h3>
+<p>Privacy tools like Tor Browser and Tails OS are critical for people facing censorship or surveillance, but downloading them requires internet access — exactly what may be restricted. OAK solves this by pre-packaging these tools onto removable media that can be physically shared and replicated.</p>
+<h3>Goals</h3>
+<ul>
+<li>Self-contained Go CLI (<code>oak</code>) that anyone can run to build an OAK image</li>
+<li>Quarterly release cadence with automated version detection</li>
+<li>Tiered images for different media sizes</li>
+<li>Offline-usable companion documentation and website</li>
+<li>Cryptographic verification of all included software</li>
+<li>GPG signing of the OAK image itself</li>
+</ul>
+<hr>
+<h2>1. Repo Layout</h2>
+<pre><code>open-access-kit/
+├── README.md                     # GitHub landing page
+├── LICENSE
+├── ARCHITECTURE.md               # This document
+├── go.mod / go.sum
+├── Makefile                      # build, test, lint, release targets
+├── oak.yaml                      # Tier + source configuration
+│
+├── cmd/oak/
+│   └── main.go                   # CLI entrypoint (cobra)
+│
+├── internal/
+│   ├── config/                   # YAML config loading, structs
+│   ├── source/                   # Source interface + implementations
+│   │   ├── source.go             # Interface definition
+│   │   ├── rsync.go              # Tor Browser, Tails
+│   │   ├── git.go                # Onion sites directory
+│   │   ├── http.go               # HTTP fetcher (version detection)
+│   │   └── local.go              # Bundled local content
+│   ├── version/                  # Version detection (scrape, RSS)
+│   ├── verify/                   # GPG + checksum verification
+│   ├── tier/                     # Size budgets, content selection
+│   ├── stage/                    # Mirror -&gt; image layout
+│   ├── annotate/                 # README, MANIFEST, VERSION generation
+│   ├── packaging/                # ZIP creation + GPG signing
+│   ├── site/                     # Go-native Markdown-&gt;HTML renderer
+│   └── pipeline/                 # Orchestrates full build
+│
+├── cli/                          # Cobra command definitions
+│   ├── build.go                  # `oak build` (full pipeline)
+│   ├── download.go               # `oak download`
+│   ├── verify.go                 # `oak verify`
+│   ├── stage.go                  # `oak stage`
+│   ├── status.go                 # `oak status`
+│   └── version.go                # `oak version`
+│
+├── content/                      # Educational content (Markdown source)
+│   ├── guides/
+│   │   ├── what-is-tor.md
+│   │   ├── using-tor-browser.md
+│   │   ├── what-is-tails.md
+│   │   ├── privacy-basics.md
+│   │   └── censorship-circumvention.md
+│   └── templates/
+│       ├── README.md.tmpl        # Root README template for images
+│       └── site/                 # HTML templates for companion website
+│
+├── keys/                         # Upstream GPG public keys (checked in)
+│   ├── torproject-signing.gpg
+│   ├── tails-signing.gpg
+│   ├── onionshare-signing.gpg
+│   └── orbot-signing.gpg
+│
+├── scripts/                      # Legacy bash scripts (reference only)
+│
+└── .github/workflows/ci.yml      # Go build + test + lint
+</code></pre>
+<p><strong>Runtime artifacts</strong> (gitignored):</p>
+<ul>
+<li><code>mirror/</code> — raw downloaded content</li>
+<li><code>image/</code> — staged image layout</li>
+<li><code>dist/</code> — packaged ZIP archives</li>
+</ul>
+<hr>
+<h2>2. Go CLI Architecture</h2>
+<h3>Framework</h3>
+<p><a href="https://github.com/spf13/cobra">spf13/cobra</a> — the standard for Go CLIs.</p>
+<h3>Commands</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>oak build --tier 64</code></td>
+<td>Full pipeline: download → verify → stage → annotate → package → sign</td>
+</tr>
+<tr>
+<td><code>oak download [source]</code></td>
+<td>Fetch/mirror all sources for the tier, or a specific source by name</td>
+</tr>
+<tr>
+<td><code>oak verify [source]</code></td>
+<td>Check GPG sigs + checksums of mirrored content</td>
+</tr>
+<tr>
+<td><code>oak stage --tier 64</code></td>
+<td>Copy mirror → <code>image/OAK-{release}/</code> with tier size budget</td>
+</tr>
+<tr>
+<td><code>oak annotate</code></td>
+<td>Generate <code>VERSION.txt</code>, <code>MANIFEST.txt</code>, <code>README.txt</code> into the staged image</td>
+</tr>
+<tr>
+<td><code>oak package</code></td>
+<td>Zip staged image → <code>dist/OAK-{release}-{tier}.zip</code> + <code>.sha256</code></td>
+</tr>
+<tr>
+<td><code>oak sign [zipfile]</code></td>
+<td>GPG-sign a packaged ZIP → <code>.zip.asc</code></td>
+</tr>
+<tr>
+<td><code>oak status</code></td>
+<td>Show mirror state, sizes, detected upstream versions</td>
+</tr>
+<tr>
+<td><code>oak version</code></td>
+<td>Print CLI version</td>
+</tr>
+</tbody>
+</table>
+<p>All steps are independently runnable. <code>oak build</code> orchestrates them end-to-end.</p>
+<h3>Global Flags</h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--config, -c</code></td>
+<td><code>./oak.yaml</code></td>
+<td>Path to configuration file</td>
+</tr>
+<tr>
+<td><code>--tier, -t</code></td>
+<td><code>64</code></td>
+<td>Target tier: <code>16</code>, <code>32</code>, <code>64</code>, <code>max</code></td>
+</tr>
+<tr>
+<td><code>--mirror-dir</code></td>
+<td><code>./mirror</code></td>
+<td>Path to mirror directory</td>
+</tr>
+<tr>
+<td><code>--image-dir</code></td>
+<td><code>./image</code></td>
+<td>Path to image output directory</td>
+</tr>
+<tr>
+<td><code>--release</code></td>
+<td>auto (e.g., <code>Q126</code>)</td>
+<td>Release name override</td>
+</tr>
+<tr>
+<td><code>--dry-run</code></td>
+<td><code>false</code></td>
+<td>Show what would happen without doing it</td>
+</tr>
+<tr>
+<td><code>--verbose, -v</code></td>
+<td><code>false</code></td>
+<td>Verbose output</td>
+</tr>
+</tbody>
+</table>
+<h3>Source Interface</h3>
+<pre><code class="language-go">type Source interface {
+    Name() string
+    DetectVersion(ctx context.Context) (string, error)
+    Download(ctx context.Context, mirrorDir string, opts DownloadOptions) error
+    Verify(ctx context.Context, mirrorDir string) error
+    Size(mirrorDir string) (int64, error)
+    Stage(ctx context.Context, mirrorDir, imageDir string, tier TierConfig) error
+}
+</code></pre>
+<p><code>DownloadOptions.Force</code> re-downloads files even if already cached (<code>oak download --force</code>).</p>
+<p>Implementations:</p>
+<ul>
+<li><strong>RsyncSource</strong> — Tor Browser, Tails (rsync protocol)</li>
+<li><strong>GitSource</strong> — onion sites directory (git clone/pull)</li>
+<li><strong>HTTPSource</strong> — generic HTTP downloads</li>
+<li><strong>LocalSource</strong> — bundled educational content</li>
+</ul>
+<p>Each is config-driven. Adding a new source means adding a YAML block, not new Go code (if it fits an existing type).</p>
+<hr>
+<h2>3. Configuration (<code>oak.yaml</code>)</h2>
+<pre><code class="language-yaml">release: Q126
+
+paths:
+  mirror: ./mirror
+  image: ./image
+  output: ./dist
+
+tiers:
+  16:
+    label: &quot;16GB&quot;
+    budget_gb: 14          # Usable space after filesystem overhead
+    sources:
+      - tor-browser
+      - onion-sites
+      - educational-content
+  32:
+    label: &quot;32GB&quot;
+    budget_gb: 29
+    sources:
+      - tor-browser
+      - onion-sites
+      - educational-content
+      - tails
+  64:
+    label: &quot;64GB&quot;
+    budget_gb: 58
+    sources:
+      - tor-browser
+      - onion-sites
+      - educational-content
+      - tails
+  max:
+    label: &quot;Max&quot;
+    budget_gb: 0           # No limit
+    sources:
+      - tor-browser
+      - onion-sites
+      - educational-content
+      - tails
+
+sources:
+  tor-browser:
+    type: rsync
+    description: &quot;Tor Browser (latest, all platforms)&quot;
+    version_detect:
+      method: http-scrape
+      url: &quot;https://www.torproject.org/dist/torbrowser/&quot;
+      pattern: '&gt;([0-9]+\.[0-9]+(\.[0-9]+)?)/'
+      select: highest-semver
+    rsync_base: &quot;rsync://rsync.torproject.org/dist-mirror/torbrowser/{version}/&quot;
+    files:
+      - &quot;tor-browser-windows-x86_64-portable-{version}.exe&quot;
+      - &quot;tor-browser-windows-x86_64-portable-{version}.exe.asc&quot;
+      - &quot;tor-browser-macos-{version}.dmg&quot;
+      - &quot;tor-browser-macos-{version}.dmg.asc&quot;
+      - &quot;tor-browser-linux-x86_64-{version}.tar.xz&quot;
+      - &quot;tor-browser-linux-x86_64-{version}.tar.xz.asc&quot;
+      - &quot;tor-browser-android-aarch64-{version}.apk&quot;
+      - &quot;tor-browser-android-aarch64-{version}.apk.asc&quot;
+    verify:
+      method: gpg
+      keyring: keys/torproject-signing.gpg
+    stage_path: &quot;software/tor-browser/&quot;
+
+  onion-sites:
+    type: git
+    description: &quot;Real-world onion sites directory&quot;
+    git_url: &quot;https://github.com/alecmuffett/real-world-onion-sites.git&quot;
+    shallow: true
+    stage_path: &quot;resources/onion-sites/&quot;
+
+  tails:
+    type: rsync
+    description: &quot;Tails OS (latest stable)&quot;
+    rsync_base: &quot;rsync.tails.net::amnesia-archive&quot;
+    verify:
+      method: gpg
+      keyring: keys/tails-signing.gpg
+    stage_path: &quot;software/tails/&quot;
+
+  educational-content:
+    type: local
+    description: &quot;Bundled guides and documentation&quot;
+    local_path: &quot;./content/guides/&quot;
+    stage_path: &quot;guides/&quot;
+
+signing:
+  enabled: true
+  key_id: &quot;&quot;               # GPG key ID; prompted at build time if empty
+  public_key: keys/oak-signing.pub
+</code></pre>
+<h3>Design Rationale</h3>
+<ul>
+<li><strong>Declarative</strong>: The entire build is config-driven. No code changes needed to add sources of existing types.</li>
+<li><strong>Version templating</strong>: <code>{version}</code> placeholders in URLs/filenames resolve at runtime.</li>
+<li><strong>Tier budgets account for filesystem overhead</strong>: Raw USB capacity minus FAT32/exFAT overhead.</li>
+<li><strong>Source/tier separation</strong>: Sources defined once, referenced by name in tier lists.</li>
+</ul>
+<hr>
+<h2>4. Build Pipeline</h2>
+<p><code>oak build --tier &lt;tier&gt;</code> runs the full quarterly update cycle:</p>
+<pre><code>1. DOWNLOAD    rsync/git/http fetch into mirror/ (skips cached files; --skip-download to bypass)
+2. VERIFY      Check GPG sigs (.asc/.sig) of mirrored content against bundled keyrings
+3. STAGE       Copy selected files from mirror/ -&gt; image/OAK-{release}/
+               Enforce tier size budget; abort if exceeded
+4. ANNOTATE    Generate VERSION.txt, MANIFEST.txt, README.txt
+5. PACKAGE     ZIP image/OAK-{release}/ -&gt; dist/OAK-{release}-{tier}.zip + .sha256
+6. SIGN        GPG-sign the ZIP -&gt; dist/OAK-{release}-{tier}.zip.asc (only if --sign)
+</code></pre>
+<p>Each step is also a standalone command. Download once, re-run later steps freely.</p>
+<p><strong>Output artifacts</strong> (all in <code>dist/</code>, gitignored, published as GitHub release assets):</p>
+<ul>
+<li><code>dist/OAK-Q126-64GB.zip</code></li>
+<li><code>dist/OAK-Q126-64GB.zip.sha256</code></li>
+<li><code>dist/OAK-Q126-64GB.zip.asc</code> (if signed)</li>
+</ul>
+<p><strong><code>oak build</code> flags:</strong></p>
+<ul>
+<li><code>--sign</code> — enable step 6</li>
+<li><code>--sign-key &lt;key-id&gt;</code> — specify GPG key (uses default key if omitted)</li>
+<li><code>--skip-download</code> — start from step 2 when mirror is already current</li>
+</ul>
+<hr>
+<h2>5. Image Layout</h2>
+<pre><code>OAK-Q126-64GB/
+├── README.txt                    # Plain text — first thing users see (points to guides/)
+├── VERSION.txt                   # Release name, build date, source versions
+├── MANIFEST.txt                  # SHA256 of every file (sha256sum -c compatible)
+│
+├── software/
+│   ├── tor-browser/
+│   │   ├── tor-browser-windows-x86_64-portable-X.Y.Z.exe
+│   │   ├── tor-browser-windows-x86_64-portable-X.Y.Z.exe.asc
+│   │   ├── tor-browser-macos-X.Y.Z.dmg
+│   │   ├── tor-browser-macos-X.Y.Z.dmg.asc
+│   │   ├── tor-browser-linux-x86_64-X.Y.Z.tar.xz
+│   │   ├── tor-browser-linux-x86_64-X.Y.Z.tar.xz.asc
+│   │   ├── tor-browser-android-aarch64-X.Y.Z.apk
+│   │   └── tor-browser-android-aarch64-X.Y.Z.apk.asc
+│   ├── tails/                    # 32GB+ tiers only
+│   │   ├── tails-amd64-X.Y.img
+│   │   ├── tails-amd64-X.Y.img.sig
+│   │   ├── tails-amd64-X.Y.iso
+│   │   └── tails-amd64-X.Y.iso.sig
+│   ├── onionshare/               # 32GB+ tiers only
+│       ├── OnionShare-win64-X.Y.Z.msi
+│       ├── OnionShare-win64-X.Y.Z.msi.asc
+│       ├── OnionShare-X.Y.Z.dmg
+│       ├── OnionShare-X.Y.Z.dmg.asc
+│       ├── OnionShare-X.Y.Z.flatpak
+│       └── OnionShare-X.Y.Z.flatpak.asc
+│   └── orbot/                    # all tiers
+│       ├── Orbot-X.Y.Z-*-arm64-v8a-release.apk
+│       ├── Orbot-X.Y.Z-*-arm64-v8a-release.apk.asc
+│       ├── Orbot-X.Y.Z-*-armeabi-v7a-release.apk
+│       └── Orbot-X.Y.Z-*-armeabi-v7a-release.apk.asc
+│
+├── guides/                       # Offline HTML documentation (open index.html first)
+│   ├── index.html                # Start here — what OAK is, tier table, quick start
+│   ├── getting-started.html      # Step-by-step: install Tor Browser, connect, boot Tails
+│   ├── manifest.html             # Release manifest — software versions and checksums
+│   ├── resources.html            # Curated privacy tools and content inventory
+│   ├── verify.html               # GPG signature verification (advanced)
+│   ├── license.html
+│   └── resources/
+│       ├── onion-sites/
+│       │   ├── index.html        # Onion site directories listing
+│       │   ├── wikipedia-onion-services.html
+│       │   └── real-world-onion-sites.html
+│       └── torproject-manual/    # Tor Browser Manual (CC-BY-4.0, cloned gh-pages)
+│           └── ...
+│
+└── keys/
+    ├── torproject-signing.gpg    # Tor Project release signing key
+    ├── tails-signing.gpg         # Tails OS release signing key
+    ├── onionshare-signing.gpg    # OnionShare release signing keys (3 developers)
+    ├── orbot-signing.gpg         # Guardian Project signing keys (2 developers)
+    ├── oak-signing.pub           # OAK builder's public key (added at release time)
+    └── README.txt
+</code></pre>
+<h3>Key Decisions</h3>
+<ul>
+<li><strong>README.txt at root</strong> — plain text, readable on any OS without a browser</li>
+<li><strong><code>guides/index.html</code> is the entry point</strong> — users are directed here from README.txt</li>
+<li><strong><code>guides/</code> rendered from <code>content/guides/</code></strong> — same Markdown source as the GitHub Pages site; <code>oak site</code> and <code>oak build</code> share the same renderer</li>
+<li><strong>MANIFEST.txt</strong> — offline-verifiable with <code>sha256sum -c MANIFEST.txt</code></li>
+<li><strong><code>keys/</code> bundled on the drive</strong> — recipients can re-verify software without internet access</li>
+</ul>
+<hr>
+<h2>6. Companion Website (Go-Native Rendering)</h2>
+<p>The <code>oak</code> CLI renders the companion website itself — no external tools required.</p>
+<h3>Technology</h3>
+<ul>
+<li><strong>goldmark</strong> (Go Markdown parser) — Markdown to HTML</li>
+<li><strong>html/template</strong> — page layouts</li>
+<li>Embedded CSS (single <code>style.css</code>, no external dependencies)</li>
+</ul>
+<h3>How It Works</h3>
+<p>The <code>internal/site/</code> package:</p>
+<ol>
+<li>Reads Markdown from <code>content/</code> and HTML templates from <code>content/templates/site/</code></li>
+<li>Renders a static site into <code>image/OAK-Q126/docs/</code></li>
+<li>All URLs are relative — works from <code>file://</code> protocol</li>
+<li>No JavaScript required for navigation</li>
+<li>Minimal, clean design readable in Tor Browser at default security settings</li>
+</ol>
+<h3>Content</h3>
+<ul>
+<li><strong>Homepage</strong> — what OAK is, what's included, how to get started</li>
+<li><strong>About</strong> — project background, philosophy</li>
+<li><strong>Getting Started</strong> — step-by-step for first-time users</li>
+<li><strong>Tool pages</strong> — dedicated page per included tool (Tor Browser, Tails)</li>
+<li><strong>Guides</strong> — privacy basics, censorship circumvention, onion routing</li>
+</ul>
+<hr>
+<h2>7. Signing Strategy</h2>
+<h3>Upstream Verification</h3>
+<p><code>oak verify</code> checks <code>.asc</code> and <code>.sig</code> files from Tor Project and Tails against their public keys bundled in <code>keys/</code>. The build fails if verification fails (overridable with <code>--force</code>).</p>
+<h3>OAK Image Signing</h3>
+<p>After packaging, <code>oak build</code> GPG-signs the output ZIP:</p>
+<ol>
+<li>Builder provides their GPG key ID via <code>oak.yaml</code> <code>signing.key_id</code> or <code>--sign-key</code> flag</li>
+<li>Produces <code>dist/OAK-Q126-64GB.zip.asc</code> (detached signature)</li>
+<li>Builder's public key is:
+<ul>
+<li>Embedded in the image at <code>keys/oak-signing.pub</code></li>
+<li>Published on the GitHub repository</li>
+</ul>
+</li>
+<li><strong>Online users</strong> verify the sig against the GitHub-published key</li>
+<li><strong>Offline recipients</strong> verify against the embedded key (trust-on-first-use — if you trust the person who gave you the USB, you trust the key on it)</li>
+</ol>
+<p>This is pragmatic for Q126. A more robust web-of-trust or keyserver model can follow.</p>
+<hr>
+<h2>8. GitHub README Structure</h2>
+<pre><code># 🌳 Open Access Kit (OAK)
+
+One-line description
+
+[Badges: release, license, CI]
+
+## What is OAK?
+2-3 paragraph explanation
+
+## Quick Start
+### Download Pre-Built Image
+Links to latest release ZIPs per tier
+
+### Build Your Own
+go install + oak build example
+
+## What's Inside
+Table: content x tier matrix
+
+## How to Use OAK
+Brief instructions for USB recipients
+
+## Building from Source
+Prerequisites, build, configuration
+
+## Release Schedule
+Quarterly cadence, naming convention
+
+## Contributing
+How to add sources, contribute guides
+
+## License
+</code></pre>
+<hr>
+<h2>9. Q126 Release Scope</h2>
+<h3>In</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Deliverables</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLI</td>
+<td><code>oak build</code>, <code>download</code>, <code>verify</code>, <code>stage</code>, <code>status</code>, <code>version</code></td>
+</tr>
+<tr>
+<td>Sources</td>
+<td>Tor Browser (rsync + version detect), onion-sites (git), Tails (rsync), OnionShare (http + version detect), Orbot (github-release + version detect), educational content (local)</td>
+</tr>
+<tr>
+<td>Tiers</td>
+<td>16GB, 32GB, 64GB, max</td>
+</tr>
+<tr>
+<td>Verification</td>
+<td>GPG verification of upstream Tor Browser + Tails</td>
+</tr>
+<tr>
+<td>Signing</td>
+<td>GPG signing of output ZIP</td>
+</tr>
+<tr>
+<td>Website</td>
+<td>Go-native companion site renderer</td>
+</tr>
+<tr>
+<td>Content</td>
+<td>3-5 educational guides (Tor, Tails, privacy, censorship)</td>
+</tr>
+<tr>
+<td>Artifacts</td>
+<td>MANIFEST.txt, VERSION.txt, README.txt/html</td>
+</tr>
+<tr>
+<td>Repo</td>
+<td>GitHub README, CI (GitHub Actions)</td>
+</tr>
+</tbody>
+</table>
+<h3>Out (Deferred)</h3>
+<ul>
+<li>Torrent-based downloading</li>
+<li>Mullvad Browser, Signal APKs, other tools</li>
+<li>Internationalization / localized content</li>
+<li>Interactive TUI</li>
+<li>GitHub Pages hosting</li>
+<li>Automated quarterly release GitHub Action</li>
+<li>Delta updates between releases</li>
+</ul>
+<h3>Size Estimates</h3>
+<table>
+<thead>
+<tr>
+<th>Content</th>
+<th>Est. Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tor Browser (all platforms + sigs)</td>
+<td>~1.2 GB</td>
+</tr>
+<tr>
+<td>Onion sites directory</td>
+<td>~15 MB</td>
+</tr>
+<tr>
+<td>Tails ISO + IMG + sigs</td>
+<td>~2.8 GB</td>
+</tr>
+<tr>
+<td>OnionShare (Win + macOS + Flatpak + sigs)</td>
+<td>~390 MB</td>
+</tr>
+<tr>
+<td>Orbot (arm64-v8a + armeabi-v7a + sigs)</td>
+<td>~78 MB</td>
+</tr>
+<tr>
+<td>Educational guides + website</td>
+<td>~25 MB</td>
+</tr>
+<tr>
+<td>Keys, manifests, READMEs</td>
+<td>~1 MB</td>
+</tr>
+<tr>
+<td><strong>16GB tier total</strong></td>
+<td><strong>~1.4 GB</strong></td>
+</tr>
+<tr>
+<td><strong>32GB+ tier total</strong></td>
+<td><strong>~4.6 GB</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Significant headroom in all tiers — intentional for future content additions.</p>
+<hr>
+<h2>10. Implementation Sequence</h2>
+<ol>
+<li><strong>Project scaffolding</strong> — <code>go.mod</code>, cobra CLI skeleton, config loading, <code>oak version</code> + <code>oak status</code></li>
+<li><strong>Source interface + Tor Browser</strong> — port <code>tor-mirror.sh</code> to Go (version detect, rsync, GPG verify)</li>
+<li><strong>Remaining sources</strong> — Git (onion-sites), rsync (Tails), local (educational content)</li>
+<li><strong>Tier logic + staging</strong> — size budgets, mirror-&gt;image copy, platform subdirs</li>
+<li><strong>Annotation</strong> — MANIFEST.txt, VERSION.txt, README generation, Markdown-&gt;HTML</li>
+<li><strong>Site renderer</strong> — Go-native companion website from Markdown + templates</li>
+<li><strong>Packaging + signing</strong> — ZIP creation, SHA256, GPG signing</li>
+<li><strong>Full pipeline</strong> — <code>oak build</code> orchestration, dry-run support</li>
+<li><strong>Content + polish</strong> — educational guides, GitHub README, CI</li>
+</ol>
+<hr>
+<h2>11. Verification Plan</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dry run</td>
+<td><code>oak build --tier 16 --dry-run</code> — correct source selection, no downloads</td>
+</tr>
+<tr>
+<td>Download + verify</td>
+<td><code>oak download &amp;&amp; oak verify</code> — upstream GPG checks pass</td>
+</tr>
+<tr>
+<td>Full build</td>
+<td><code>oak build --tier 16</code> — inspect image layout matches spec</td>
+</tr>
+<tr>
+<td>Offline docs</td>
+<td>Open <code>image/OAK-Q126/docs/index.html</code> from <code>file://</code> in browser</td>
+</tr>
+<tr>
+<td>Manifest check</td>
+<td><code>sha256sum -c image/OAK-Q126/MANIFEST.txt</code></td>
+</tr>
+<tr>
+<td>Signature check</td>
+<td><code>gpg --verify dist/OAK-Q126-16GB.zip.asc</code></td>
+</tr>
+<tr>
+<td>All tiers</td>
+<td>Build 16/32/64/max, confirm size budgets respected</td>
+</tr>
+</tbody>
+</table>
+
+</main>
+<footer>
+  Open Access Kit &mdash;
+  Code: <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>
+  &nbsp;&middot;&nbsp;
+  Content: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+  &nbsp;&middot;&nbsp;
+  <a href="license.html">License</a>
+</footer>
+</body>
+</html>
