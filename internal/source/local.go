@@ -51,7 +51,7 @@ func (s *localSource) Stage(ctx context.Context, mirrorDir, imageDir string, tie
 // hasMarkdown reports whether dir contains any .md files (recursively).
 func hasMarkdown(dir string) bool {
 	found := false
-	filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+	_ = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err == nil && !d.IsDir() && strings.ToLower(filepath.Ext(path)) == ".md" {
 			found = true
 			return fs.SkipAll
