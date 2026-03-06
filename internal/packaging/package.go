@@ -70,7 +70,9 @@ func Sign(_ context.Context, zipPath, keyID string) error {
 	return nil
 }
 
-// createZip walks imageDir and writes all files into zipPath.
+// createZip walks imageDir and writes all files into zipPath using Store
+// (no compression). All content in OAK images is already compressed
+// (ZIM, ISO, APK, etc.), so Deflate would waste CPU without reducing size.
 // rootName is the top-level directory name inside the ZIP (e.g. OAK-Q126).
 func createZip(imageDir, zipPath, rootName string) error {
 	f, err := os.Create(zipPath)
@@ -93,10 +95,16 @@ func createZip(imageDir, zipPath, rootName string) error {
 		if err != nil {
 			return err
 		}
-		// Use forward slashes inside the ZIP regardless of host OS
+		// Use forward slashes inside the ZIP regardless of host OS.
 		entry := rootName + "/" + filepath.ToSlash(rel)
 
-		fw, err := w.Create(entry)
+		hdr := &zip.FileHeader{
+			Name:   entry,
+			Method: zip.Store, // no compression — content is already compressed
+		}
+		hdr.SetModTime(info.ModTime())
+
+		fw, err := w.CreateHeader(hdr)
 		if err != nil {
 			return fmt.Errorf("creating zip entry %s: %w", entry, err)
 		}
@@ -104,9 +112,9 @@ func createZip(imageDir, zipPath, rootName string) error {
 		if err != nil {
 			return err
 		}
-		defer src.Close()
-		_, err = io.Copy(fw, src)
-		return err
+		_, copyErr := io.Copy(fw, src)
+		src.Close()
+		return copyErr
 	})
 }
 
