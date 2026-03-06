@@ -13,10 +13,11 @@ import (
 type localSource struct {
 	name string
 	cfg  config.SourceConfig
+	vars map[string]any
 }
 
-func newLocal(name string, cfg config.SourceConfig) *localSource {
-	return &localSource{name: name, cfg: cfg}
+func newLocal(name string, cfg config.SourceConfig, vars map[string]any) *localSource {
+	return &localSource{name: name, cfg: cfg, vars: vars}
 }
 
 func (s *localSource) Name() string { return s.name }
@@ -43,7 +44,7 @@ func (s *localSource) Stage(ctx context.Context, mirrorDir, imageDir string, tie
 	dst := filepath.Join(imageDir, s.cfg.StagePath)
 	if hasMarkdown(s.cfg.LocalPath) {
 		tmplPath := "./content/templates/site/base.html"
-		return site.Render(s.cfg.LocalPath, dst, site.Options{TemplatePath: tmplPath})
+		return site.Render(s.cfg.LocalPath, dst, site.Options{TemplatePath: tmplPath, Vars: s.vars})
 	}
 	return copyDir(s.cfg.LocalPath, dst)
 }

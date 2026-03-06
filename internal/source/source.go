@@ -36,14 +36,16 @@ type Source interface {
 }
 
 // New constructs the appropriate Source implementation from a config entry.
-func New(name string, cfg config.SourceConfig) (Source, error) {
+// vars is passed to local sources so they can substitute template placeholders
+// (e.g. {{.Release}}) when rendering Markdown guides into HTML during staging.
+func New(name string, cfg config.SourceConfig, vars map[string]any) (Source, error) {
 	switch cfg.Type {
 	case "rsync":
 		return newRsync(name, cfg), nil
 	case "git":
 		return newGit(name, cfg), nil
 	case "local":
-		return newLocal(name, cfg), nil
+		return newLocal(name, cfg, vars), nil
 	case "http":
 		return newHTTP(name, cfg), nil
 	case "github-release":

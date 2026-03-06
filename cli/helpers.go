@@ -27,24 +27,34 @@ func sourcesForTier(cfg *config.Config, tierKey string) ([]source.Source, error)
 	return buildSources(cfg, t.Sources)
 }
 
+// globalVars returns the template vars derived from the top-level config,
+// used when rendering Markdown guides to HTML during staging.
+func globalVars(cfg *config.Config) map[string]any {
+	return map[string]any{
+		"Release":      cfg.Release,
+		"DownloadRoot": cfg.DownloadRoot,
+	}
+}
+
 // sourceByName returns a single Source for the named config entry.
 func sourceByName(cfg *config.Config, name string) (source.Source, error) {
 	scfg, ok := cfg.Sources[name]
 	if !ok {
 		return nil, fmt.Errorf("unknown source %q", name)
 	}
-	return source.New(name, scfg)
+	return source.New(name, scfg, globalVars(cfg))
 }
 
 // buildSources constructs Source objects for the given list of source names.
 func buildSources(cfg *config.Config, names []string) ([]source.Source, error) {
+	vars := globalVars(cfg)
 	sources := make([]source.Source, 0, len(names))
 	for _, name := range names {
 		scfg, ok := cfg.Sources[name]
 		if !ok {
 			return nil, fmt.Errorf("source %q referenced in tier but not defined in sources", name)
 		}
-		s, err := source.New(name, scfg)
+		s, err := source.New(name, scfg, vars)
 		if err != nil {
 			return nil, err
 		}
